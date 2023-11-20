@@ -14,7 +14,7 @@ void KeyEvent::UpdateKey(int key, int scancode, int action, int mods)
 	this->m_sKeyInfo.scanCode = scancode;
 	this->m_sKeyInfo.action = action;
 	this->m_sKeyInfo.mods = mods;
-	this->Event::Notify();
+	this->Event::Notify("keyevent");
 }
 
 sKeyInfo KeyEvent::GetKeyInfo()

@@ -20,7 +20,8 @@ public:
 	~WindowSystem();
 
 	// Where we really start/destroy everything that could go wrong
-	bool Initialize(uint width, uint height, const std::string& windowName, GLFWkeyfun KeyCallback);
+	bool Initialize(uint width, uint height, const std::string& windowName, 
+					GLFWkeyfun KeyCallback, GLFWmousebuttonfun MousePressCallback, GLFWcursorposfun MousePosCallback);
 	void Destroy();
 
 	glm::mat4 GetProjection();

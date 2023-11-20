@@ -14,7 +14,8 @@ WindowSystem::~WindowSystem()
 {
 }
 
-bool WindowSystem::Initialize(uint windowWidth, uint windowHeight, const std::string& windowName, GLFWkeyfun KeyCallback)
+bool WindowSystem::Initialize(uint windowWidth, uint windowHeight, const std::string& windowName,
+                              GLFWkeyfun KeyCallback, GLFWmousebuttonfun MousePressCallback, GLFWcursorposfun MousePosCallback)
 {
     glfwSetErrorCallback(GlfwErrorCallback);
     if (!glfwInit()) {
@@ -37,6 +38,8 @@ bool WindowSystem::Initialize(uint windowWidth, uint windowHeight, const std::st
         return false;
     }
     glfwSetKeyCallback(this->m_pWindow, KeyCallback);
+    glfwSetMouseButtonCallback(this->m_pWindow, MousePressCallback);
+    glfwSetCursorPosCallback(this->m_pWindow, MousePosCallback);
 
     glfwMakeContextCurrent(this->m_pWindow);
     gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

@@ -3,11 +3,14 @@
 #include "components/iComponent.h"
 #include "common/opengl.h"
 #include "common/utils.h"
+#include "common/constants.h"
+#include "common/Input.h"
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
+float cameraSpeed      = 300;
 double changeStepFloat = 0.01;
-int changeStepInt = 1;
+int changeStepInt      = 1;
 
 void Editor::m_PrintParameter(std::string parName, std::string parValue)
 {
@@ -51,16 +54,26 @@ void Editor::m_PrintParameter(std::string parName, std::vector<std::string> parV
 	printf("]\n");
 }
 
-Editor::Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector)
-	: m_pSceneView(pSceneView), m_pSceneDirector(pSceneDirector)
+Editor::Editor(SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow)
+			: m_pSceneView(pSceneView), m_pSceneDirector(pSceneDirector), m_pWindow(pWindow)
 {
-	pKeyEvent->Attach(this);
+	m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
+	m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
 
-	this->m_lastSelectedEntity = 0;
-	this->m_selectedEntity = 0;
-	this->m_selectedComponent = 0;
-	this->m_selectedParameter = 0;
-	this->m_isRunning = true;
+	m_oldMouseState = GLFW_RELEASE;
+	m_lastSelectedEntity = 0;
+	m_selectedEntity = 0;
+	m_selectedComponent = 0;
+	m_selectedParameter = 0;
+	m_isRunning = true;
+	m_firstUpdate = true;
+	m_lastX = 0;
+	m_lastY = 0;
+	m_yaw = 0;
+	m_pitch = 0;
+	m_sensitivity = 0.025f;
+
+	m_vecCompInfos = m_pSceneView->GetComponentsInfo(m_selectedEntity);
 }
 
 Editor::~Editor()
@@ -69,7 +82,7 @@ Editor::~Editor()
 
 void Editor::RedrawEntityUI()
 {
-	if (!this->m_isRunning)
+	if (!m_isRunning)
 	{
 		// Only allow changes on editor mode
 		return;
@@ -78,8 +91,8 @@ void Editor::RedrawEntityUI()
 	system("cls");
 	printf("Editor / Play mode: P\n");
 
-	this->m_vecCompInfos = this->m_pSceneView->GetComponentsInfo(this->m_selectedEntity);
-	sComponentInfo componentInfo = this->m_vecCompInfos[this->m_selectedComponent];
+	m_vecCompInfos = m_pSceneView->GetComponentsInfo(m_selectedEntity);
+	sComponentInfo componentInfo = m_vecCompInfos[m_selectedComponent];
 
 
 	printf("Select entity: PAGE_UP/PAGE_DOWN\n");
@@ -94,7 +107,7 @@ void Editor::RedrawEntityUI()
 
 	printf("Change step floats: %.2f\n", changeStepFloat);
 	printf("Change step ints: %d\n", changeStepInt);
-	printf("Entity ID #%d\n\n", this->m_selectedEntity);
+	printf("Entity ID #%d\n\n", m_selectedEntity);
 
 	printf("Component: %s\n", componentInfo.componentName.c_str());
 	printf("%s\n", std::string(10, '-').c_str());
@@ -103,7 +116,7 @@ void Editor::RedrawEntityUI()
 	// needing to convert every time we get from components?
 	for (int i = 0; i < componentInfo.componentParameters.size(); i++)
 	{
-		if (i == this->m_selectedParameter)
+		if (i == m_selectedParameter)
 		{
 			printf(">> ");
 		}
@@ -114,31 +127,31 @@ void Editor::RedrawEntityUI()
 		sParameterInfo parameterInfo = componentInfo.componentParameters[i];
 		if (parameterInfo.parameterType == "string")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterStrValue);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterStrValue);
 		}
 		else if (parameterInfo.parameterType == "int")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterIntValue);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterIntValue);
 		}
 		else if (parameterInfo.parameterType == "bool")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterBoolValue);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterBoolValue);
 		}
 		else if (parameterInfo.parameterType == "float")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterFloatValue);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterFloatValue);
 		}
 		else if (parameterInfo.parameterType == "vec3")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVec3Value);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVec3Value);
 		}
 		else if (parameterInfo.parameterType == "vec4")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVec4Value);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVec4Value);
 		}
 		else if (parameterInfo.parameterType == "vecStr")
 		{
-			this->m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVecStrValue);
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVecStrValue);
 		}
 		else
 		{
@@ -152,230 +165,261 @@ void Editor::RedrawEntityUI()
 	return;
 }
 
-void Editor::Notify(iEvent* pEvent)
+void Editor::Update(double deltaTime)
 {
-	KeyEvent* pKeyEvent = dynamic_cast<KeyEvent*>(pEvent);
+	bool isUpdate = KeyActions(deltaTime);
+
+	if (isUpdate)
+	{
+		RedrawEntityUI();
+	}
 	
-	this->RedrawEntityUI();
-	
-	this->KeyActions(pKeyEvent->GetKeyInfo());
+	MouseActions();
+	MoveCamera(deltaTime);
 }
 
 bool Editor::IsRunning()
 {
-	return this->m_isRunning;
+	return m_isRunning;
 }
 
 void Editor::SetRunning(bool isRunning)
 {
-	this->m_isRunning = isRunning;
+	m_isRunning = isRunning;
 }
 
-void Editor::KeyActions(sKeyInfo keyInfo)
+void Editor::MouseActions()
+{
+	if (Input::IsMouseButtonPressed(GLFW_MOUSE_BUTTON_1))
+	{
+		if (m_oldMouseState == GLFW_RELEASE)
+		{
+			m_firstUpdate = true;
+			m_pWindow->CaptureMouse();
+			m_oldMouseState = GLFW_PRESS;
+		}
+
+		glm::vec2 mouse = Input::MousePosition();
+		m_UpdateCamera(mouse.x, mouse.y);
+	}
+	else
+	{
+		if (m_oldMouseState == GLFW_PRESS)
+		{
+			m_firstUpdate = false;
+			m_pWindow->ReleaseMouse();
+			m_oldMouseState = GLFW_RELEASE;
+		}
+	}
+}
+
+bool Editor::KeyActions(double deltaTime)
 {
 	// Close window
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_ESCAPE && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
 	{
-		this->m_pSceneDirector->SetRunning(false);
-		return;
+		m_pSceneDirector->SetRunning(false);
+		return true;
 	}
 
 	// Editor mode/Game mode
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_P && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_P))
 	{
-		this->m_pSceneDirector->ChangeMode();
-		return;
+		m_pSceneDirector->ChangeMode();
+		return true;
 	}
 
-	if (!this->m_isRunning)
+	if (!m_isRunning)
 	{
 		// Only allow changes on editor mode
-		return;
+		return true;
 	}
 
 	// Save/Load scene
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_F1 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_F1))
 	{
-		this->m_pSceneDirector->SaveScene();
-		return;
+		m_pSceneDirector->SaveScene();
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_F5 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_F5))
 	{
-		this->m_pSceneDirector->LoadScene();
-		return;
+		m_pSceneDirector->LoadScene();
+		return true;
 	}
 
 	// Entity selection
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_PAGE_UP && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_PAGE_UP))
 	{
-		this->ChangeSelectedEntity(1);
-		return;
+		ChangeSelectedEntity(1);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_PAGE_DOWN && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_PAGE_DOWN))
 	{
-		this->ChangeSelectedEntity(-1);
-		return;
+		ChangeSelectedEntity(-1);
+		return true;
 	}
 
 	// Set value directly
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_0 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_0))
 	{
-		this->SetParameterManually(0);
-		return;
+		SetParameterManually(0);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_1 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_1))
 	{
-		this->SetParameterManually(1);
-		return;
+		SetParameterManually(1);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_2 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_2))
 	{
-		this->SetParameterManually(2);
-		return;
+		SetParameterManually(2);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_3 && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_3))
 	{
-		this->SetParameterManually(3);
-		return;
+		SetParameterManually(3);
+		return true;
 	}
 
 	// Component selection
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_RIGHT && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_RIGHT))
 	{
-		this->ChangeSelectedComponent(-1);
-		return;
+		ChangeSelectedComponent(-1);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_LEFT && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_LEFT))
 	{
-		this->ChangeSelectedComponent(1);
-		return;
+		ChangeSelectedComponent(1);
+		return true;
 	}
 
 	// Parameter selection
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_UP && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_UP))
 	{
-		this->ChangeSelectedParameter(-1);
-		return;
+		ChangeSelectedParameter(-1);
+		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_DOWN && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_DOWN))
 	{
-		this->ChangeSelectedParameter(1);
-		return;
+		ChangeSelectedParameter(1);
+		return true;
 	}
 
 	// Change step
 	// --------------------------------------------
-	if (keyInfo.mods == 0)
+	if (Input::IsKeyPressed(GLFW_KEY_EQUAL))
 	{
-		if (keyInfo.pressedKey == GLFW_KEY_EQUAL && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-		{
-			changeStepFloat += 0.01f;
-			return;
-		}
-		if (keyInfo.pressedKey == GLFW_KEY_MINUS && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-		{
-			changeStepFloat -= 0.01f;
-			return;
-		}
-		if (keyInfo.pressedKey == GLFW_KEY_RIGHT_BRACKET && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-		{
-			changeStepFloat += 0.1f;
-			return;
-		}
-		if (keyInfo.pressedKey == GLFW_KEY_LEFT_BRACKET && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-		{
-			changeStepFloat -= 0.1f;
-			return;
-		}
+		changeStepFloat += 0.01f;
+		return true;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_MINUS))
+	{
+		changeStepFloat -= 0.01f;
+		return true;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_RIGHT_BRACKET))
+	{
+		changeStepFloat += 0.1f;
+		return true;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_LEFT_BRACKET))
+	{
+		changeStepFloat -= 0.1f;
+		return true;
 	}
 
-	if ((keyInfo.mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL)
+	if (Input::IsKeyPressed(GLFW_KEY_LEFT_CONTROL))
 	{
 
-		if (keyInfo.pressedKey == GLFW_KEY_KP_ADD && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+		if (Input::IsKeyPressed(GLFW_KEY_KP_ADD))
 		{
 			changeStepInt += 1;
-			return;
+			return true;
 		}
-		if (keyInfo.pressedKey == GLFW_KEY_KP_SUBTRACT && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+		if (Input::IsKeyPressed(GLFW_KEY_KP_SUBTRACT))
 		{
 			changeStepInt -= 1;
-			return;
+			return true;
 		}
 	}
 
 	// Change to camera/back to selected
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_C && (keyInfo.action == GLFW_PRESS))
+	if (Input::IsKeyPressed(GLFW_KEY_C))
 	{
-		if (this->m_selectedEntity == 0)
+		if (m_selectedEntity == 0)
 		{
-			this->m_selectedEntity = this->m_lastSelectedEntity;
-			this->m_selectedParameter = 0;
-			this->m_selectedComponent = 0;
+			m_selectedEntity = m_lastSelectedEntity;
+			m_selectedParameter = 0;
+			m_selectedComponent = 0;
 		}
 		else
 		{
-			this->m_lastSelectedEntity = this->m_selectedEntity;
-			this->m_selectedEntity = 0;
-			this->m_selectedParameter = 0;
-			this->m_selectedComponent = 0;
+			m_lastSelectedEntity = m_selectedEntity;
+			m_selectedEntity = 0;
+			m_selectedParameter = 0;
+			m_selectedComponent = 0;
 		}
-		return;
+		return true;
 	}
 
-	// Parameter edition
+	// Parameter modification
 	// --------------------------------------------
-	if (keyInfo.pressedKey == GLFW_KEY_D && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+	if (Input::IsKeyPressed(GLFW_KEY_RIGHT_SHIFT)) // Shift key is down
 	{
-		this->ModifySelectedParameter(0, 1);
-		return;
-	}
-	if (keyInfo.pressedKey == GLFW_KEY_A && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(0, -1);
-		return;
+		if (Input::IsKeyPressed(GLFW_KEY_D))
+		{
+			ModifySelectedParameter(0, 1);
+			return true;
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_A))
+		{
+			ModifySelectedParameter(0, -1);
+			return true;
+		}
+
+		if (Input::IsKeyPressed(GLFW_KEY_E))
+		{
+			ModifySelectedParameter(1, 1);
+			return true;
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_Q))
+		{
+			ModifySelectedParameter(1, -1);
+			return true;
+		}
+
+		if (Input::IsKeyPressed(GLFW_KEY_W))
+		{
+			ModifySelectedParameter(2, 1);
+			return true;
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_S))
+		{
+			ModifySelectedParameter(2, -1);
+			return true;
+		}
+
+		if (Input::IsKeyPressed(GLFW_KEY_X))
+		{
+			ModifySelectedParameter(3, 1);
+			return true;
+		}
+		if (Input::IsKeyPressed(GLFW_KEY_Z))
+		{
+			ModifySelectedParameter(3, -1);
+			return true;
+		}
 	}
 
-	if (keyInfo.pressedKey == GLFW_KEY_E && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(1, 1);
-		return;
-	}
-	if (keyInfo.pressedKey == GLFW_KEY_Q && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(1, -1);
-		return;
-	}
-
-	if (keyInfo.pressedKey == GLFW_KEY_W && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(2, 1);
-		return;
-	}
-	if (keyInfo.pressedKey == GLFW_KEY_S && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(2, -1);
-		return;
-	}
-
-	if (keyInfo.pressedKey == GLFW_KEY_X && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(3, 1);
-		return;
-	}
-	if (keyInfo.pressedKey == GLFW_KEY_Z && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-	{
-		this->ModifySelectedParameter(3, -1);
-		return;
-	}
+	return false;
 }
 
 void Editor::ChangeSelected(int& selected, int orientation, int count)
@@ -391,27 +435,27 @@ void Editor::ChangeSelected(int& selected, int orientation, int count)
 
 void Editor::ChangeSelectedEntity(int orientation)
 {
-	int maxEntities = (int)this->m_pSceneView->GetNumEntities();
-	ChangeSelected(this->m_selectedEntity, orientation, maxEntities);
-	this->m_selectedComponent = 0;
-	this->m_selectedParameter = 0;
+	int maxEntities = (int)m_pSceneView->GetNumEntities();
+	ChangeSelected(m_selectedEntity, orientation, maxEntities);
+	m_selectedComponent = 0;
+	m_selectedParameter = 0;
 }
 
 void Editor::ChangeSelectedComponent(int orientation)
 {
-	int numComponents = (int)this->m_vecCompInfos.size();
-	ChangeSelected(this->m_selectedComponent, orientation, numComponents);
-	this->m_selectedParameter = 0;
+	int numComponents = (int)m_vecCompInfos.size();
+	ChangeSelected(m_selectedComponent, orientation, numComponents);
+	m_selectedParameter = 0;
 }
 
 void Editor::ChangeSelectedParameter(int orientation)
 {
-	if (this->m_selectedComponent >= this->m_vecCompInfos.size())
+	if (m_selectedComponent >= m_vecCompInfos.size())
 	{
 		return;
 	}
-	int numParameters = (int)this->m_vecCompInfos[this->m_selectedComponent].componentParameters.size();
-	ChangeSelected(this->m_selectedParameter, orientation, numParameters);
+	int numParameters = (int)m_vecCompInfos[m_selectedComponent].componentParameters.size();
+	ChangeSelected(m_selectedParameter, orientation, numParameters);
 }
 
 void Editor::m_ModifySelected(int& value, int orientation)
@@ -459,17 +503,43 @@ void Editor::m_ModifySelectedCamera(glm::vec3& value, int orientation, int axis)
 	value[axis] += (orientation * changeStepInt	);
 }
 
+void Editor::m_UpdateCamera(float xpos, float ypos)
+{
+	using namespace glm;
+
+	if (m_firstUpdate)
+	{
+		m_lastX = xpos;
+		m_lastY = ypos;
+		m_firstUpdate = false;
+	}
+
+	float xoffset = xpos - m_lastX;
+	float yoffset = ypos - m_lastY;
+	m_lastX = xpos;
+	m_lastY = ypos;
+	xoffset *= m_sensitivity;
+	yoffset *= m_sensitivity;
+
+	vec3 rotation = m_pTransformCamera->GetOrientation();
+
+	rotation.x += xoffset;
+	rotation.y -= yoffset;
+
+	m_pTransformCamera->SetOrientation(rotation);
+}
+
 void Editor::ModifySelectedParameter(int axis, int orientation)
 {
 	using namespace myutils;
 
-	if (this->m_selectedComponent >= this->m_vecCompInfos.size())
+	if (m_selectedComponent >= m_vecCompInfos.size())
 	{
 		return;
 	}
 
-	sComponentInfo compInfo = this->m_vecCompInfos[this->m_selectedComponent];
-	sParameterInfo paramInfo = compInfo.componentParameters[this->m_selectedParameter];
+	sComponentInfo compInfo = m_vecCompInfos[m_selectedComponent];
+	sParameterInfo paramInfo = compInfo.componentParameters[m_selectedParameter];
 	
 	if (paramInfo.parameterType == "string")
 	{
@@ -491,15 +561,15 @@ void Editor::ModifySelectedParameter(int axis, int orientation)
 
 		if (paramInfo.parameterType == "int")
 		{
-			this->m_ModifySelected(paramInfo.parameterIntValue, orientation);
+			m_ModifySelected(paramInfo.parameterIntValue, orientation);
 		}
 		else if (paramInfo.parameterType == "float")
 		{
-			this->m_ModifySelected(paramInfo.parameterFloatValue, orientation);
+			m_ModifySelected(paramInfo.parameterFloatValue, orientation);
 		}
 		else
 		{
-			this->m_ModifySelected(paramInfo.parameterBoolValue, orientation);
+			m_ModifySelected(paramInfo.parameterBoolValue, orientation);
 		}
 	}
 	else if (paramInfo.parameterType == "vec3")
@@ -507,23 +577,51 @@ void Editor::ModifySelectedParameter(int axis, int orientation)
 		// Avoid using floats for the camera
 		if (compInfo.componentName == "camera")
 		{
-			this->m_ModifySelectedCamera(paramInfo.parameterVec3Value, orientation, axis);
+			m_ModifySelectedCamera(paramInfo.parameterVec3Value, orientation, axis);
 		}
 		else
 		{
-			this->m_ModifySelected(paramInfo.parameterVec3Value, orientation, axis);
+			m_ModifySelected(paramInfo.parameterVec3Value, orientation, axis);
 		}
 	}
 	else if (paramInfo.parameterType == "vec4")
 	{
-		this->m_ModifySelected(paramInfo.parameterVec4Value, orientation, axis);
+		m_ModifySelected(paramInfo.parameterVec4Value, orientation, axis);
 	}
 
-	iComponent* pComponent = this->m_pSceneView->GetComponent<iComponent>(this->m_selectedEntity, 
+	iComponent* pComponent = m_pSceneView->GetComponent<iComponent>(m_selectedEntity, 
 																		  compInfo.componentName);
 	pComponent->SetParameter(paramInfo);
 
 	return;
+}
+
+void Editor::MoveCamera(double deltaTime)
+{
+	using namespace glm;
+
+	vec3 cameraPosition = this->m_pTransformCamera->GetPosition();
+	vec3 cameraRotation = this->m_pTransformCamera->GetOrientation();
+	vec3 cameraUpVector = this->m_pCamera->upVector;
+	
+	vec3 cameraFront = normalize(m_pCamera->GetCameraFront(cameraPosition, cameraRotation));
+	vec3 cameraSides = normalize(cross(cameraFront, cameraUpVector));
+
+	// Handle key presses for movement
+	if (Input::IsKeyPressed(GLFW_KEY_W)) {
+		cameraPosition += cameraSpeed * cameraFront * (float)deltaTime;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_S)) {
+		cameraPosition -= cameraSpeed * cameraFront * (float)deltaTime;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_A)) {
+		cameraPosition -= cameraSpeed * cameraSides * (float)deltaTime;
+	}
+	if (Input::IsKeyPressed(GLFW_KEY_D)) {
+		cameraPosition += cameraSpeed * cameraSides * (float)deltaTime;
+	}
+
+	this->m_pTransformCamera->SetPosition(cameraPosition);
 }
 
 void Editor::SetParameterManually(int axis)
@@ -535,8 +633,8 @@ void Editor::SetParameterManually(int axis)
 	std::string value;
 	std::cin >> value;
 
-	sComponentInfo compInfo = this->m_vecCompInfos[this->m_selectedComponent];
-	sParameterInfo paramInfo = compInfo.componentParameters[this->m_selectedParameter];
+	sComponentInfo compInfo = m_vecCompInfos[m_selectedComponent];
+	sParameterInfo paramInfo = compInfo.componentParameters[m_selectedParameter];
 
 	if (paramInfo.parameterType == "string")
 	{
@@ -580,7 +678,7 @@ void Editor::SetParameterManually(int axis)
 		paramInfo.parameterVec4Value[axis] = std::stof(value);
 	}
 
-	iComponent* pComponent = this->m_pSceneView->GetComponent<iComponent>(this->m_selectedEntity,
+	iComponent* pComponent = m_pSceneView->GetComponent<iComponent>(m_selectedEntity,
 		compInfo.componentName);
 	pComponent->SetParameter(paramInfo);
 }

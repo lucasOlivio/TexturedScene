@@ -48,7 +48,6 @@ void Player::Move(double deltaTime)
     vec3 cameraPosition = this->m_pTransform->GetPosition();
     vec3 cameraOrientation = normalize(this->m_pTransform->GetOrientation());
     vec3 cameraUpVector = this->m_pCamera->upVector;
-
     vec3 cameraDirection = normalize(cross(cameraOrientation, cameraUpVector));
 
 	// Front movement

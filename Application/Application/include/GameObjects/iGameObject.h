@@ -33,7 +33,7 @@ public:
 	virtual std::string GetScriptName() = 0;
 
 	virtual void Notify(iEvent* pEvent, sCollisionData* pCollision) = 0;
-	virtual void Notify(iEvent* pEvent) = 0;
+	virtual void Notify(std::string eventName, iEvent* pEvent) = 0;
 
 	// Will remove from list of objects on update
 	virtual void Delete() = 0;

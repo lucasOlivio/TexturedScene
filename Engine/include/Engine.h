@@ -7,6 +7,7 @@
 #include "EnginePhysics/Physics.h"
 #include "EngineMedia/MediaPlayer.h"
 #include "events/KeyEvent.h"
+#include "events/MouseEvent.h"
 #include "events/CollisionEvent.h"
 
 class Engine :
@@ -28,6 +29,7 @@ protected:
 	uint m_currShaderID;
 
 	KeyEvent* m_pKeyEvent;
+	MouseEvent* m_pMouseEvent;
 	CollisionEvent* m_pCollisionEvent;
 
 	// TODO: System runtime events like physics should be handled by the scene

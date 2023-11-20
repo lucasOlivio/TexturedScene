@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class iEvent;
 
 class iListener
@@ -7,5 +9,5 @@ class iListener
 public:
 	virtual ~iListener() {};
 
-	virtual void Notify(iEvent* pEvent) = 0;
+	virtual void Notify(std::string eventName, iEvent* pEvent) = 0;
 };

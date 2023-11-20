@@ -4,11 +4,14 @@
 #include "scene/SceneView.h"
 #include "scene/iSceneDirector.h"
 #include "events/KeyEvent.h"
-#include "events/iListener.h"
+#include "events/MouseEvent.h"
+#include "EngineRenderer/WindowSystem.h"
+#include "components/Transform.h"
+#include "components/Camera.h"
 
 // For now only some info been printed on console
 // and handling keycallbacks from glfw
-class Editor : public iListener
+class Editor
 {
 private:
 	int m_selectedEntity;
@@ -20,6 +23,19 @@ private:
 
 	SceneView* m_pSceneView;
 	iSceneDirector* m_pSceneDirector;
+
+	// Flying camera
+	bool m_oldMouseState;
+	bool m_firstUpdate;
+	float m_lastX;
+	float m_lastY;
+	float m_yaw;
+	float m_pitch;
+	float m_sensitivity;
+	TransformComponent* m_pTransformCamera;
+	CameraComponent* m_pCamera;
+
+	WindowSystem* m_pWindow;
 
 	// TODO: Better way to handle multiple value types from parameters
 	void m_PrintParameter(std::string parName, std::string parValue);
@@ -36,33 +52,29 @@ private:
 	void m_ModifySelected(glm::vec3& value, int orientation, int axis);
 	void m_ModifySelected(glm::vec4& value, int orientation, int axis);
 	void m_ModifySelectedCamera(glm::vec3& value, int orientation, int axis);
+
+	void m_UpdateCamera(float xpos, float ypos);
 public:
 	// ctors & dtors
-	Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector);
+	Editor(SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow);
 	~Editor();
 
-	// TODO: The scene should be changed so that the systems can get only the
-	// componen they need, to avoid the whole thing been passed everywhere 
+	void Update(double deltaTime);
 
 	// Draw selected entity UI info
 	void RedrawEntityUI();
 
-	// On key callback we manage entities on the scene accordingly
-	virtual void Notify(iEvent* pEvent);
-
 	bool IsRunning();
 	void SetRunning(bool isRunning);
-
-	// TODO: Set changes to be handled by each component I think
-	// without editor needing to know about all
-	// 
-	// Actions to take based on key pressed
-	void KeyActions(sKeyInfo keyInfo);
 
 	void ChangeSelected(int& selected, int orientation, int count);
 	void ChangeSelectedEntity(int orientation);
 	void ChangeSelectedComponent(int orientation);
 	void ChangeSelectedParameter(int orientation);
+
+	void MouseActions();
+	bool KeyActions(double deltaTime);
+	void MoveCamera(double deltaTime);
 
 	void ModifySelectedParameter(int axis, int orientation);
 	void SetParameterManually(int axis);

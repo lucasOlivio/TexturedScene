@@ -20,5 +20,5 @@ public:
     virtual void Dettach(iListener* pListener);
 
     // This method allows subjects to send events via the EventManager
-    virtual void Notify();
+    virtual void Notify(std::string eventType);
 };

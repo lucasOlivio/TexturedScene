@@ -1,7 +1,7 @@
 #include "Engine.h"
 #include "scene/Scene.h"
 #include "common/ConfigReadWriteFactory.h"
-#include "events/KeyWrapper.h"
+#include "events/GLFWWrapper.h"
 #include "common/utils.h"
 #include "common/constants.h"
 
@@ -25,19 +25,19 @@ Engine* Engine::m_pInstance = nullptr;
 
 Engine::Engine()
 {
-	this->m_isInitialized = false;
-	this->m_isRunning = false;
+	m_isInitialized = false;
+	m_isRunning = false;
 
-	this->m_lastTime = 0.0;
+	m_lastTime = 0.0;
 
 	// Singleton
-	assert(!this->m_pInstance);
+	assert(!m_pInstance);
 	m_pInstance = this;
 }
 
 Engine::~Engine()
 {
-	this->m_pInstance = nullptr;
+	m_pInstance = nullptr;
 }
 
 Engine* Engine::Get()
@@ -51,20 +51,22 @@ Engine* Engine::Get()
 
 bool Engine::Initialize(const std::string& sceneName)
 {
-	if (this->m_isInitialized)
+	if (m_isInitialized)
 	{
 		// Already initialized
 		return true;
 	}
 
 	// Events
-	this->m_pCollisionEvent = new CollisionEvent();
-	this->m_pKeyEvent = new KeyEvent();
-	KeyWrapper::SetKeyEvent(this->m_pKeyEvent);
+	m_pCollisionEvent = new CollisionEvent();
+	m_pKeyEvent = new KeyEvent();
+	m_pMouseEvent = new MouseEvent();
+	GLFWWrapper::SetKeyEvent(m_pKeyEvent);
+	GLFWWrapper::SetMouseEvent(m_pMouseEvent);
 
 	printf("Initializing creation of scene '%s'\n", sceneName.c_str());
 
-	this->m_pScene = new Scene(this->m_pKeyEvent, this->m_pCollisionEvent);
+	m_pScene = new Scene(m_pKeyEvent, m_pCollisionEvent);
 	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite("json");
 
 	// TODO: This should come from a config file
@@ -74,7 +76,7 @@ bool Engine::Initialize(const std::string& sceneName)
 
 	printf("Loading configs...\n");
 	// Load scene components and entities from database file
-	bool isSceneLoaded = pConfigrw->ReadScene(sceneFilePath, this->m_pScene);
+	bool isSceneLoaded = pConfigrw->ReadScene(sceneFilePath, m_pScene);
 	if (!isSceneLoaded)
 	{
 		CheckEngineError("Scene loading");
@@ -84,21 +86,22 @@ bool Engine::Initialize(const std::string& sceneName)
 	delete pConfigrw; // Used only to load all configs
 
 	printf("Creating systems...\n");
-	this->m_pShaderManager = new ShaderManager(baseShadersPath);
-	this->m_pRenderer = new Renderer();
-	this->m_pEditor = new Editor(this->m_pKeyEvent, this->m_pScene, this);
-	this->m_pPhysics = new Physics(this->m_pScene, this->m_pCollisionEvent);
-	this->m_pMediaPlayer = MediaPlayer::Get();
-
-	this->m_pWindowSystem = new WindowSystem(this->m_pShaderManager);
+	m_pShaderManager = new ShaderManager(baseShadersPath);
+	m_pRenderer = new Renderer();
+	m_pWindowSystem = new WindowSystem(m_pShaderManager);
+	m_pEditor = new Editor(m_pScene, this, m_pWindowSystem);
+	m_pPhysics = new Physics(m_pScene, m_pCollisionEvent);
+	m_pMediaPlayer = MediaPlayer::Get();
 
 	printf("Initializing systems...\n");
 	// Initializes all systems
 
-	bool isWSInitialized = this->m_pWindowSystem->Initialize(windowWidth,
+	bool isWSInitialized = m_pWindowSystem->Initialize(windowWidth,
 		windowHeight,
 		windowName,
-		KeyWrapper::KeyCallback);
+		GLFWWrapper::KeyCallback,
+		GLFWWrapper::MousePressCallback,
+		GLFWWrapper::MousePosCallback);
 	if (!isWSInitialized)
 	{
 		CheckEngineError("initializing Window system");
@@ -107,27 +110,27 @@ bool Engine::Initialize(const std::string& sceneName)
 
 	printf("Creating shaders...\n");
 	// Creates main shader program
-	bool isShaderCreated = this->m_pShaderManager->AddShaderProgram(shaderProgramName);
+	bool isShaderCreated = m_pShaderManager->AddShaderProgram(shaderProgramName);
 	if (!isShaderCreated)
 	{
 		CheckEngineError("creating shader program");
 		return false;
 	}
-	this->m_currShaderID = this->m_pShaderManager->GetIDFromShaderProgramName(shaderProgramName);
-	this->m_pShaderManager->UseShaderProgram(this->m_currShaderID);
+	m_currShaderID = m_pShaderManager->GetIDFromShaderProgramName(shaderProgramName);
+	m_pShaderManager->UseShaderProgram(m_currShaderID);
 
-	bool isERInitialized = this->m_pRenderer->Initialize(baseModelPath,
+	bool isERInitialized = m_pRenderer->Initialize(baseModelPath,
 														 baseTexturesPath,
-														 this->m_pShaderManager,
-														 this->m_currShaderID,
-														 this->m_pScene);
+														 m_pShaderManager,
+														 m_currShaderID,
+														 m_pScene);
 	if (!isERInitialized)
 	{
 		CheckEngineError("Engine renderer initialization");
 		return false;
 	}
 
-	bool isMediaInit = this->m_pMediaPlayer->Initialize(baseAudioPath, this->m_pScene);
+	bool isMediaInit = m_pMediaPlayer->Initialize(baseAudioPath, m_pScene);
 	if (!isMediaInit)
 	{
 		CheckEngineError("Engine media player initialization");
@@ -136,7 +139,7 @@ bool Engine::Initialize(const std::string& sceneName)
 
 	m_lastTime = glfwGetTime();
 
-	this->m_isInitialized = true;
+	m_isInitialized = true;
 	printf("Scene '%s' created scussesfully!\n", sceneName.c_str());
 
     return true;
@@ -144,42 +147,46 @@ bool Engine::Initialize(const std::string& sceneName)
 
 void Engine::Run()
 {
-	if (!this->m_isInitialized)
+	if (!m_isInitialized)
 	{
 		return;
 	}
 
-	this->m_isRunning = true;
+	m_isRunning = true;
 
-	while (this->IsRunning())
+	while (IsRunning())
 	{
-		double fixedDeltaTime = this->GetFixedDeltaTime();
+		double fixedDeltaTime = GetFixedDeltaTime();
 
-		this->m_pWindowSystem->NewFrame(this->m_currShaderID);
-		this->m_pPhysics->NewFrame();
+		m_pWindowSystem->NewFrame(m_currShaderID);
+		m_pPhysics->NewFrame();
 
-		this->Update(fixedDeltaTime);
+		Update(fixedDeltaTime);
 
-		this->m_pWindowSystem->EndFrame();
+		m_pWindowSystem->EndFrame();
 
-		this->m_pScene->ClearListenerDeleted();
-		this->m_pScene->ClearDeleted();
+		m_pScene->ClearListenerDeleted();
+		m_pScene->ClearDeleted();
 	}
 }
 
 void Engine::Update(double fixedDeltaTime)
 {
-	this->m_pPhysics->Update(fixedDeltaTime);
-	this->m_pMediaPlayer->Update(fixedDeltaTime);
-	this->m_pWindowSystem->UpdateUL(this->m_currShaderID);
-	this->m_pRenderer->RenderScene(fixedDeltaTime);
+	if (m_pEditor->IsRunning())
+	{
+		m_pEditor->Update(fixedDeltaTime);
+	}
+	m_pPhysics->Update(fixedDeltaTime);
+	m_pMediaPlayer->Update(fixedDeltaTime);
+	m_pWindowSystem->UpdateUL(m_currShaderID);
+	m_pRenderer->RenderScene(fixedDeltaTime);
 }
 
 bool Engine::IsRunning()
 {
-	if (this->m_isRunning
-		&& this->m_pRenderer->IsRunning()
-		&& !this->m_pWindowSystem->WindowShouldClose())
+	if (m_isRunning
+		&& m_pRenderer->IsRunning()
+		&& !m_pWindowSystem->WindowShouldClose())
 	{
 		return true;
 	}
@@ -192,8 +199,8 @@ bool Engine::IsRunning()
 double Engine::GetFixedDeltaTime()
 {
 	double currentTime = glfwGetTime();
-	double deltaTime = currentTime - this->m_lastTime;
-	this->m_lastTime = currentTime;
+	double deltaTime = currentTime - m_lastTime;
+	m_lastTime = currentTime;
 
 	// Debugging performance:
 	// printf("delta real: %.2f\n", deltaTime);
@@ -204,93 +211,93 @@ double Engine::GetFixedDeltaTime()
 	}
 
 	// Add the frame time to the list
-	this->m_frameTimes.push_back(deltaTime);
+	m_frameTimes.push_back(deltaTime);
 
 	// Limit the number of frames
 	const size_t maxFrameCount = 60; // Store frame times for a second
-	if (this->m_frameTimes.size() > maxFrameCount) {
-		this->m_frameTimes.erase(this->m_frameTimes.begin());
+	if (m_frameTimes.size() > maxFrameCount) {
+		m_frameTimes.erase(m_frameTimes.begin());
 	}
 
 	// Calculate the average frame time
 	double averageFrameTime = 0;
-	for (double time : this->m_frameTimes) {
+	for (double time : m_frameTimes) {
 		averageFrameTime += time;
 	}
-	averageFrameTime /= this->m_frameTimes.size();
+	averageFrameTime /= m_frameTimes.size();
 
 	return averageFrameTime;
 }
 
 void Engine::Exit()
 {
-	if (!this->m_isInitialized)
+	if (!m_isInitialized)
 	{
 		return;
 	}
 
-	this->m_pRenderer->Destroy();
-	this->m_pWindowSystem->Destroy();
+	m_pRenderer->Destroy();
+	m_pWindowSystem->Destroy();
 
-	this->m_isInitialized = false;
-	this->m_isRunning = false;
+	m_isInitialized = false;
+	m_isRunning = false;
 
-	delete this->m_pRenderer;
-	delete this->m_pEditor;
-	delete this->m_pScene;
+	delete m_pRenderer;
+	delete m_pEditor;
+	delete m_pScene;
 
-	delete this->m_pKeyEvent;
+	delete m_pKeyEvent;
 
 	return;
 }
 
 GLFWwindow* Engine::GetWindow()
 {
-	return this->m_pWindowSystem->GetWindow();
+	return m_pWindowSystem->GetWindow();
 }
 
 glm::mat4 Engine::GetWindowProjectionMat()
 {
-	return this->m_pWindowSystem->GetProjection();
+	return m_pWindowSystem->GetProjection();
 }
 
 void Engine::GetWindowSize(int& windowHeight, int& windowWidth)
 {
-	this->m_pWindowSystem->GetWindowSize(windowHeight, windowWidth);
+	m_pWindowSystem->GetWindowSize(windowHeight, windowWidth);
 }
 
 glm::mat4 Engine::GetViewMat()
 {
-	return this->m_pRenderer->GetCamera()->GetViewMat();
+	return m_pRenderer->GetCamera()->GetViewMat();
 }
 
 void Engine::SetRunning(bool isRunning)
 {
-	this->m_isRunning = isRunning;
+	m_isRunning = isRunning;
 }
 
 void Engine::ChangeMode()
 {
-	bool editorRunning = this->m_pEditor->IsRunning();
+	bool editorRunning = m_pEditor->IsRunning();
 
 	if (editorRunning)
 	{
 		// Entering play mode
-		this->SaveScene();
+		SaveScene();
 
-		this->m_pEditor->SetRunning(false);
-		this->m_pPhysics->SetRunning(true);
-		this->m_pScene->SetPlaying(true);
+		m_pEditor->SetRunning(false);
+		m_pPhysics->SetRunning(true);
+		m_pScene->SetPlaying(true);
 
-		this->LoadScene();
+		LoadScene();
 	}
 	else
 	{
-		this->m_pEditor->SetRunning(true);
-		this->m_pPhysics->SetRunning(false);
-		this->m_pScene->SetPlaying(false);
+		m_pEditor->SetRunning(true);
+		m_pPhysics->SetRunning(false);
+		m_pScene->SetPlaying(false);
 
-		this->LoadScene();
+		LoadScene();
 	}
 
 	return;
@@ -300,7 +307,7 @@ void Engine::SaveScene(std::string filePath)
 {
 	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite(filePath);
 
-	bool isSceneSaved = pConfigrw->WriteScene(filePath, this->m_pScene);
+	bool isSceneSaved = pConfigrw->WriteScene(filePath, m_pScene);
 	if (!isSceneSaved)
 	{
 		CheckEngineError("Scene saving to file");
@@ -314,16 +321,16 @@ void Engine::SaveScene(std::string filePath)
 
 void Engine::SaveScene()
 {
-	this->SaveScene(sceneFilePath);
+	SaveScene(sceneFilePath);
 }
 
 void Engine::LoadScene(std::string filePath)
 {
-	this->m_pScene->Clear();
+	m_pScene->Clear();
 
 	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite(filePath);
 
-	bool isSceneLoaded = pConfigrw->ReadScene(filePath, this->m_pScene);
+	bool isSceneLoaded = pConfigrw->ReadScene(filePath, m_pScene);
 	if (!isSceneLoaded)
 	{
 		CheckEngineError("Scene loading from file");
@@ -332,12 +339,12 @@ void Engine::LoadScene(std::string filePath)
 
 	delete pConfigrw; // Used only to load configs
 
-	this->m_pRenderer->LoadScene(baseModelPath);
+	m_pRenderer->LoadScene(baseModelPath);
 
 	return;
 }
 
 void Engine::LoadScene()
 {
-	this->LoadScene(sceneFilePath);
+	LoadScene(sceneFilePath);
 }

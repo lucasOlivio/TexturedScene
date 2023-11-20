@@ -103,7 +103,7 @@
     <ClCompile Include="src\events\Event.cpp">
       <Filter>EngineUtilities\Events</Filter>
     </ClCompile>
-    <ClCompile Include="src\events\KeyWrapper.cpp">
+    <ClCompile Include="src\events\GLFWWrapper.cpp">
       <Filter>EngineUtilities\Events</Filter>
     </ClCompile>
     <ClCompile Include="src\events\KeyEvent.cpp">
@@ -167,6 +167,9 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\components\audioOcclusion.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\events\MouseEvent.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -267,7 +270,7 @@
     <ClInclude Include="include\events\iListener.h">
       <Filter>EngineUtilities\Events</Filter>
     </ClInclude>
-    <ClInclude Include="include\events\KeyWrapper.h">
+    <ClInclude Include="include\events\GLFWWrapper.h">
       <Filter>EngineUtilities\Events</Filter>
     </ClInclude>
     <ClInclude Include="include\events\KeyEvent.h">
@@ -310,6 +313,7 @@
     <ClInclude Include="include\components\Channel.h" />
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
     <ClInclude Include="include\components\audioOcclusion.h" />
+    <ClInclude Include="include\events\MouseEvent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\scene\SceneView.tpp">

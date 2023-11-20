@@ -8,7 +8,10 @@ class Input
 {
 public:
 	static bool IsKeyPressed(int key);
+
 	static glm::vec2 MousePosition();
 
 	static glm::vec2 MousePosRelative();
+
+	static bool IsMouseButtonPressed(int button);
 };

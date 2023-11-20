@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="src\events\MouseEvent.cpp" />
     <ClCompile Include="src\components\audioOcclusion.cpp" />
     <ClCompile Include="src\components\Audio.cpp" />
     <ClCompile Include="src\components\Channel.cpp" />
@@ -45,7 +46,7 @@
     <ClCompile Include="src\events\Event.cpp" />
     <ClCompile Include="src\components\Force.cpp" />
     <ClCompile Include="src\events\KeyEvent.cpp" />
-    <ClCompile Include="src\events\KeyWrapper.cpp" />
+    <ClCompile Include="src\events\GLFWWrapper.cpp" />
     <ClCompile Include="src\components\Model.cpp" />
     <ClCompile Include="src\EngineRenderer\ModelSystem.cpp" />
     <ClCompile Include="src\EngineRenderer\openglerrors.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
     <ClInclude Include="include\EngineRenderer\LightSystem.h" />
     <ClInclude Include="include\events\iCollisionListener.h" />
+    <ClInclude Include="include\events\MouseEvent.h" />
     <ClInclude Include="include\events\sCollisionData.h" />
     <ClInclude Include="include\components\Model.h" />
     <ClInclude Include="include\components\Transform.h" />
@@ -115,7 +117,7 @@
     <ClInclude Include="include\events\iEvent.h" />
     <ClInclude Include="include\events\iListener.h" />
     <ClInclude Include="include\events\KeyEvent.h" />
-    <ClInclude Include="include\events\KeyWrapper.h" />
+    <ClInclude Include="include\events\GLFWWrapper.h" />
     <ClInclude Include="include\common\iConfigReadWrite.h" />
     <ClInclude Include="include\common\ParserJSON.h" />
     <ClInclude Include="include\scene\iScene.h" />

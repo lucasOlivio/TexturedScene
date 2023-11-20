@@ -75,5 +75,5 @@ public:
 	// Collision listener
 	//----------------
 	virtual void Notify(iEvent* pEvent, sCollisionData* pCollision) {};
-	virtual void Notify(iEvent* pEvent) {};
+	virtual void Notify(std::string eventName, iEvent* pEvent) {};
 };

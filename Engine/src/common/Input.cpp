@@ -56,3 +56,12 @@ glm::vec2 Input::MousePosRelative()
 
     return { worldSpaceMousePosition.x, worldSpaceMousePosition.y };
 }
+
+bool Input::IsMouseButtonPressed(int button)
+{
+    GLFWwindow* pWindow = Engine::Get()->GetWindow();
+
+    int state = glfwGetMouseButton(pWindow, GLFW_MOUSE_BUTTON_LEFT);
+
+    return state == GLFW_PRESS;
+}

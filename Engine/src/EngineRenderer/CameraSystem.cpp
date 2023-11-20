@@ -28,10 +28,10 @@ glm::mat4 CameraSystem::GetViewMat()
     vec3 cameraRotation = this->m_pTransform->GetOrientation();
     vec3 cameraUpVector = this->m_pCamera->upVector;
 
-    vec3 cameraFront = this->m_pCamera->GetCameraFront(cameraPosition, cameraRotation);
+    vec3 cameraTarget = this->m_pCamera->GetCameraTarget(cameraPosition, cameraRotation);
 
     return lookAt(cameraPosition,
-                  cameraFront,
+                  cameraTarget,
                   cameraUpVector);
 }
 

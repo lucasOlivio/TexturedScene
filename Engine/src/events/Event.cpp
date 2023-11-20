@@ -4,12 +4,12 @@ Event::~Event()
 {
 }
 
-void Event::Notify()
+void Event::Notify(std::string eventType)
 {
 	// Notify all listeners that was a change
 	for (iListener* listener : this->m_pListeners)
 	{
-		listener->Notify(this);
+		listener->Notify(eventType, this);
 	}
 }
 
