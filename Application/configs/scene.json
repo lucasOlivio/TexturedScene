@@ -1,0 +1,36 @@
+[
+    {
+        "camera": {
+            "upVector": [
+                0.0,
+                1.0,
+                0.0
+            ],
+            "isActive": true
+        },
+        "script": {
+            "scriptName": "Player",
+            "isActive": false,
+            "variables": {
+                "sensitivity": "0.025",
+                "velocity": "300"
+            }
+        },
+        "tag": {
+            "name": "player"
+        },
+        "transform": {
+            "position": [
+                34.0,
+                3.0,
+                32.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                -90.0
+            ]
+        }
+    }
+]

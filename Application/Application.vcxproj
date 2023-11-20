@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{faac655d-74ab-49c3-a00f-b8f2e1084113}</ProjectGuid>
+    <RootNamespace>Application</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Application</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)Engine\include\;$(ProjectDir)Application\include\;$(SolutionDir)extern\include\;$(SolutionDir)AssimpFileLoaderHelper\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)Engine\include\;$(ProjectDir)Application\include\;$(SolutionDir)extern\include\;$(SolutionDir)AssimpFileLoaderHelper\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)$(Platform)\$(Configuration)\;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Engine.lib;AssimpFileLoaderHelper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PostBuildEvent>
+      <Command>msbuild $(ProjectName).vcxproj /t:AfterBuild</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>Engine.lib;AssimpFileLoaderHelper.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreLinkEvent>
+      <Command>
+      </Command>
+    </PreLinkEvent>
+    <PostBuildEvent>
+      <Command>msbuild $(ProjectName).vcxproj /t:AfterBuild</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Application\src\GameObjects\AlienObject.cpp" />
+    <ClCompile Include="Application\src\GameObjects\TriggerObject.cpp" />
+    <ClCompile Include="Application\src\GameObjects\AudioObject.cpp" />
+    <ClCompile Include="Application\src\Application.cpp" />
+    <ClCompile Include="Application\src\GameObjects\DefaultObject.cpp" />
+    <ClCompile Include="Application\src\GameObjects\HangarDoorObject.cpp" />
+    <ClCompile Include="Application\src\GameObjects\Player.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Application\src\GameObjects\GameObjectFactory.cpp" />
+    <ClCompile Include="Application\src\GameObjects\GameManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\fragmentShader01.glsl" />
+    <None Include="assets\shaders\vertexShader01.glsl" />
+    <None Include="configs\scene.json" />
+    <None Include="fmod.dll" />
+    <None Include="fmodL.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application\include\Application.h" />
+    <ClInclude Include="Application\include\GameObjects\AudioObject.h" />
+    <ClInclude Include="Application\include\GameObjects\GameManager.h" />
+    <ClInclude Include="Application\include\GameObjects\GameObjectFactory.h" />
+    <ClInclude Include="Application\include\GameObjects\AlienObject.h" />
+    <ClInclude Include="Application\include\GameObjects\TriggerObject.h" />
+    <ClInclude Include="Application\include\GameObjects\HangarDoorObject.h" />
+    <ClInclude Include="Application\include\GameObjects\iGameMediator.h" />
+    <ClInclude Include="Application\include\GameObjects\iGameObject.h" />
+    <ClInclude Include="Application\include\GameObjects\DefaultObject.h" />
+    <ClInclude Include="Application\include\GameObjects\Player.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <!-- CUSTOM MSBUILD TAGS -->
+  <ItemGroup>
+    <DLLFiles Include="*.dll" />
+    <ExecFiles Include="..\$(Platform)\$(Configuration)\*.exe" />
+    <ConfigFiles Include="configs\*.json" />
+    <AssetsFiles Include="assets\**\*.*" />
+  </ItemGroup>
+  <PropertyGroup>
+    <DeploymentPath>..\bin\</DeploymentPath>
+    <AssetsDeploymentPath>..\bin\assets\</AssetsDeploymentPath>
+    <ConfigsDeploymentPath>..\bin\configs\</ConfigsDeploymentPath>
+    <DeployZip>Application.zip</DeployZip>
+  </PropertyGroup>
+  <Target Name="AfterBuild" BeforeTargets="CleanAfterBuild" Condition="'$(Configuration)' == 'Release'">
+    <!-- Remove older build -->
+    <Delete Files="$(DeployZip)" Condition="Exists('$(DeployZip)')" />
+    <Delete Files="$(DeploymentPath)" Condition="Exists('$(DeploymentPath)')" />
+    <!-- Copy all dependency files to the deployment folder -->
+    <MakeDir Directories="$(DeploymentPath)" />
+    <Copy sourceFiles="@(DLLFiles)" DestinationFolder="$(DeploymentPath)" />
+    <Copy sourceFiles="@(ExecFiles)" DestinationFolder="$(DeploymentPath)" />
+    <Copy sourceFiles="@(AssetsFiles)" DestinationFolder="$(AssetsDeploymentPath)%(RecursiveDir)" />
+    <Copy sourceFiles="@(ConfigFiles)" DestinationFolder="$(ConfigsDeploymentPath)%(RecursiveDir)" />
+    <ZipDirectory SourceDirectory="$(DeploymentPath)" DestinationFile="$(DeployZip)" />
+  </Target>
+  <!-- Delete all folders not needed anymore -->
+  <Target Name="CleanAfterBuild" DependsOnTargets="AfterBuild">
+    <RemoveDir Directories="$(DeploymentPath)" />
+  </Target>
+</Project>
