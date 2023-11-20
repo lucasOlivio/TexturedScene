@@ -20,15 +20,15 @@
         },
         "transform": {
             "position": [
-                -314.0,
-                292.0,
-                1026.0
+                -897.3665161132813,
+                297.17718505859375,
+                626.4180908203125
             ],
             "scale": 1.0,
             "orientation": [
-                0,
-                0,
-                0.0
+                -46.150108337402344,
+                -3.575000047683716,
+                -0.0
             ]
         }
     },
@@ -56,6 +56,9 @@
             "useVertexColour": true,
             "doNotLight": true,
             "isActive": true
+        },
+        "tag": {
+            "name": "wall"
         },
         "transform": {
             "position": [

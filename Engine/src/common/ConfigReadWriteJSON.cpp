@@ -54,7 +54,7 @@ bool ConfigReadWriteJSON::ReadScene(const std::string& filePath, iScene* pScene)
     return true;
 }
 
-bool ConfigReadWriteJSON::WriteScene(const std::string& filePath, iScene* pScene)
+bool ConfigReadWriteJSON::WriteScene(const std::string& filePath, SceneView* pScene)
 {
     using namespace rapidjson;
 

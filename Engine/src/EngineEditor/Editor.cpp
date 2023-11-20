@@ -247,6 +247,8 @@ bool Editor::KeyActions(double deltaTime)
 	if (Input::IsKeyPressed(GLFW_KEY_F5))
 	{
 		m_pSceneDirector->LoadScene();
+		m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
+		m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
 		return true;
 	}
 
@@ -606,20 +608,23 @@ void Editor::MoveCamera(double deltaTime)
 	
 	vec3 cameraFront = normalize(m_pCamera->GetCameraFront(cameraPosition, cameraRotation));
 	vec3 cameraSides = normalize(cross(cameraFront, cameraUpVector));
+	vec3 moveOffset = vec3(0.0f);
 
 	// Handle key presses for movement
 	if (Input::IsKeyPressed(GLFW_KEY_W)) {
-		cameraPosition += cameraSpeed * cameraFront * (float)deltaTime;
+		moveOffset = cameraSpeed * cameraFront * (float)deltaTime;
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_S)) {
-		cameraPosition -= cameraSpeed * cameraFront * (float)deltaTime;
+		moveOffset = -(cameraSpeed * cameraFront * (float)deltaTime);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_A)) {
-		cameraPosition -= cameraSpeed * cameraSides * (float)deltaTime;
+		moveOffset = -(cameraSpeed * cameraSides * (float)deltaTime);
 	}
 	if (Input::IsKeyPressed(GLFW_KEY_D)) {
-		cameraPosition += cameraSpeed * cameraSides * (float)deltaTime;
+		moveOffset = cameraSpeed * cameraSides * (float)deltaTime;
 	}
+
+	cameraPosition += moveOffset;
 
 	this->m_pTransformCamera->SetPosition(cameraPosition);
 }

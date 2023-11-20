@@ -9,5 +9,5 @@ public:
 	virtual ~ConfigReadWriteJSON();
 
 	virtual bool ReadScene(const std::string& filePath, iScene* pScene);
-	virtual bool WriteScene(const std::string& filePath, iScene* pScene);
+	virtual bool WriteScene(const std::string& filePath, SceneView* pScene);
 };

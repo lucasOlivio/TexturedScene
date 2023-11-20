@@ -172,6 +172,9 @@
     <ClCompile Include="src\events\MouseEvent.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="src\EngineDebug\DebugSystem.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\EngineRenderer\CameraSystem.h">
@@ -314,6 +317,7 @@
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
     <ClInclude Include="include\components\audioOcclusion.h" />
     <ClInclude Include="include\events\MouseEvent.h" />
+    <ClInclude Include="include\EngineDebug\DebugSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\scene\SceneView.tpp">

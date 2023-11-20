@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="src\EngineDebug\DebugSystem.cpp" />
     <ClCompile Include="src\events\MouseEvent.cpp" />
     <ClCompile Include="src\components\audioOcclusion.cpp" />
     <ClCompile Include="src\components\Audio.cpp" />
@@ -91,6 +92,7 @@
     <ClInclude Include="include\components\Tag.h" />
     <ClInclude Include="include\components\Texture.h" />
     <ClInclude Include="include\components\Tiling.h" />
+    <ClInclude Include="include\EngineDebug\DebugSystem.h" />
     <ClInclude Include="include\EngineMedia\AudioManager.h" />
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
     <ClInclude Include="include\EngineRenderer\LightSystem.h" />

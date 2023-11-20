@@ -98,9 +98,9 @@ bool SceneParserJSON::ParseFromJsonObj(rapidjson::Value& jsonObject, iScene* pSc
     return true;
 }
 
-bool SceneParserJSON::ParseToJsonObj(iScene* pScene,
-    rapidjson::Value& jsonObjectOut,
-    rapidjson::Document::AllocatorType& allocator)
+bool SceneParserJSON::ParseToJsonObj(SceneView* pScene,
+                                     rapidjson::Value& jsonObjectOut,
+                                     rapidjson::Document::AllocatorType& allocator)
 {
     using namespace rapidjson;
     using namespace myutils;
@@ -113,6 +113,13 @@ bool SceneParserJSON::ParseToJsonObj(iScene* pScene,
         // Create a RapidJSON object for each entity
         Value entityObject;
         entityObject.SetObject();
+
+        // Don't save debug info
+        TagComponent* pTag = pScene->GetComponent<TagComponent>(entityID, "tag");
+        if (pTag->name == "debuginfo")
+        {
+            continue;
+        }
 
         // Iterate over the components of the entity
         for (sComponentInfo component : pScene->GetComponentsInfo(entityID))

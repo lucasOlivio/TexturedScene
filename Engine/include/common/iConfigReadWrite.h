@@ -1,6 +1,6 @@
 #pragma once
 
-#include "scene/iScene.h"
+#include "scene/SceneView.h"
 #include <string>
 
 class iConfigReadWrite
@@ -12,5 +12,5 @@ public:
 	virtual bool ReadScene(const std::string& filePath, iScene* pScene) = 0;
 
 	// Parse scene from the structure then save to file
-	virtual bool WriteScene(const std::string& filePath, iScene* pScene) = 0;
+	virtual bool WriteScene(const std::string& filePath, SceneView* pScene) = 0;
 };
