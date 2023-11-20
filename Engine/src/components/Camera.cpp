@@ -1,5 +1,7 @@
 #include "components/Camera.h"
 #include "common/utils.h"
+#include "common/constants.h"
+#include "common/utilsMat.h"
 #include <glm/gtx/string_cast.hpp>
 
 void CameraComponent::GetInfo(sComponentInfo& compInfoOut)
@@ -9,28 +11,28 @@ void CameraComponent::GetInfo(sComponentInfo& compInfoOut)
 	compInfoOut.componentName = "camera";
 	compInfoOut.componentParameters.clear();
 
-	this->AddCompParInfo("cameraEye", "vec3", this->cameraEye, compInfoOut);
-	this->AddCompParInfo("cameraFront", "vec3", this->cameraFront, compInfoOut);
     this->AddCompParInfo("upVector", "vec3", this->upVector, compInfoOut);
-    this->AddCompParInfo("isActive", "bool", this->isActive, compInfoOut);
 }
 
 void CameraComponent::SetParameter(sParameterInfo& parameterIn)
 {
     using namespace myutils;
 
-    if (parameterIn.parameterName == "cameraEye") {
-        this->cameraEye = parameterIn.parameterVec3Value;
-    }
-    else if (parameterIn.parameterName == "cameraFront") {
-        this->cameraFront = parameterIn.parameterVec3Value;
-    }
-    else if (parameterIn.parameterName == "upVector") {
+    if (parameterIn.parameterName == "upVector") {
         this->upVector = parameterIn.parameterVec3Value;
-    }
-    else if (parameterIn.parameterName == "isActive") {
-        this->isActive = parameterIn.parameterBoolValue;
     }
 
     return;
+}
+
+glm::vec3 CameraComponent::GetCameraFront(const glm::vec3& cameraPosition, const glm::vec3& rotation)
+{
+    using namespace glm;
+
+	vec3 front;
+	front.x = cos(radians(rotation.x)) * cos(radians(rotation.y));
+	front.y = sin(radians(rotation.y));
+	front.z = sin(radians(rotation.x)) * cos(radians(rotation.y));
+	
+	return cameraPosition + glm::normalize(front);
 }

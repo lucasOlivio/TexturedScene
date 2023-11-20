@@ -45,36 +45,38 @@ void Player::Move(double deltaTime)
 	using namespace glm;
 
 	vec3 newVelocity = vec3(0);
-	vec3 cameraFront = this->m_pCamera->cameraFront;
-	vec3 cameraUp = this->m_pCamera->upVector;
-	vec3 direction = normalize(cross(cameraFront, cameraUp));
+    vec3 cameraPosition = this->m_pTransform->GetPosition();
+    vec3 cameraOrientation = normalize(this->m_pTransform->GetOrientation());
+    vec3 cameraUpVector = this->m_pCamera->upVector;
+
+    vec3 cameraDirection = normalize(cross(cameraOrientation, cameraUpVector));
 
 	// Front movement
 	if (Input::IsKeyPressed(GLFW_KEY_W))
 	{
-		newVelocity += this->m_velocity * this->m_pCamera->cameraFront * (float)deltaTime;
+		newVelocity += this->m_velocity * cameraOrientation * (float)deltaTime;
 	}
 	else if (Input::IsKeyPressed(GLFW_KEY_S))
 	{
-		newVelocity -= this->m_velocity * this->m_pCamera->cameraFront * (float)deltaTime;
+		newVelocity -= this->m_velocity * cameraOrientation * (float)deltaTime;
 	}
 
 	// Sides movement
 	if (Input::IsKeyPressed(GLFW_KEY_D))
 	{
-		newVelocity += this->m_velocity * direction * (float)deltaTime;
+		newVelocity += this->m_velocity * cameraDirection * (float)deltaTime;
 	}
 	else if (Input::IsKeyPressed(GLFW_KEY_A))
 	{
-		newVelocity -= this->m_velocity * direction * (float)deltaTime;
+		newVelocity -= this->m_velocity * cameraDirection * (float)deltaTime;
 	}
 
 	this->m_pForce->SetVelocity(newVelocity);
 
 	vec3 newPosition = this->m_pTransform->GetPosition();
 
-	this->m_pCamera->cameraEye = newPosition;
-	vec3 forward = this->m_pCamera->cameraFront * vec3(-1, 0, -1);
+	this->m_pTransform->SetPosition(newPosition);
+	vec3 forward = cameraOrientation * vec3(-1, 0, -1);
 
 	MediaPlayer::Get()->SetListenerAttributes(newPosition, vec3(0),
 											forward, this->m_pCamera->upVector);
@@ -87,25 +89,28 @@ void Player::UpdateCamera()
 	// Only horizontal movement for camera
 	vec2 mousePos = Input::MousePosition();
 	float xpos = mousePos.x;
+	float ypos = mousePos.y;
 
-	if (this->m_firstUpdate)
+	if (m_firstUpdate)
 	{
-		this->m_lastX = xpos;
-		this->m_firstUpdate = false;
+		m_lastX = xpos;
+		m_lastY = ypos;
+		m_firstUpdate = false;
 	}
 
-	float xoffset = xpos - this->m_lastX;
-	this->m_lastX = xpos;
-
+	float xoffset = xpos - m_lastX;
+	float yoffset = ypos - m_lastY;
+	m_lastX = xpos;
+	m_lastY = ypos;
 	xoffset *= m_sensitivity;
+	yoffset *= m_sensitivity;
 
-	this->m_yaw += xoffset;
+	vec3 rotation = m_pTransform->GetOrientation();
 
-	glm::vec3 front;
-	front.x = cos(glm::radians(this->m_yaw)) * cos(glm::radians(this->m_pitch));
-	front.y = sin(glm::radians(this->m_pitch));
-	front.z = sin(glm::radians(this->m_yaw)) * cos(glm::radians(this->m_pitch));
-	this->m_pCamera->cameraFront = glm::normalize(front);
+	rotation.x += xoffset;
+	rotation.y += yoffset;
+
+	m_pTransform->SetOrientation(rotation);
 }
 
 void Player::Notify(iEvent* pEvent, sCollisionData* pCollision)

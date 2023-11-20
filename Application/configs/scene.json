@@ -5,8 +5,7 @@
                 0.0,
                 1.0,
                 0.0
-            ],
-            "isActive": true
+            ]
         },
         "script": {
             "scriptName": "Player",
@@ -21,7 +20,46 @@
         },
         "transform": {
             "position": [
-                34.0,
+                -314.0,
+                292.0,
+                1026.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                -90,
+                1.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "script": {
+            "scriptName": "GameManager",
+            "isActive": true,
+            "variables": {
+                "minDistanceToInteract": "10"
+            }
+        },
+        "tag": {
+            "name": "GM"
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "walls/SM_Env_Dwarf_Wall_01.ply"
+            ],
+            "collisionName": "",
+            "friendlyName": "wall1",
+            "parentTagName": "",
+            "isWireframe": false,
+            "useVertexColour": true,
+            "doNotLight": true,
+            "isActive": true
+        },
+        "transform": {
+            "position": [
+                35.0,
                 3.0,
                 32.0
             ],
@@ -29,7 +67,7 @@
             "orientation": [
                 0.0,
                 -0.0,
-                -90.0
+                0.0
             ]
         }
     }

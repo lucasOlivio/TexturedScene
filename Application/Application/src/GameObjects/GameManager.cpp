@@ -34,10 +34,6 @@ void GameManager::OnStart(iEvent* pEvent)
 
 	// Script custom
 	//----------------
-	this->m_maxHeight = std::stoi(this->m_pScript->GetVariable("maxHeight"));
-	this->m_maxWidth = std::stoi(this->m_pScript->GetVariable("maxWidth"));
-	this->m_minHeight = std::stoi(this->m_pScript->GetVariable("minHeight"));
-	this->m_minWidth = std::stoi(this->m_pScript->GetVariable("minWidth"));
 	this->m_minDistanceToInteract = std::stof(this->m_pScript->GetVariable("minDistanceToInteract"));
 
 	GameObjectFactory gameObjFactory(this->m_pSceneView);
