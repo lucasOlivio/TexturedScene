@@ -58,6 +58,8 @@
     </None>
     <None Include="fmodL.dll" />
     <None Include="fmod.dll" />
+    <None Include="assets\shaders\fragmentdebugshader.glsl" />
+    <None Include="assets\shaders\vertexdebugshader.glsl" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\include\GameObjects\GameManager.h">

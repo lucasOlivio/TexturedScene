@@ -22,6 +22,9 @@ public:
 
 	void DestroyVBO(std::string modelName);
 
+	sMesh* LoadModelIntoVAO(std::string& fileName, int shaderID, bool bIsDynamicBuffer,
+							bool hasNormals, bool hasTexture);
+	// Normals and texture as default
 	sMesh* LoadModelIntoVAO(std::string& fileName, int shaderID, bool bIsDynamicBuffer);
 
 	bool UpdateVAOBuffers(std::string& fileName,

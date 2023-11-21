@@ -9,6 +9,7 @@
 #include "events/KeyEvent.h"
 #include "events/MouseEvent.h"
 #include "events/CollisionEvent.h"
+#include "EngineDebug/DebugSystem.h"
 
 class Engine :
 	public iSceneDirector
@@ -24,6 +25,7 @@ protected:
 	Physics* m_pPhysics;
 	MediaPlayer* m_pMediaPlayer;
 
+	DebugSystem* m_pDebugSystem;
 	WindowSystem* m_pWindowSystem;
 	ShaderManager* m_pShaderManager;
 	uint m_currShaderID;

@@ -172,7 +172,9 @@
     <ClCompile Include="Application\src\GameObjects\GameManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\shaders\fragmentdebugshader.glsl" />
     <None Include="assets\shaders\fragmentShader01.glsl" />
+    <None Include="assets\shaders\vertexdebugshader.glsl" />
     <None Include="assets\shaders\vertexShader01.glsl" />
     <None Include="configs\scene.json" />
     <None Include="fmod.dll" />

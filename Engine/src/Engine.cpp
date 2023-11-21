@@ -92,6 +92,7 @@ bool Engine::Initialize(const std::string& sceneName)
 	m_pEditor = new Editor(m_pScene, this, m_pWindowSystem);
 	m_pPhysics = new Physics(m_pScene, m_pCollisionEvent);
 	m_pMediaPlayer = MediaPlayer::Get();
+	m_pDebugSystem = DebugSystem::Get();
 
 	printf("Initializing systems...\n");
 	// Initializes all systems
@@ -117,7 +118,6 @@ bool Engine::Initialize(const std::string& sceneName)
 		return false;
 	}
 	m_currShaderID = m_pShaderManager->GetIDFromShaderProgramName(shaderProgramName);
-	m_pShaderManager->UseShaderProgram(m_currShaderID);
 
 	bool isERInitialized = m_pRenderer->Initialize(baseModelPath,
 														 baseTexturesPath,
@@ -134,6 +134,13 @@ bool Engine::Initialize(const std::string& sceneName)
 	if (!isMediaInit)
 	{
 		CheckEngineError("Engine media player initialization");
+		return false;
+	}
+
+	bool isDebugInit = m_pDebugSystem->Initialize(m_pShaderManager, baseModelPath);
+	if (!isDebugInit)
+	{
+		CheckEngineError("Engine debug initialization");
 		return false;
 	}
 
@@ -157,6 +164,8 @@ void Engine::Run()
 	while (IsRunning())
 	{
 		double fixedDeltaTime = GetFixedDeltaTime();
+		
+		m_pShaderManager->UseShaderProgram(shaderProgramName);
 
 		m_pWindowSystem->NewFrame(m_currShaderID);
 		m_pPhysics->NewFrame();
@@ -180,6 +189,7 @@ void Engine::Update(double fixedDeltaTime)
 	m_pMediaPlayer->Update(fixedDeltaTime);
 	m_pWindowSystem->UpdateUL(m_currShaderID);
 	m_pRenderer->RenderScene(fixedDeltaTime);
+	m_pDebugSystem->Update(fixedDeltaTime, m_pRenderer->GetCamera()->GetViewMat(), m_pWindowSystem->GetProjection());
 }
 
 bool Engine::IsRunning()
@@ -247,6 +257,8 @@ void Engine::Exit()
 	delete m_pScene;
 
 	delete m_pKeyEvent;
+	delete m_pDebugSystem;
+	delete m_pMediaPlayer;
 
 	return;
 }

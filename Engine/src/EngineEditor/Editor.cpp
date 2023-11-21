@@ -5,6 +5,7 @@
 #include "common/utils.h"
 #include "common/constants.h"
 #include "common/Input.h"
+#include "EngineDebug/DebugSystem.h"
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 

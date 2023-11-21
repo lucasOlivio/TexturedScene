@@ -166,7 +166,7 @@
     <ClCompile Include="src\EngineMedia\MediaPlayer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\components\audioOcclusion.cpp">
+    <ClCompile Include="src\components\AudioOcclusion.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\events\MouseEvent.cpp">
@@ -315,7 +315,7 @@
     <ClInclude Include="include\EngineMedia\AudioManager.h" />
     <ClInclude Include="include\components\Channel.h" />
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
-    <ClInclude Include="include\components\audioOcclusion.h" />
+    <ClInclude Include="include\components\AudioOcclusion.h" />
     <ClInclude Include="include\events\MouseEvent.h" />
     <ClInclude Include="include\EngineDebug\DebugSystem.h" />
   </ItemGroup>

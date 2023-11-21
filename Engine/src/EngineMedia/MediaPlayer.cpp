@@ -1,7 +1,7 @@
 #include "EngineMedia/MediaPlayer.h"
 #include "components/Audio.h"
 #include "components/Channel.h"
-#include "components/audioOcclusion.h"
+#include "components/AudioOcclusion.h"
 #include "components/collision.h"
 #include "components/Transform.h"
 #include "common/utilsMat.h"

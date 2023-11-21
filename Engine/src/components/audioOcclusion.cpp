@@ -1,4 +1,4 @@
-#include "components/audioOcclusion.h"
+#include "components/AudioOcclusion.h"
 #include "common/utils.h"
 
 void AudioOcclusionComponent::GetInfo(sComponentInfo& compInfoOut)

@@ -22,7 +22,7 @@
     <ClCompile Include="glad.c" />
     <ClCompile Include="src\EngineDebug\DebugSystem.cpp" />
     <ClCompile Include="src\events\MouseEvent.cpp" />
-    <ClCompile Include="src\components\audioOcclusion.cpp" />
+    <ClCompile Include="src\components\AudioOcclusion.cpp" />
     <ClCompile Include="src\components\Audio.cpp" />
     <ClCompile Include="src\components\Channel.cpp" />
     <ClCompile Include="src\components\Component.cpp" />
@@ -78,7 +78,7 @@
     <ClInclude Include="include\common\utilsMat.h" />
     <ClInclude Include="include\components.h" />
     <ClInclude Include="include\components\Audio.h" />
-    <ClInclude Include="include\components\audioOcclusion.h" />
+    <ClInclude Include="include\components\AudioOcclusion.h" />
     <ClInclude Include="include\components\Camera.h" />
     <ClInclude Include="include\components\Channel.h" />
     <ClInclude Include="include\components\Collision.h" />

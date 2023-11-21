@@ -13,4 +13,4 @@
 #include "components/Light.h"
 #include "components/Audio.h"
 #include "components/Channel.h"
-#include "components/audioOcclusion.h"
+#include "components/AudioOcclusion.h"
