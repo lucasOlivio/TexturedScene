@@ -21,7 +21,7 @@ uniform vec4 eyeLocation;
 uniform bool bUseDebugColour;	// if this is true, then use debugColourRGBA for the colour
 uniform vec4 debugColourRGBA;	
 
-uniform bool bUseVertexColour;		// If true, then use vertex colours
+uniform bool bUseVertexColour;		// If true, then use vertex instead of texture colours
 
 uniform sampler2D texture0;			// 2D meaning x,y or s,t or u,v
 //uniform sampler2D texture1;

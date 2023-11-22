@@ -229,6 +229,7 @@ void DebugSystem::m_AddCollisions()
 
     const vec4 COLLISION_COLOR = RED;
 
+    // Draw each collision accordingly
     for (m_pScene->First("collision"); !m_pScene->IsDone(); m_pScene->Next())
     {
         EntityID entityID = m_pScene->CurrentKey();
@@ -269,17 +270,42 @@ void DebugSystem::m_AddNormals()
 
         mat4 worldMat = pTransform->GetTransform();
         sMesh* pMesh = pModel->GetCurrentMesh();
-        for (int i = 0; i < pMesh->numberOfVertices; i++)
+        
+        // Draw the normal for each face (cross product of 2 edges)
+        for (int i = 0; i < pMesh->numberOfIndices;)
         {
-            sVertex vertex = pMesh->pVertices[i];
+            // Face indices
+            int i1 = pMesh->pIndices[i];
+            int i2 = pMesh->pIndices[i + 1];
+            int i3 = pMesh->pIndices[i + 2];
 
-            vec3 startXYZ = worldMat * vec4(vertex.x, vertex.y, vertex.z, 1.0);
-            vec3 endXYZ = worldMat * vec4(vertex.x + (NORMAL_SIZE * vertex.nx), 
-                                          vertex.y + (NORMAL_SIZE * vertex.ny), 
-                                          vertex.z + (NORMAL_SIZE * vertex.nz), 
+            // Face vertices
+            sVertex v1 = pMesh->pVertices[i1];
+            sVertex v2 = pMesh->pVertices[i2];
+            sVertex v3 = pMesh->pVertices[i3];
+
+            // Face edges
+            vec3 e1 = vec3(v1.x, v1.y, v1.z) - vec3(v2.x, v2.y, v2.z);
+            vec3 e2 = vec3(v1.x, v1.y, v1.z) - vec3(v3.x, v3.y, v3.z);
+
+            // Face normal
+            vec3 normal = normalize(cross(e1, e2));
+
+            // Face center
+            vec3 center = vec3((v1.x + v2.x + v3.x) / 3,
+                               (v1.y + v2.y + v3.y) / 3, 
+                               (v1.z + v2.z + v3.z) / 3 );
+
+            vec3 startXYZ = worldMat * vec4(center, 1.0);
+            vec3 endXYZ = worldMat * vec4(center.x + (NORMAL_SIZE * normal.x),
+                                          center.y + (NORMAL_SIZE * normal.y),
+                                          center.z + (NORMAL_SIZE * normal.z),
                                           1.0);
 
             AddLine(startXYZ, endXYZ, BLUE);
+
+            // Next face
+            i += 3;
         }
     }
 }
