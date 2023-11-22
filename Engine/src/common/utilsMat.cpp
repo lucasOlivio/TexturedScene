@@ -48,6 +48,16 @@ namespace myutils
         return;
     }
 
+    void ApplyTransformInModelMat(glm::vec3 position, glm::vec3 quaternions, float scale, glm::mat4& matModelOut)
+    {
+        // Combine all the transformations
+        ApplyTranslation(position, matModelOut);
+        ApplyRotation(quaternions, matModelOut);
+        ApplyScale(scale, matModelOut);
+
+        return;
+    }
+
     double distance(const glm::vec3& p1, const glm::vec3& p2) 
     {
         return std::hypot(p1.x - p2.x, p1.y - p2.y);

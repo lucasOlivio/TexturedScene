@@ -438,3 +438,5 @@ FodyWeavers.xsd
 
 # Imgui
 imgui.ini
+
+*.nvsettings

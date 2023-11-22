@@ -1,6 +1,7 @@
 #include "EngineDebug/DebugSystem.h"
 #include "components/Model.h"
 #include "common/utils.h"
+#include "common/utilsMat.h"
 #include "common/opengl.h"
 
 DebugSystem* DebugSystem::m_pInstance = nullptr;
@@ -36,6 +37,8 @@ bool DebugSystem::Initialize(ShaderManager* pShaderManager, std::string baseMode
     m_pShaderProgram = m_pShaderManager->GetShaderProgramFromID(m_debugShaderID);
     m_pShaderManager->UseShaderProgram(m_debugShaderName);
 
+    m_vecSpheresToDraw = {};
+
     m_InitializeLineVertex();
 
     // Generate and bind VAO
@@ -46,10 +49,10 @@ bool DebugSystem::Initialize(ShaderManager* pShaderManager, std::string baseMode
     glGenBuffers(1, &m_debugVBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_debugVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, 
-                LINE_VERTEX_BUFFER_SIZE * sizeof(sLineVertex), 
-                (GLvoid*)m_pLinesVerticesToDraw, 
-                GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,
+        LINE_VERTEX_BUFFER_SIZE * sizeof(sLineVertex),
+        (GLvoid*)m_pLinesVerticesToDraw,
+        GL_DYNAMIC_DRAW);
 
     GLint vPosition_location = glGetAttribLocation(m_debugShaderID, "vPos");
     GLint vColour_location = glGetAttribLocation(m_debugShaderID, "vCol");
@@ -73,12 +76,9 @@ bool DebugSystem::Initialize(ShaderManager* pShaderManager, std::string baseMode
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    //// Load the other debug objects
-    //std::string sphereFile = "debug/sphere.ply";
-    //m_pVAOManager->LoadModelIntoVAO(sphereFile, m_debugShaderID, true, false, false);
-
-    //std::string cubeFile = "debug/cube.ply";
-    //m_pVAOManager->LoadModelIntoVAO(cubeFile, m_debugShaderID, true, false, false);
+    // Load the other debug objects
+    std::string sphereFile = "debug/sphere.ply";
+    m_pSphereMesh = m_pVAOManager->LoadModelIntoVAO(sphereFile, m_debugShaderID, true, false, false);
 
     m_sizeOfLineVBO = 0;
 
@@ -87,7 +87,9 @@ bool DebugSystem::Initialize(ShaderManager* pShaderManager, std::string baseMode
 
 void DebugSystem::ResetDebugObjects()
 {
+
     m_sizeOfLineVBO = 0;
+    m_vecSpheresToDraw.clear();
 }
 
 void DebugSystem::AddLine(glm::vec3 startXYZ, glm::vec3 endXYZ, glm::vec4 RGBA)
@@ -130,21 +132,47 @@ void DebugSystem::AddGizmo(glm::vec3 position, int size)
     AddLine(position, glm::vec3(position.x, position.y, position.z + size), glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
 }
 
+void DebugSystem::AddRectangle(glm::vec3 minXYZ, glm::vec3 maxXYZ, glm::vec4 RGBA)
+{
+    // Bottom face
+    AddLine(glm::vec3(minXYZ.x, minXYZ.y, minXYZ.z), glm::vec3(maxXYZ.x, minXYZ.y, minXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, minXYZ.y, minXYZ.z), glm::vec3(maxXYZ.x, minXYZ.y, maxXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, minXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, minXYZ.y, maxXYZ.z), RGBA);
+    AddLine(glm::vec3(minXYZ.x, minXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, minXYZ.y, minXYZ.z), RGBA);
+
+    // Top face
+    AddLine(glm::vec3(minXYZ.x, maxXYZ.y, minXYZ.z), glm::vec3(maxXYZ.x, maxXYZ.y, minXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, maxXYZ.y, minXYZ.z), glm::vec3(maxXYZ.x, maxXYZ.y, maxXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, maxXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, maxXYZ.y, maxXYZ.z), RGBA);
+    AddLine(glm::vec3(minXYZ.x, maxXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, maxXYZ.y, minXYZ.z), RGBA);
+
+    // Vertical edges
+    AddLine(glm::vec3(minXYZ.x, minXYZ.y, minXYZ.z), glm::vec3(minXYZ.x, maxXYZ.y, minXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, minXYZ.y, minXYZ.z), glm::vec3(maxXYZ.x, maxXYZ.y, minXYZ.z), RGBA);
+    AddLine(glm::vec3(maxXYZ.x, minXYZ.y, maxXYZ.z), glm::vec3(maxXYZ.x, maxXYZ.y, maxXYZ.z), RGBA);
+    AddLine(glm::vec3(minXYZ.x, minXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, maxXYZ.y, maxXYZ.z), RGBA);
+}
+
+void DebugSystem::AddSphere(glm::vec3 position, float radius)
+{
+    // For now we only deal with 1 debug sphere and update its position and scale at render time
+    std::pair<glm::vec3, float> pairSphere;
+    pairSphere.first = position;
+    pairSphere.second = radius;
+    m_vecSpheresToDraw.push_back(pairSphere);
+}
+
 void DebugSystem::Update(double deltaTime, glm::mat4 matView, glm::mat4 matProjection)
 {
     m_pShaderManager->UseShaderProgram(m_debugShaderID);
 
     m_pShaderProgram->IsWireframe(true);
 
-    glm::mat4 matModel = glm::mat4(1.0f);
-    glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
-
     m_pShaderProgram->SetUniformMatrix4f("matView", matView);
     m_pShaderProgram->SetUniformMatrix4f("matProjection", matProjection);
-    m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
-    m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
 
     m_DrawLines();
+    m_DrawSpheres();
 
     return;
 }
@@ -161,6 +189,11 @@ void DebugSystem::m_InitializeLineVertex()
 
 void DebugSystem::m_DrawLines()
 {
+    glm::mat4 matModel = glm::mat4(1.0f);
+    glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
+    m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
+    m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+
     // Bind VAO
     glBindVertexArray(m_debugVAO);
 
@@ -168,15 +201,39 @@ void DebugSystem::m_DrawLines()
     glBindBuffer(GL_ARRAY_BUFFER, m_debugVBO);
     // Overwrite the contents of an exiting buffer
     glBufferSubData(GL_ARRAY_BUFFER,
-                    0,
-                    m_sizeOfLineVBO * sizeof(sLineVertex), 
-                    (GLvoid*)m_pLinesVerticesToDraw);
+        0,
+        m_sizeOfLineVBO * sizeof(sLineVertex),
+        (GLvoid*)m_pLinesVerticesToDraw);
 
     // Draw the lines
-    glDrawArrays(GL_LINES, 0, m_sizeOfLineVBO * sizeof(sLineVertex));
+    glDrawArrays(GL_LINES, 0, m_sizeOfLineVBO);
 
     // Unbind VAO and VBO
     glBindVertexArray(0);
-    
+
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void DebugSystem::m_DrawSpheres()
+{
+    using namespace std;
+    using namespace glm;
+    using namespace myutils;
+
+    for (pair<vec3, float> sphere : m_vecSpheresToDraw)
+    {
+        mat4 matModel(1.0f);
+        ApplyTransformInModelMat(sphere.first, vec3(0.0f), sphere.second, matModel);
+        glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
+
+        this->m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
+        this->m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+
+        glBindVertexArray(m_pSphereMesh->VAO_ID);
+        glDrawElements(GL_TRIANGLES,
+            m_pSphereMesh->numberOfIndices,
+            GL_UNSIGNED_INT,
+            0);
+        glBindVertexArray(0);
+    }
 }

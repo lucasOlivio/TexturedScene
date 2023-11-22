@@ -9,6 +9,7 @@
 #include "events/KeyEvent.h"
 #include "events/MouseEvent.h"
 #include "events/CollisionEvent.h"
+#include "common/Input.h"
 #include "EngineDebug/DebugSystem.h"
 
 class Engine :
@@ -33,6 +34,8 @@ protected:
 	KeyEvent* m_pKeyEvent;
 	MouseEvent* m_pMouseEvent;
 	CollisionEvent* m_pCollisionEvent;
+
+	Input* m_pInput;
 
 	// TODO: System runtime events like physics should be handled by the scene
 	Scene* m_pScene;

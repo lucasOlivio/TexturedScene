@@ -10,6 +10,7 @@ namespace myutils
 
     // TODO: Remove reference  to object here
 	void ApplyTransformInModelMat(iComponent* pTransform, glm::mat4& matModelOut);
+    void ApplyTransformInModelMat(glm::vec3 position, glm::vec3 quaternions, float scale, glm::mat4& matModelOut);
 
     double distance(const glm::vec3& p1, const glm::vec3& p2);
 

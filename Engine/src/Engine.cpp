@@ -91,6 +91,7 @@ bool Engine::Initialize(const std::string& sceneName)
 	m_pWindowSystem = new WindowSystem(m_pShaderManager);
 	m_pEditor = new Editor(m_pScene, this, m_pWindowSystem);
 	m_pPhysics = new Physics(m_pScene, m_pCollisionEvent);
+	m_pInput = new Input(m_pKeyEvent, m_pMouseEvent);
 	m_pMediaPlayer = MediaPlayer::Get();
 	m_pDebugSystem = DebugSystem::Get();
 

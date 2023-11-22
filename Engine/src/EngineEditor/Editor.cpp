@@ -9,9 +9,11 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-float cameraSpeed      = 300;
+float cameraSpeed      = 400;
 double changeStepFloat = 0.01;
 int changeStepInt      = 1;
+
+DebugSystem* pDebug = DebugSystem::Get();
 
 void Editor::m_PrintParameter(std::string parName, std::string parValue)
 {
@@ -163,7 +165,48 @@ void Editor::RedrawEntityUI()
 	}
 
 	printf("\n\n");
+
+	DrawSelectedEntity();
+
 	return;
+}
+
+void Editor::DrawSelectedEntity()
+{
+	using namespace glm;
+
+	int gizmoSize = 25;
+
+	// Bounding box and gizmo to selected element
+	pDebug->ResetDebugObjects();
+	iComponent* pModelComp = m_pSceneView->GetComponent(m_selectedEntity, "model");
+	TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(m_selectedEntity, "transform");
+
+	if (pModelComp != nullptr)
+	{
+		mat4 worldMat = pTransform->GetTransform();
+		ModelComponent* pModel = (ModelComponent*)pModelComp;
+		sMesh* currMesh = pModel->GetCurrentMesh();
+
+		vec3 minXYZ = vec3(currMesh->minX, currMesh->minY, currMesh->minZ);
+		vec3 maxXYZ = vec3(currMesh->maxX, currMesh->maxY, currMesh->maxZ);
+
+		minXYZ = worldMat * vec4(minXYZ, 1.0f);
+		maxXYZ = worldMat * vec4(maxXYZ, 1.0f);
+		gizmoSize = (int)distance(minXYZ, maxXYZ); // Gizmo the size of the object
+
+		pDebug->AddRectangle(
+			minXYZ,
+			maxXYZ,
+			vec4(0.0f, 1.0f, 0.0f, 1.0f)
+		);
+	}
+	else
+	{
+		pDebug->AddSphere(pTransform->GetPosition(), 10.0f);
+	}
+
+	pDebug->AddGizmo(pTransform->GetPosition(), gizmoSize);
 }
 
 void Editor::Update(double deltaTime)
@@ -375,7 +418,7 @@ bool Editor::KeyActions(double deltaTime)
 
 	// Parameter modification
 	// --------------------------------------------
-	if (Input::IsKeyPressed(GLFW_KEY_RIGHT_SHIFT)) // Shift key is down
+	if (Input::GetKeyMods() == GLFW_MOD_SHIFT) // Shift key is down
 	{
 		if (Input::IsKeyPressed(GLFW_KEY_D))
 		{
@@ -610,6 +653,12 @@ void Editor::MoveCamera(double deltaTime)
 	vec3 cameraFront = normalize(m_pCamera->GetCameraFront(cameraPosition, cameraRotation));
 	vec3 cameraSides = normalize(cross(cameraFront, cameraUpVector));
 	vec3 moveOffset = vec3(0.0f);
+
+	// No ctrl or shift been pressed
+	if (Input::GetKeyMods() != 0)
+	{
+		return;
+	}
 
 	// Handle key presses for movement
 	if (Input::IsKeyPressed(GLFW_KEY_W)) {

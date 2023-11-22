@@ -11,7 +11,7 @@
 // This config is VS22vc143x64static
 
 #include <sstream>
-
+#include <float.h>
 #include <fstream>
 
 
@@ -42,6 +42,12 @@ bool cFileLoader_Imp::m_ProcessScene(const aiScene* scene, sMesh* drawInfo)
 	// Load the indices for the Index Buffer
 	drawInfo->pIndices = new unsigned int[drawInfo->numberOfIndices];
 
+	float minX = FLT_MAX;
+	float minY = minX;
+	float minZ = minX;
+	float maxX = FLT_MIN;
+	float maxY = maxX;
+	float maxZ = maxX;
 	for (unsigned int index = 0; index < scene->mNumMeshes; index++)
 	{
 		aiMesh* currMesh = scene->mMeshes[index];
@@ -71,6 +77,33 @@ bool cFileLoader_Imp::m_ProcessScene(const aiScene* scene, sMesh* drawInfo)
 				drawInfo->pVertices[vboIndex].u = currMesh->mTextureCoords[0][currMeshIndex].x;
 				drawInfo->pVertices[vboIndex].v = currMesh->mTextureCoords[0][currMeshIndex].y;
 			}
+
+			// Get mesh info
+			if (drawInfo->pVertices[vboIndex].x < minX)
+			{
+				minX = drawInfo->pVertices[vboIndex].x;
+			}
+			if (drawInfo->pVertices[vboIndex].y < minY)
+			{
+				minY = drawInfo->pVertices[vboIndex].y;
+			}
+			if (drawInfo->pVertices[vboIndex].z < minZ)
+			{
+				minZ = drawInfo->pVertices[vboIndex].z;
+			}
+
+			if (drawInfo->pVertices[vboIndex].x > maxX)
+			{
+				maxX = drawInfo->pVertices[vboIndex].x;
+			}
+			if (drawInfo->pVertices[vboIndex].y > maxY)
+			{
+				maxY = drawInfo->pVertices[vboIndex].y;
+			}
+			if (drawInfo->pVertices[vboIndex].z > maxZ)
+			{
+				maxZ = drawInfo->pVertices[vboIndex].z;
+			}
 		}
 
 		// Load the indices for the Index Buffer
@@ -85,6 +118,12 @@ bool cFileLoader_Imp::m_ProcessScene(const aiScene* scene, sMesh* drawInfo)
 			drawInfo->pIndices[indicesIndex] = currMesh->mFaces[currTriangleIndex].mIndices[2];
 		}
 	}
+	drawInfo->minX = minX;
+	drawInfo->minY = minY;
+	drawInfo->minZ = minZ;
+	drawInfo->maxX = maxX;
+	drawInfo->maxY = maxY;
+	drawInfo->maxZ = maxZ;
 
 	return true;
 }
@@ -109,24 +148,7 @@ bool cFileLoader_Imp::Load3DModelFile(std::string filename, AssimpHelper::cFileL
     // propably to request more postprocessing than we do in this example.
 	const aiScene* scene = importer.ReadFile(filename_and_path.c_str(), assimpPostProcessingFlags);
 
-//    const aiScene* scene = importer.ReadFile(filename_and_path.c_str(),
-//                                             aiProcess_CalcTangentSpace |
-//                                             aiProcess_Triangulate |
-//                                             aiProcess_JoinIdenticalVertices |
-//                                             aiProcess_SortByPType);
-    // aiProcess_CalcTangentSpace:      Calculates the tangents and bitangents for the imported meshes.
-    // aiProcess_Triangulate:           Triangulates all faces of all meshes.
-    // aiProcess_JoinIdenticalVertices: Identifies and joins identical vertex data sets within all imported meshes.
-    // aiProcess_SortByPType:           This step splits meshes with more than one primitive type in homogeneous sub-meshes.,
-    // aiProcess_GenNormals:            Generates normals for all faces of all meshes.
-    //                                  (is ignored if normals are already there at the time this flag is evaluated.)
-    //                                  (can *NOT* be used with aiProcess_GenSmoothNormals)
-    // aiProcess_GenSmoothNormals:      Generates smooth normals for all vertices in the mesh.
-    //                                  (...is ignored if normals are already there at the time this flag is evaluated.)
-    //                                  (can *NOT* be used with aiProcess_GenNormals)
-    // aiProcess_FixInfacingNormals:    This step tries to determine which meshes have normal vectors that are facing inwards and inverts them.
-
-                                       // If the import failed, report it
+    // If the import failed, report it
     if (!scene)
     {
         std::string errorString(importer.GetErrorString());

@@ -25,6 +25,10 @@ struct sMesh
 	unsigned int numberOfIndices;
 	unsigned int numberOfTriangles;
 
+	// Mesh info
+	float maxX, maxY, maxZ;
+	float minX, minY, minZ;
+
 	// The index buffer (CPU side)
 	unsigned int* pIndices;
 	sVertex* pVertices;

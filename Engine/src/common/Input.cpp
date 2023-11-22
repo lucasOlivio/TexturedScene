@@ -3,6 +3,29 @@
 #include "Engine.h"
 #include <glm/gtc/matrix_transform.hpp>
 
+sKeyInfo Input::m_keyInfo = sKeyInfo();
+sMouseInfo Input::m_mouseInfo = sMouseInfo();
+
+Input::Input(KeyEvent* pKeyevent, MouseEvent* pMouseEvent)
+{
+    pKeyevent->Attach(this);
+    pMouseEvent->Attach(this);
+}
+
+void Input::Notify(std::string eventName, iEvent* pEvent)
+{
+    if (eventName == "keyevent")
+    {
+        KeyEvent* pKeyEvent = (KeyEvent*)pEvent;
+        m_keyInfo = pKeyEvent->GetKeyInfo();
+    }
+    else if (eventName == "mouseevent")
+    {
+        MouseEvent* pMouseEvent = (MouseEvent*)pEvent;
+        m_mouseInfo = pMouseEvent->GetInfo();
+    }
+}
+
 bool Input::IsKeyPressed(const int key)
 {
     GLFWwindow* pWindow = Engine::Get()->GetWindow();
@@ -64,4 +87,34 @@ bool Input::IsMouseButtonPressed(int button)
     int state = glfwGetMouseButton(pWindow, GLFW_MOUSE_BUTTON_LEFT);
 
     return state == GLFW_PRESS;
+}
+
+int Input::GetKeyMods()
+{
+    return m_keyInfo.mods;
+}
+
+int Input::GetMouseMods()
+{
+    return m_mouseInfo.mods;
+}
+
+int Input::GetKeyAction()
+{
+    return m_keyInfo.action;
+}
+
+int Input::GetMouseAction()
+{
+    return m_mouseInfo.action;
+}
+
+sKeyInfo Input::GetKeyInfo()
+{
+    return m_keyInfo;
+}
+
+sMouseInfo Input::GetMouseInfo()
+{
+    return m_mouseInfo;
 }

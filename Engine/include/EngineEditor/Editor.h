@@ -63,6 +63,7 @@ public:
 
 	// Draw selected entity UI info
 	void RedrawEntityUI();
+	void DrawSelectedEntity();
 
 	bool IsRunning();
 	void SetRunning(bool isRunning);
