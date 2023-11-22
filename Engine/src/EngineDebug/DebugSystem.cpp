@@ -1,11 +1,14 @@
 #include "EngineDebug/DebugSystem.h"
-#include "components/Model.h"
 #include "common/utils.h"
 #include "common/utilsMat.h"
 #include "common/opengl.h"
+#include "common/constants.h"
+#include "components/Model.h"
+#include "components/Collision.h"
+#include "components/Transform.h"
 
 DebugSystem* DebugSystem::m_pInstance = nullptr;
-const unsigned int LINE_VERTEX_BUFFER_SIZE = 5'000;
+const int LINE_VERTEX_BUFFER_SIZE = 10'000;
 
 DebugSystem* DebugSystem::Get()
 {
@@ -16,9 +19,11 @@ DebugSystem* DebugSystem::Get()
 	return DebugSystem::m_pInstance;
 }
 
-bool DebugSystem::Initialize(ShaderManager* pShaderManager, std::string baseModelsPath)
+bool DebugSystem::Initialize(SceneView* pScene, ShaderManager* pShaderManager, std::string baseModelsPath)
 {
     using namespace myutils;
+
+    m_pScene = pScene;
 
     m_pShaderManager = pShaderManager;
     m_pVAOManager = new VAOManager(m_pShaderManager);
@@ -89,6 +94,11 @@ void DebugSystem::ResetDebugObjects()
 {
 
     m_sizeOfLineVBO = 0;
+
+    for (sDebugSphere* pSphere : m_vecSpheresToDraw)
+    {
+        delete pSphere;
+    }
     m_vecSpheresToDraw.clear();
 }
 
@@ -116,6 +126,9 @@ void DebugSystem::AddLine(glm::vec3 startXYZ, glm::vec3 endXYZ, glm::vec4 RGBA)
 
     // Increment by two
     m_sizeOfLineVBO += 2;
+
+    // Check if new size is within range
+    myutils::WrapMinMax(0, LINE_VERTEX_BUFFER_SIZE, m_sizeOfLineVBO);
 
     return;
 }
@@ -153,13 +166,14 @@ void DebugSystem::AddRectangle(glm::vec3 minXYZ, glm::vec3 maxXYZ, glm::vec4 RGB
     AddLine(glm::vec3(minXYZ.x, minXYZ.y, maxXYZ.z), glm::vec3(minXYZ.x, maxXYZ.y, maxXYZ.z), RGBA);
 }
 
-void DebugSystem::AddSphere(glm::vec3 position, float radius)
+void DebugSystem::AddSphere(glm::vec3 position, float radius, glm::vec4 color)
 {
     // For now we only deal with 1 debug sphere and update its position and scale at render time
-    std::pair<glm::vec3, float> pairSphere;
-    pairSphere.first = position;
-    pairSphere.second = radius;
-    m_vecSpheresToDraw.push_back(pairSphere);
+    sDebugSphere* pSphere =  new sDebugSphere();
+    pSphere->position = position;
+    pSphere->radius = radius;
+    pSphere->color = color;
+    m_vecSpheresToDraw.push_back(pSphere);
 }
 
 void DebugSystem::Update(double deltaTime, glm::mat4 matView, glm::mat4 matProjection)
@@ -171,10 +185,32 @@ void DebugSystem::Update(double deltaTime, glm::mat4 matView, glm::mat4 matProje
     m_pShaderProgram->SetUniformMatrix4f("matView", matView);
     m_pShaderProgram->SetUniformMatrix4f("matProjection", matProjection);
 
+    if (IsModesOn(eDebugMode::COLLISION))
+    {
+        m_AddCollisions();
+    }
+
+    if (IsModesOn(eDebugMode::NORMAL))
+    {
+        m_AddNormals();
+    }
+
     m_DrawLines();
     m_DrawSpheres();
 
+    ResetDebugObjects();
+
     return;
+}
+
+void DebugSystem::ToggleMode(eDebugMode dMode)
+{
+    m_debugMode ^= (int)dMode;
+}
+
+bool DebugSystem::IsModesOn(eDebugMode dModes)
+{
+    return (m_debugMode & (int)dModes) != 0;
 }
 
 void DebugSystem::m_InitializeLineVertex()
@@ -187,12 +223,75 @@ void DebugSystem::m_InitializeLineVertex()
     m_sizeOfLineVBO = 0;
 }
 
+void DebugSystem::m_AddCollisions()
+{
+    using namespace glm;
+
+    const vec4 COLLISION_COLOR = RED;
+
+    for (m_pScene->First("collision"); !m_pScene->IsDone(); m_pScene->Next())
+    {
+        EntityID entityID = m_pScene->CurrentKey();
+        CollisionComponent* pCollision = m_pScene->CurrentValue<CollisionComponent>();
+        TransformComponent* pTransform = m_pScene->GetComponent<TransformComponent>(entityID, "transform");
+
+        mat4 worldMat = pTransform->GetTransform();
+
+        if (pCollision->Get_eShape() == eShape::AABB)
+        {
+            sAABB* pAABB = pCollision->GetShape<sAABB>();
+
+            vec3 minXYZ = worldMat * vec4(pAABB->minXYZ, 1.0f);
+            vec3 maxXYZ = worldMat * vec4(pAABB->maxXYZ, 1.0f);
+
+            AddRectangle(minXYZ, maxXYZ, COLLISION_COLOR);
+        }
+        else if (pCollision->Get_eShape() == eShape::SPHERE)
+        {
+            sSphere* pSphere = pCollision->GetShape<sSphere>();
+
+            AddSphere(pTransform->GetPosition(), pSphere->radius, COLLISION_COLOR);
+        }
+    }
+}
+
+void DebugSystem::m_AddNormals()
+{
+    using namespace glm;
+
+    const int NORMAL_SIZE = 10;
+
+    for (m_pScene->First("model"); !m_pScene->IsDone(); m_pScene->Next())
+    {
+        EntityID entityID = m_pScene->CurrentKey();
+        ModelComponent* pModel = m_pScene->CurrentValue<ModelComponent>();
+        TransformComponent* pTransform = m_pScene->GetComponent<TransformComponent>(entityID, "transform");
+
+        mat4 worldMat = pTransform->GetTransform();
+        sMesh* pMesh = pModel->GetCurrentMesh();
+        for (int i = 0; i < pMesh->numberOfVertices; i++)
+        {
+            sVertex vertex = pMesh->pVertices[i];
+
+            vec3 startXYZ = worldMat * vec4(vertex.x, vertex.y, vertex.z, 1.0);
+            vec3 endXYZ = worldMat * vec4(vertex.x + (NORMAL_SIZE * vertex.nx), 
+                                          vertex.y + (NORMAL_SIZE * vertex.ny), 
+                                          vertex.z + (NORMAL_SIZE * vertex.nz), 
+                                          1.0);
+
+            AddLine(startXYZ, endXYZ, BLUE);
+        }
+    }
+}
+
 void DebugSystem::m_DrawLines()
 {
     glm::mat4 matModel = glm::mat4(1.0f);
     glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
     m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
     m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+
+    m_pShaderProgram->SetUniformFloat("useDebugColor", false);
 
     // Bind VAO
     glBindVertexArray(m_debugVAO);
@@ -220,14 +319,17 @@ void DebugSystem::m_DrawSpheres()
     using namespace glm;
     using namespace myutils;
 
-    for (pair<vec3, float> sphere : m_vecSpheresToDraw)
+    for (sDebugSphere* pSphere : m_vecSpheresToDraw)
     {
         mat4 matModel(1.0f);
-        ApplyTransformInModelMat(sphere.first, vec3(0.0f), sphere.second, matModel);
+        ApplyTransformInModelMat(pSphere->position, vec3(0.0f), pSphere->radius, matModel);
         glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
 
-        this->m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
-        this->m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+        m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
+        m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+
+        m_pShaderProgram->SetUniformFloat("useDebugColor", true);
+        m_pShaderProgram->SetUniformVec4("debugColour", pSphere->color);
 
         glBindVertexArray(m_pSphereMesh->VAO_ID);
         glDrawElements(GL_TRIANGLES,

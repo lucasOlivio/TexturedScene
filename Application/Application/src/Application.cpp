@@ -30,6 +30,12 @@ void Application::LoadGM()
 
 void Application::Update(double fixedDeltaTime)
 {
+	if (Input::IsKeyPressed(GLFW_KEY_ESCAPE))
+	{
+		SetRunning(false);
+		return;
+	}
+
 	Engine::Update(fixedDeltaTime);
 
 	if (this->m_pScene->IsPlaying())

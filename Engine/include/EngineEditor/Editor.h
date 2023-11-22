@@ -11,7 +11,7 @@
 
 // For now only some info been printed on console
 // and handling keycallbacks from glfw
-class Editor
+class Editor : public iListener
 {
 private:
 	int m_selectedEntity;
@@ -56,7 +56,7 @@ private:
 	void m_UpdateCamera(float xpos, float ypos);
 public:
 	// ctors & dtors
-	Editor(SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow);
+	Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow);
 	~Editor();
 
 	void Update(double deltaTime);
@@ -64,6 +64,9 @@ public:
 	// Draw selected entity UI info
 	void RedrawEntityUI();
 	void DrawSelectedEntity();
+
+	// On key callback we manage entities on the scene accordingly
+	virtual void Notify(std::string eventName, iEvent* pEvent);
 
 	bool IsRunning();
 	void SetRunning(bool isRunning);
@@ -74,7 +77,8 @@ public:
 	void ChangeSelectedParameter(int orientation);
 
 	void MouseActions();
-	bool KeyActions(double deltaTime);
+	// Actions to take based on key pressed
+	bool KeyActions(sKeyInfo keyInfo);
 	void MoveCamera(double deltaTime);
 
 	void ModifySelectedParameter(int axis, int orientation);

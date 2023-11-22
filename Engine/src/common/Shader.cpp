@@ -88,6 +88,12 @@ void ShaderManager::ShaderProgram::SetUniformMatrix4f(const char* variableName, 
 	glUniformMatrix4fv(matUL, 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void ShaderManager::ShaderProgram::SetUniformVec4(const char* variableName, const glm::vec4& value)
+{
+	GLint vecUL = this->GetUniformIDFromName(variableName);
+	glUniform4f(vecUL, value.x, value.y, value.z, value.w);
+}
+
 void ShaderManager::ShaderProgram::BindTexture(uint textureUnit, uint textureId)
 {
 	glActiveTexture(textureUnit);

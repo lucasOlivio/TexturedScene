@@ -36,13 +36,7 @@
     <ClCompile Include="Application\src\GameObjects\AudioObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Application\src\GameObjects\HangarDoorObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Application\src\GameObjects\TriggerObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\src\GameObjects\AlienObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -86,13 +80,7 @@
     <ClInclude Include="Application\include\GameObjects\AudioObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Application\include\GameObjects\HangarDoorObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Application\include\GameObjects\TriggerObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\include\GameObjects\AlienObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

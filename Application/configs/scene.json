@@ -7,12 +7,37 @@
                 0.0
             ]
         },
+        "force": {
+            "inverseMass": 0.10000000149011612,
+            "restitution": 0.800000011920929,
+            "acceleration": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "velocity": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "isActive": true,
+            "adjustTowards": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "adjustValue": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
         "script": {
             "scriptName": "Player",
             "isActive": false,
             "variables": {
                 "sensitivity": "0.025",
-                "velocity": "300"
+                "velocity": "400"
             }
         },
         "tag": {
@@ -20,15 +45,15 @@
         },
         "transform": {
             "position": [
-                -1185.949462890625,
-                297.17718505859375,
-                302.6874084472656
+                -155.92698669433594,
+                620.857666015625,
+                1538.85205078125
             ],
             "scale": 1.0,
             "orientation": [
-                -5.875050067901611,
-                -4.1750102043151855,
-                0.0
+                -70.42333221435547,
+                -10.650609970092773,
+                -0.00013000000035390258
             ]
         }
     },
@@ -58,6 +83,26 @@
         }
     },
     {
+        "collision": {
+            "shape": 4,
+            "bodyType": 0,
+            "isActive": true,
+            "minXYZ": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "maxXYZ": [
+                501.0,
+                501.0,
+                68.0
+            ],
+            "offset": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
         "model": {
             "models": [
                 "walls/SM_Env_Dwarf_Wall_01.ply"
@@ -76,6 +121,42 @@
         "transform": {
             "position": [
                 0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "collision": {
+            "shape": 1,
+            "bodyType": 0,
+            "isActive": true,
+            "radius": 119.0
+        },
+        "model": {
+            "models": [
+                "walls/SM_Env_Dwarf_Wall_01.ply"
+            ],
+            "collisionName": "",
+            "friendlyName": "wall1",
+            "parentTagName": "",
+            "isWireframe": false,
+            "useVertexColour": true,
+            "doNotLight": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "wall"
+        },
+        "transform": {
+            "position": [
+                748.0,
                 0.0,
                 0.0
             ],

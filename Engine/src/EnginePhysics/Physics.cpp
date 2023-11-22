@@ -5,9 +5,9 @@
 
 Physics::Physics(SceneView* pSceneView, CollisionEvent* pCollisionEvent)
 {
-	this->m_isRunning = false;
-	this->m_pSceneView = pSceneView;
-	this->m_pCollisionEvent = pCollisionEvent;
+	m_isRunning = false;
+	m_pSceneView = pSceneView;
+	m_pCollisionEvent = pCollisionEvent;
 }
 
 Physics::~Physics()
@@ -15,237 +15,78 @@ Physics::~Physics()
 
 }
 
-void Physics::m_ApplyForce(ForceComponent* pForce, TransformComponent* pTransform, double deltaTime)
-{
-	// Check if object have mass
-	if (pForce->GetInverseMass() <= 0.0f)
-	{
-		return;
-	}
-
-	// Explicit forward Euler "integration step"
-	//	NewVelocity = LastVel + (Accel * DeltaTime)
-	//	NewPosition = LastPos + (Vel * DeltaTime)	
-
-	// Calculate new velocity this frame based on 
-	// delta time, acceleration and current velocity
-	glm::vec3 velThisFrame = (pForce->GetAcceleration() * (float)deltaTime) + pForce->GetVelocity();
-	pForce->SetVelocity(velThisFrame);
-	// New object position
-	glm::vec3 deltaPosition = velThisFrame * (float)deltaTime;
-
-	pTransform->Move(deltaPosition);
-
-	return;
-}
-
-void Physics::m_CheckCollisions(EntityID entityA, CollisionComponent* pCollA, TransformComponent* pTransformA)
-{
-	using namespace std;
-	using namespace glm;
-
-	bool isIntersecting = false;
-	vec3 collisionNormalA = vec3(0);
-	vec3 collisionNormalB = vec3(0);
-
-	if (!pCollA->IsActive())
-	{
-		return;
-	}
-
-	mat4 transformMatA = pTransformA->GetTransformNoRotation();
-	vec3 contactPointA(0);
-	vec3 contactPointB(0);
-
-	// Go through list of already visited components, this way we are sure we'll only test 1 time each
-	for (EntityID entityB : this->m_vecCollVisited)
-	{
-		bool isCollision = false;
-		CollisionComponent* pCollB = this->m_pSceneView->GetComponent<CollisionComponent>(entityB, "collision");
-		TransformComponent* pTransformB = this->m_pSceneView->GetComponent<TransformComponent>(entityB, "transform");
-		mat4 transformMatB = pTransformB->GetTransformNoRotation();
-
-		if (pCollA->Get_eBodyType() == eBodyType::STATIC && pCollB->Get_eBodyType() == eBodyType::STATIC)
-		{
-			// 2 static objects should not trigger
-			continue;
-		}
-
-		if (pCollA->Get_eShape() == eShape::AABB2D && pCollB->Get_eShape() == eShape::AABB2D)
-		{
-			sAABB2D* pAABB2D_A = pCollA->GetShape<sAABB2D>();
-			sAABB2D* pAABB2D_B = pCollB->GetShape<sAABB2D>();
-
-			isCollision = this->AABBAABB2D_Test(pAABB2D_A, transformMatA, pAABB2D_B, transformMatB, 
-												contactPointA, contactPointB, collisionNormalA, collisionNormalB);
-		}
-		else if (pCollA->Get_eShape() == eShape::AABB && pCollB->Get_eShape() == eShape::AABB)
-		{
-			sAABB* pAABB_A = pCollA->GetShape<sAABB>();
-			sAABB* pAABB_B = pCollB->GetShape<sAABB>();
-
-			isCollision = this->AABBAABB_Test(pAABB_A, transformMatA, pAABB_B, transformMatB,
-											  contactPointA, contactPointB, collisionNormalA, collisionNormalB);
-		}
-		else
-		{
-			// Collision test not implemented yet
-			isCollision = false;
-		}
-
-		if (!isCollision)
-		{
-			continue;
-		}
-
-		TagComponent* tagA = this->m_pSceneView->GetComponent<TagComponent>(entityA, "tag");
-		TagComponent* tagB = this->m_pSceneView->GetComponent<TagComponent>(entityB, "tag");
-
-		// Set all collision data needed for others to handle it
-		sCollisionData* pCollision = new sCollisionData();
-		pCollision->entityA = entityA;
-		pCollision->entityB = entityB;
-		pCollision->tagA = tagA->name;
-		pCollision->tagB = tagB->name;
-		pCollision->bodyTypeA = pCollA->Get_eBodyType();
-		pCollision->bodyTypeB = pCollB->Get_eBodyType();
-		pCollision->collisionNormalA = collisionNormalA;
-		pCollision->collisionNormalB = collisionNormalB;
-		pCollision->contactPointA = contactPointA;
-		pCollision->contactPointB = contactPointB;
-		pCollision->positionA = pTransformA->GetPosition();
-		pCollision->positionB = pTransformB->GetPosition();
-
-		// Add to vector that will be later sent as notification
-		this->m_vecCollided.push_back(pCollision);
-	}
-
-	this->m_vecCollVisited.push_back(entityA);
-
-	return;
-}
-
-// TODO: Entity A will never be static body here right? because we just jump them
-void Physics::m_ResolveCollision(sCollisionData* pCollisionEvent, TransformComponent* pTransformA, 
-								TransformComponent* pTransformB, ForceComponent* pForceA, ForceComponent* pForceB)
-{
-	using namespace glm;
-
-	vec3 velocityA = vec3(0);
-	vec3 velocityB = vec3(0);
-
-	float inverseMassA = 0;
-	float inverseMassB = 0;
-
-	float restitutionA = 0;
-	float restitutionB = 0;
-
-	if (pForceA)
-	{
-		velocityA = pForceA->GetVelocity();
-		inverseMassA = pForceA->GetInverseMass();
-		restitutionA = pForceA->GetRestitution();
-	}
-
-	if (pForceB)
-	{
-		velocityB = pForceB->GetVelocity();
-		inverseMassB = pForceB->GetInverseMass();
-		restitutionB = pForceB->GetRestitution();
-	}
-
-	// Recalculate velocity based on inverse mass
-	if (pCollisionEvent->bodyTypeA == eBodyType::DYNAMIC && pCollisionEvent->bodyTypeB == eBodyType::STATIC)
-	{
-		myutils::ResolveVelocity(velocityA, velocityB, pCollisionEvent->collisionNormalA, restitutionA,
-			inverseMassA, inverseMassB);
-
-		pForceA->SetVelocity(velocityA);
-		pTransformA->SetOldPosition(2);
-	}
-
-	if (pCollisionEvent->bodyTypeB == eBodyType::DYNAMIC && pCollisionEvent->bodyTypeA == eBodyType::STATIC)
-	{
-		myutils::ResolveVelocity(velocityB, velocityA, pCollisionEvent->collisionNormalB, restitutionB,
-			inverseMassB, inverseMassA);
-
-		pForceB->SetVelocity(velocityB);
-		pTransformB->SetOldPosition(2);
-	}
-}
-
 void Physics::NewFrame()
 {
-	for (sCollisionData* pCollision : this->m_vecCollided)
+	for (sCollisionData* pCollision : m_vecCollided)
 	{
 		delete pCollision;
 	}
 
-	this->m_vecCollided.clear();
-	this->m_vecCollVisited.clear();
+	m_vecCollided.clear();
+	m_vecCollVisited.clear();
 }
 
 void Physics::Update(double deltaTime)
 {
-	if (!this->m_isRunning)
+	if (!m_isRunning)
 	{
 		return;
 	}
 
 	// Change position based on the acceleration and velocity
-	for (this->m_pSceneView->First("force"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())
+	for (m_pSceneView->First("force"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
-		EntityID entityID = this->m_pSceneView->CurrentKey();
-		ForceComponent* pForce = this->m_pSceneView->CurrentValue<ForceComponent>();
-		TransformComponent* pTransform = this->m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
+		EntityID entityID = m_pSceneView->CurrentKey();
+		ForceComponent* pForce = m_pSceneView->CurrentValue<ForceComponent>();
+		TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
 
-		this->m_ApplyForce(pForce, pTransform, deltaTime);
+		m_ApplyForce(pForce, pTransform, deltaTime);
 	}
 
 	// Check if new position is intersecting with other entity
-	for (this->m_pSceneView->First("collision"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())
+	for (m_pSceneView->First("collision"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
-		EntityID entityID = this->m_pSceneView->CurrentKey();
-		CollisionComponent* pCollision = this->m_pSceneView->CurrentValue<CollisionComponent>();
-		TransformComponent* pTransform = this->m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
+		EntityID entityID = m_pSceneView->CurrentKey();
+		CollisionComponent* pCollision = m_pSceneView->CurrentValue<CollisionComponent>();
+		TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
 
-		this->m_CheckCollisions(entityID, pCollision, pTransform);
+		m_CheckCollisions(entityID, pCollision, pTransform);
 	}
 
 	// Apply respective response for each collision types
-	for (sCollisionData* pCollision : this->m_vecCollided)
+	for (sCollisionData* pCollision : m_vecCollided)
 	{
-		TransformComponent* pTransformA = this->m_pSceneView->GetComponent<TransformComponent>(pCollision->entityA, "transform");
-		TransformComponent* pTransformB = this->m_pSceneView->GetComponent<TransformComponent>(pCollision->entityB, "transform");
+		TransformComponent* pTransformA = m_pSceneView->GetComponent<TransformComponent>(pCollision->entityA, "transform");
+		TransformComponent* pTransformB = m_pSceneView->GetComponent<TransformComponent>(pCollision->entityB, "transform");
 
 		// Static bodies won`t have force
 		ForceComponent* pForceA = nullptr;
 		if (pCollision->bodyTypeA != eBodyType::STATIC)
 		{
-			ForceComponent* pForceA = this->m_pSceneView->GetComponent<ForceComponent>(pCollision->entityA, "force");
+			ForceComponent* pForceA = m_pSceneView->GetComponent<ForceComponent>(pCollision->entityA, "force");
 		}
 		ForceComponent* pForceB = nullptr;
 		if (pCollision->bodyTypeB != eBodyType::STATIC)
 		{
-			pForceB = this->m_pSceneView->GetComponent<ForceComponent>(pCollision->entityB, "force");
+			pForceB = m_pSceneView->GetComponent<ForceComponent>(pCollision->entityB, "force");
 		}
 
 
-		this->m_ResolveCollision(pCollision, pTransformA, pTransformB, pForceA, pForceB);
+		m_ResolveCollision(pCollision, pTransformA, pTransformB, pForceA, pForceB);
 	}
 
 	// Trigger collision event for objects that collided
-	this->m_pCollisionEvent->TriggerCollisions(this->m_vecCollided);
+	m_pCollisionEvent->TriggerCollisions(m_vecCollided);
 }
 
 bool Physics::IsRunning()
 {
-	return this->m_isRunning;
+	return m_isRunning;
 }
 
 void Physics::SetRunning(bool isRunning)
 {
-	this->m_isRunning = isRunning;
+	m_isRunning = isRunning;
 }
 
 bool Physics::AABBAABB_Test(sAABB* aabbA, glm::mat4 matTransfA, 
@@ -406,4 +247,167 @@ bool Physics::AABBAABB2D_Test(sAABB2D* aabb2dA, glm::mat4 matTransfA,
 	contactPointB = glm::vec3(BminWorld[0], BminWorld[1], 0.0f);
 
 	return true; // Collision detected
+}
+
+void Physics::m_ApplyForce(ForceComponent* pForce, TransformComponent* pTransform, double deltaTime)
+{
+	// Check if object have mass
+	if (pForce->GetInverseMass() <= 0.0f)
+	{
+		return;
+	}
+
+	// Explicit forward Euler "integration step"
+	//	NewVelocity = LastVel + (Accel * DeltaTime)
+	//	NewPosition = LastPos + (Vel * DeltaTime)	
+
+	// Calculate new velocity this frame based on 
+	// delta time, acceleration and current velocity
+	glm::vec3 velThisFrame = (pForce->GetAcceleration() * (float)deltaTime) + pForce->GetVelocity();
+	pForce->SetVelocity(velThisFrame);
+	// New object position
+	glm::vec3 deltaPosition = velThisFrame * (float)deltaTime;
+
+	pTransform->Move(deltaPosition);
+
+	return;
+}
+
+void Physics::m_CheckCollisions(EntityID entityA, CollisionComponent* pCollA, TransformComponent* pTransformA)
+{
+	using namespace std;
+	using namespace glm;
+
+	bool isIntersecting = false;
+	vec3 collisionNormalA = vec3(0);
+	vec3 collisionNormalB = vec3(0);
+
+	if (!pCollA->IsActive())
+	{
+		return;
+	}
+
+	mat4 transformMatA = pTransformA->GetTransformNoRotation();
+	vec3 contactPointA(0);
+	vec3 contactPointB(0);
+
+	// Go through list of already visited components, this way we are sure we'll only test 1 time each
+	for (EntityID entityB : m_vecCollVisited)
+	{
+		bool isCollision = false;
+		CollisionComponent* pCollB = m_pSceneView->GetComponent<CollisionComponent>(entityB, "collision");
+		TransformComponent* pTransformB = m_pSceneView->GetComponent<TransformComponent>(entityB, "transform");
+		mat4 transformMatB = pTransformB->GetTransformNoRotation();
+
+		if (pCollA->Get_eBodyType() == eBodyType::STATIC && pCollB->Get_eBodyType() == eBodyType::STATIC)
+		{
+			// 2 static objects should not trigger
+			continue;
+		}
+
+		if (pCollA->Get_eShape() == eShape::AABB2D && pCollB->Get_eShape() == eShape::AABB2D)
+		{
+			sAABB2D* pAABB2D_A = pCollA->GetShape<sAABB2D>();
+			sAABB2D* pAABB2D_B = pCollB->GetShape<sAABB2D>();
+
+			isCollision = AABBAABB2D_Test(pAABB2D_A, transformMatA, pAABB2D_B, transformMatB,
+				contactPointA, contactPointB, collisionNormalA, collisionNormalB);
+		}
+		else if (pCollA->Get_eShape() == eShape::AABB && pCollB->Get_eShape() == eShape::AABB)
+		{
+			sAABB* pAABB_A = pCollA->GetShape<sAABB>();
+			sAABB* pAABB_B = pCollB->GetShape<sAABB>();
+
+			isCollision = AABBAABB_Test(pAABB_A, transformMatA, pAABB_B, transformMatB,
+				contactPointA, contactPointB, collisionNormalA, collisionNormalB);
+		}
+		else
+		{
+			// Collision test not implemented yet
+			isCollision = false;
+		}
+
+		if (!isCollision)
+		{
+			continue;
+		}
+
+		TagComponent* tagA = m_pSceneView->GetComponent<TagComponent>(entityA, "tag");
+		TagComponent* tagB = m_pSceneView->GetComponent<TagComponent>(entityB, "tag");
+
+		// Set all collision data needed for others to handle it
+		sCollisionData* pCollision = new sCollisionData();
+		pCollision->entityA = entityA;
+		pCollision->entityB = entityB;
+		pCollision->tagA = tagA->name;
+		pCollision->tagB = tagB->name;
+		pCollision->bodyTypeA = pCollA->Get_eBodyType();
+		pCollision->bodyTypeB = pCollB->Get_eBodyType();
+		pCollision->collisionNormalA = collisionNormalA;
+		pCollision->collisionNormalB = collisionNormalB;
+		pCollision->contactPointA = contactPointA;
+		pCollision->contactPointB = contactPointB;
+		pCollision->positionA = pTransformA->GetPosition();
+		pCollision->positionB = pTransformB->GetPosition();
+
+		// Add to vector that will be later sent as notification
+		m_vecCollided.push_back(pCollision);
+	}
+
+	m_vecCollVisited.push_back(entityA);
+
+	return;
+}
+
+// TODO: Entity A will never be static body here right? because we just jump them
+void Physics::m_ResolveCollision(sCollisionData* pCollisionEvent, TransformComponent* pTransformA,
+	TransformComponent* pTransformB, ForceComponent* pForceA, ForceComponent* pForceB)
+{
+	using namespace glm;
+
+	vec3 velocityA = vec3(0);
+	vec3 velocityB = vec3(0);
+
+	float inverseMassA = 0;
+	float inverseMassB = 0;
+
+	float restitutionA = 0;
+	float restitutionB = 0;
+
+	if (pForceA)
+	{
+		velocityA = pForceA->GetVelocity();
+		inverseMassA = pForceA->GetInverseMass();
+		restitutionA = pForceA->GetRestitution();
+	}
+
+	if (pForceB)
+	{
+		velocityB = pForceB->GetVelocity();
+		inverseMassB = pForceB->GetInverseMass();
+		restitutionB = pForceB->GetRestitution();
+	}
+
+	// Recalculate velocity based on inverse mass
+	if (pCollisionEvent->bodyTypeA == eBodyType::DYNAMIC && pCollisionEvent->bodyTypeB == eBodyType::STATIC)
+	{
+		myutils::ResolveVelocity(velocityA, velocityB, pCollisionEvent->collisionNormalA, restitutionA,
+			inverseMassA, inverseMassB);
+
+		pForceA->SetVelocity(velocityA);
+		pTransformA->SetOldPosition(2);
+	}
+
+	if (pCollisionEvent->bodyTypeB == eBodyType::DYNAMIC && pCollisionEvent->bodyTypeA == eBodyType::STATIC)
+	{
+		myutils::ResolveVelocity(velocityB, velocityA, pCollisionEvent->collisionNormalB, restitutionB,
+			inverseMassB, inverseMassA);
+
+		pForceB->SetVelocity(velocityB);
+		pTransformB->SetOldPosition(2);
+	}
+}
+
+void Physics::m_DebugCollisions()
+{
 }

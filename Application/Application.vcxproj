@@ -160,12 +160,10 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Application\src\GameObjects\AlienObject.cpp" />
     <ClCompile Include="Application\src\GameObjects\TriggerObject.cpp" />
     <ClCompile Include="Application\src\GameObjects\AudioObject.cpp" />
     <ClCompile Include="Application\src\Application.cpp" />
     <ClCompile Include="Application\src\GameObjects\DefaultObject.cpp" />
-    <ClCompile Include="Application\src\GameObjects\HangarDoorObject.cpp" />
     <ClCompile Include="Application\src\GameObjects\Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Application\src\GameObjects\GameObjectFactory.cpp" />
@@ -185,9 +183,7 @@
     <ClInclude Include="Application\include\GameObjects\AudioObject.h" />
     <ClInclude Include="Application\include\GameObjects\GameManager.h" />
     <ClInclude Include="Application\include\GameObjects\GameObjectFactory.h" />
-    <ClInclude Include="Application\include\GameObjects\AlienObject.h" />
     <ClInclude Include="Application\include\GameObjects\TriggerObject.h" />
-    <ClInclude Include="Application\include\GameObjects\HangarDoorObject.h" />
     <ClInclude Include="Application\include\GameObjects\iGameMediator.h" />
     <ClInclude Include="Application\include\GameObjects\iGameObject.h" />
     <ClInclude Include="Application\include\GameObjects\DefaultObject.h" />

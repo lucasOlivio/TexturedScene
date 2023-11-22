@@ -3,6 +3,8 @@
 #include "common/utils.h"
 #include "common/utilsMat.h"
 #include "components/Transform.h"
+#include "common/Input.h"
+#include "common/opengl.h" // TODO: Remove this necessity, abstract key buttons values
 
 GameManager::~GameManager()
 {

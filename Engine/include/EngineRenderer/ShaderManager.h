@@ -61,6 +61,7 @@ public:
 		void SetUniformFloat(const char* variableName, float value);
 		void SetUniformInt(const char* variableName, int value);
 		void SetUniformMatrix4f(const char* variableName, const glm::mat4& value);
+		void SetUniformVec4(const char* variableName, const glm::vec4& value);
 
 		void BindTexture(uint textureUnit, uint textureId);
 	};

@@ -89,7 +89,7 @@ bool Engine::Initialize(const std::string& sceneName)
 	m_pShaderManager = new ShaderManager(baseShadersPath);
 	m_pRenderer = new Renderer();
 	m_pWindowSystem = new WindowSystem(m_pShaderManager);
-	m_pEditor = new Editor(m_pScene, this, m_pWindowSystem);
+	m_pEditor = new Editor(m_pKeyEvent, m_pScene, this, m_pWindowSystem);
 	m_pPhysics = new Physics(m_pScene, m_pCollisionEvent);
 	m_pInput = new Input(m_pKeyEvent, m_pMouseEvent);
 	m_pMediaPlayer = MediaPlayer::Get();
@@ -138,7 +138,7 @@ bool Engine::Initialize(const std::string& sceneName)
 		return false;
 	}
 
-	bool isDebugInit = m_pDebugSystem->Initialize(m_pShaderManager, baseModelPath);
+	bool isDebugInit = m_pDebugSystem->Initialize(m_pScene, m_pShaderManager, baseModelPath);
 	if (!isDebugInit)
 	{
 		CheckEngineError("Engine debug initialization");
@@ -186,8 +186,11 @@ void Engine::Update(double fixedDeltaTime)
 	{
 		m_pEditor->Update(fixedDeltaTime);
 	}
-	m_pPhysics->Update(fixedDeltaTime);
-	m_pMediaPlayer->Update(fixedDeltaTime);
+	else
+	{
+		m_pMediaPlayer->Update(fixedDeltaTime);
+		m_pPhysics->Update(fixedDeltaTime);
+	}
 	m_pWindowSystem->UpdateUL(m_currShaderID);
 	m_pRenderer->RenderScene(fixedDeltaTime);
 	m_pDebugSystem->Update(fixedDeltaTime, m_pRenderer->GetCamera()->GetViewMat(), m_pWindowSystem->GetProjection());
@@ -306,11 +309,11 @@ void Engine::ChangeMode()
 	}
 	else
 	{
-		m_pEditor->SetRunning(true);
 		m_pPhysics->SetRunning(false);
 		m_pScene->SetPlaying(false);
 
 		LoadScene();
+		m_pEditor->SetRunning(true);
 	}
 
 	return;
