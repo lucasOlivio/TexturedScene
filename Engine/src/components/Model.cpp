@@ -77,7 +77,6 @@ void ModelComponent::GetInfo(sComponentInfo& compInfoOut)
 	this->AddCompParInfo("friendlyName", "string", this->friendlyName, compInfoOut);
     this->AddCompParInfo("parentTagName", "string", this->parentTagName, compInfoOut);
 	this->AddCompParInfo("isWireframe", "bool", this->isWireframe, compInfoOut);
-    this->AddCompParInfo("useVertexColour", "bool", this->useVertexColour, compInfoOut);
 	this->AddCompParInfo("doNotLight", "bool", this->doNotLight, compInfoOut);
     this->AddCompParInfo("isActive", "bool", this->m_isActive, compInfoOut);
 }
@@ -102,9 +101,6 @@ void ModelComponent::SetParameter(sParameterInfo& parameterIn)
     }
     else if (parameterIn.parameterName == "isWireframe") {
         this->isWireframe = parameterIn.parameterBoolValue;
-    }
-    else if (parameterIn.parameterName == "useVertexColour") {
-        this->useVertexColour = parameterIn.parameterBoolValue;
     }
     else if (parameterIn.parameterName == "doNotLight") {
         this->doNotLight = parameterIn.parameterBoolValue;

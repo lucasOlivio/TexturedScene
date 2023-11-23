@@ -82,10 +82,10 @@
     <ClCompile Include="glad.c">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\Shader.cpp">
+    <ClCompile Include="src\EngineRenderer\Shader.cpp">
       <Filter>EngineRenderer\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="src\common\ShaderManager.cpp">
+    <ClCompile Include="src\EngineRenderer\ShaderManager.cpp">
       <Filter>EngineRenderer\Shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\components\ComponentBuilder.cpp">
@@ -130,15 +130,6 @@
     <ClCompile Include="src\common\Input.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="src\TextureManager\C24BitBMPpixel.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TextureManager\cBasicTextureManager.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TextureManager\CTextureFromBMP.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="src\components\Texture.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -173,6 +164,21 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="src\EngineDebug\DebugSystem.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineRenderer\MaterialManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineRenderer\TextureManager\C24BitBMPpixel.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineRenderer\TextureManager\cBasicTextureManager.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\EngineRenderer\TextureManager\CTextureFromBMP.cpp">
+      <Filter>Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="src\components\Material.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
   </ItemGroup>
@@ -304,9 +310,6 @@
     <ClInclude Include="include\components\Tag.h" />
     <ClInclude Include="include\components\Script.h" />
     <ClInclude Include="include\common\Input.h" />
-    <ClInclude Include="include\TextureManager\C24BitBMPpixel.h" />
-    <ClInclude Include="include\TextureManager\cBasicTextureManager.h" />
-    <ClInclude Include="include\TextureManager\CTextureFromBMP.h" />
     <ClInclude Include="include\components\Texture.h" />
     <ClInclude Include="include\components\Tiling.h" />
     <ClInclude Include="include\components\Light.h" />
@@ -318,6 +321,15 @@
     <ClInclude Include="include\components\AudioOcclusion.h" />
     <ClInclude Include="include\events\MouseEvent.h" />
     <ClInclude Include="include\EngineDebug\DebugSystem.h" />
+    <ClInclude Include="include\components\Material.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\C24BitBMPpixel.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\cBasicTextureManager.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\CTextureFromBMP.h" />
+    <ClInclude Include="include\EngineRenderer\MaterialManager.h" />
+    <ClInclude Include="include\TextureManager\C24BitBMPpixel.h" />
+    <ClInclude Include="include\TextureManager\cBasicTextureManager.h" />
+    <ClInclude Include="include\TextureManager\CTextureFromBMP.h" />
+    <ClInclude Include="include\EngineRenderer\TextureProperties.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="include\scene\SceneView.tpp">

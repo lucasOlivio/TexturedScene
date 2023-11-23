@@ -216,6 +216,43 @@ bool ParserJSON::SetVecStr(rapidjson::Value& jsonObject,
     return true;
 }
 
+bool ParserJSON::GetVecFloat(rapidjson::Value& jsonObject, std::vector<float>& valueOut)
+{
+    using namespace rapidjson;
+
+    if (!jsonObject.IsArray()) {
+        return false;
+    }
+    for (SizeType i = 0; i < jsonObject.Size(); i++) {
+        if (!jsonObject[i].IsFloat()) {
+            return false;
+        }
+    }
+
+
+    for (SizeType i = 0; i < jsonObject.Size(); i++) {
+        valueOut.push_back(jsonObject[i].GetFloat());
+    }
+
+    return true;
+}
+
+bool ParserJSON::SetVecFloat(rapidjson::Value& jsonObject, const std::vector<float>& valueIn, rapidjson::Document::AllocatorType& allocator)
+{
+    using namespace rapidjson;
+    using namespace myutils;
+
+    jsonObject.SetArray();
+
+    for (SizeType i = 0; i < valueIn.size(); i++) {
+        Value floatVal;
+        floatVal.SetFloat(valueIn[i]);
+        jsonObject.PushBack(floatVal, allocator);
+    }
+
+    return true;
+}
+
 bool ParserJSON::GetMap(rapidjson::Value& jsonObject, std::map<std::string, std::string>& valueOut)
 {
     using namespace rapidjson;
@@ -263,42 +300,47 @@ bool ParserJSON::SetValue(rapidjson::Value& jsonObject,
     // Discover parameter type by setting 
     if (valueIn.parameterType == "string")
     {
-        this->SetString(jsonObject, valueIn.parameterStrValue, allocator);
+        SetString(jsonObject, valueIn.parameterStrValue, allocator);
         return true;
     }
     if (valueIn.parameterType == "float")
     {
-        this->SetFloat(jsonObject, valueIn.parameterFloatValue);
+        SetFloat(jsonObject, valueIn.parameterFloatValue);
         return true;
     }
     if (valueIn.parameterType == "int")
     {
-        this->SetInt(jsonObject, valueIn.parameterIntValue);
+        SetInt(jsonObject, valueIn.parameterIntValue);
         return true;
     }
     if (valueIn.parameterType == "bool")
     {
-        this->SetBool(jsonObject, valueIn.parameterBoolValue);
+        SetBool(jsonObject, valueIn.parameterBoolValue);
         return true;
     }
     if (valueIn.parameterType == "vec3")
     {
-        this->SetVec3(jsonObject, valueIn.parameterVec3Value, allocator);
+        SetVec3(jsonObject, valueIn.parameterVec3Value, allocator);
         return true;
     }
     if (valueIn.parameterType == "vec4")
     {
-        this->SetVec4(jsonObject, valueIn.parameterVec4Value, allocator);
+        SetVec4(jsonObject, valueIn.parameterVec4Value, allocator);
+        return true;
+    }
+    if (valueIn.parameterType == "vecFloat")
+    {
+        SetVecFloat(jsonObject, valueIn.parameterVecFloatValue, allocator);
         return true;
     }
     if (valueIn.parameterType == "vecStr")
     {
-        this->SetVecStr(jsonObject, valueIn.parameterVecStrValue, allocator);
+        SetVecStr(jsonObject, valueIn.parameterVecStrValue, allocator);
         return true;
     }
     if (valueIn.parameterType == "map")
     {
-        this->SetMap(jsonObject, valueIn.parameterMapValue, allocator);
+        SetMap(jsonObject, valueIn.parameterMapValue, allocator);
         return true;
     }
     // Value type not found
@@ -308,42 +350,47 @@ bool ParserJSON::SetValue(rapidjson::Value& jsonObject,
 bool ParserJSON::GetValue(rapidjson::Value& jsonObject, sParameterInfo& valueOut)
 {
     // Discover parameter type by getting 
-    if (this->GetString(jsonObject, valueOut.parameterStrValue))
+    if (GetString(jsonObject, valueOut.parameterStrValue))
     {
         valueOut.parameterType = "string";
         return true;
     }
-    if (this->GetFloat(jsonObject, valueOut.parameterFloatValue))
+    if (GetFloat(jsonObject, valueOut.parameterFloatValue))
     {
         valueOut.parameterType = "float";
         return true;
     }
-    if (this->GetInt(jsonObject, valueOut.parameterIntValue))
+    if (GetInt(jsonObject, valueOut.parameterIntValue))
     {
         valueOut.parameterType = "int";
         return true;
     }
-    if (this->GetBool(jsonObject, valueOut.parameterBoolValue))
+    if (GetBool(jsonObject, valueOut.parameterBoolValue))
     {
         valueOut.parameterType = "bool";
         return true;
     }
-    if (this->GetVec3(jsonObject, valueOut.parameterVec3Value))
+    if (GetVec3(jsonObject, valueOut.parameterVec3Value))
     {
         valueOut.parameterType = "vec3";
         return true;
     }
-    if (this->GetVec4(jsonObject, valueOut.parameterVec4Value))
+    if (GetVec4(jsonObject, valueOut.parameterVec4Value))
     {
         valueOut.parameterType = "vec4";
         return true;
     }
-    if (this->GetVecStr(jsonObject, valueOut.parameterVecStrValue))
+    if (GetVecFloat(jsonObject, valueOut.parameterVecFloatValue))
+    {
+        valueOut.parameterType = "vecFloat";
+        return true;
+    }
+    if (GetVecStr(jsonObject, valueOut.parameterVecStrValue))
     {
         valueOut.parameterType = "vecStr";
         return true;
     }
-    if (this->GetMap(jsonObject, valueOut.parameterMapValue))
+    if (GetMap(jsonObject, valueOut.parameterMapValue))
     {
         valueOut.parameterType = "map";
         return true;

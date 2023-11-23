@@ -3,8 +3,8 @@
 
 SceneView::SceneView()
 {
-	this->m_map.clear();
-	this->m_currIterator = this->m_map.begin();
+	m_map.clear();
+	m_currIterator = m_map.begin();
 }
 
 SceneView::~SceneView()
@@ -13,30 +13,30 @@ SceneView::~SceneView()
 
 void SceneView::First(std::string componentName)
 {
-	bool hasComponent = this->GetMapComponents(componentName, this->m_map);
+	bool hasComponent = GetMapComponents(componentName, m_map);
 	if (hasComponent)
 	{
-		this->m_currIterator = this->m_map.begin();
+		m_currIterator = m_map.begin();
 	}
 	else
 	{
-		this->m_currIterator = this->m_map.end();
+		m_currIterator = m_map.end();
 	}
 }
 
 void SceneView::Next()
 {
-	this->m_currIterator++;
+	m_currIterator++;
 }
 
 void SceneView::End()
 {
-	this->m_currIterator = this->m_map.end();
+	m_currIterator = m_map.end();
 }
 
 bool SceneView::IsDone()
 {
-	if (this->m_currIterator == this->m_map.end())
+	if (m_currIterator == m_map.end())
 	{
 		return true;
 	}
@@ -45,36 +45,38 @@ bool SceneView::IsDone()
 
 EntityID SceneView::CurrentKey()
 {
-	return this->m_currIterator->first;
+	return m_currIterator->first;
 }
 
 int SceneView::GetNumComponents(std::string componentName)
 {
 	std::map<EntityID, iComponent*> mapComponents;
-	this->GetMapComponents(componentName, mapComponents);
+	GetMapComponents(componentName, mapComponents);
 	return (int)mapComponents.size();
 }
 
 int SceneView::GetEntityByTag(std::string tagName)
 {
-	auto tagEntity = this->m_mapTagEntity.find(tagName);
-	if (tagEntity != this->m_mapTagEntity.end())
+	auto tagEntity = m_mapTagEntity.find(tagName);
+	if (tagEntity != m_mapTagEntity.end())
 	{
 		return (int)tagEntity->second;
 	}
 
 	// Tag not in cache yet, so add it
-	for (this->First("tag"); !this->IsDone(); this->Next())
+	std::map<EntityID, iComponent*> mapTags;
+	GetMapComponents("tag", mapTags);
+	for (std::pair<EntityID, iComponent*> pairTag : mapTags)
 	{
-		TagComponent* pTag = this->CurrentValue<TagComponent>();
+		TagComponent* pTag = (TagComponent*)pairTag.second;
+		EntityID currEntity = pairTag.first;
+
 		if (tagName != pTag->name)
 		{
 			continue;
 		}
 
-		EntityID currEntity = this->CurrentKey();
-
-		this->m_mapTagEntity[pTag->name] = currEntity;
+		m_mapTagEntity[pTag->name] = currEntity;
 
 		return (int)currEntity;
 	}
@@ -84,15 +86,15 @@ int SceneView::GetEntityByTag(std::string tagName)
 
 iComponent* SceneView::GetComponentByTag(std::string tagName, std::string componentName)
 {
-	EntityID entityID = this->GetEntityByTag(tagName);
+	EntityID entityID = GetEntityByTag(tagName);
 
-	return this->GetComponent(entityID, componentName);
+	return GetComponent(entityID, componentName);
 }
 
 iComponent* SceneView::GetComponent(EntityID entityID, std::string componentName)
 {
-	auto entity = this->m_map.find(entityID);
-	if (entity == this->m_map.end())
+	auto entity = m_map.find(entityID);
+	if (entity == m_map.end())
 	{
 		return nullptr;
 	}

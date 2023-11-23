@@ -20,7 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c" />
+    <ClCompile Include="src\components\Material.cpp" />
     <ClCompile Include="src\EngineDebug\DebugSystem.cpp" />
+    <ClCompile Include="src\EngineRenderer\MaterialManager.cpp" />
+    <ClCompile Include="src\EngineRenderer\TextureManager\C24BitBMPpixel.cpp" />
+    <ClCompile Include="src\EngineRenderer\TextureManager\cBasicTextureManager.cpp" />
+    <ClCompile Include="src\EngineRenderer\TextureManager\CTextureFromBMP.cpp" />
     <ClCompile Include="src\events\MouseEvent.cpp" />
     <ClCompile Include="src\components\AudioOcclusion.cpp" />
     <ClCompile Include="src\components\Audio.cpp" />
@@ -57,22 +62,20 @@
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\scene\SceneParserJSON.cpp" />
     <ClCompile Include="src\scene\SceneView.cpp" />
-    <ClCompile Include="src\common\Shader.cpp" />
-    <ClCompile Include="src\common\ShaderManager.cpp" />
+    <ClCompile Include="src\EngineRenderer\Shader.cpp" />
+    <ClCompile Include="src\EngineRenderer\ShaderManager.cpp" />
     <ClCompile Include="src\components\Transform.cpp" />
     <ClCompile Include="src\common\utils.cpp" />
     <ClCompile Include="src\common\utilsMat.cpp" />
     <ClCompile Include="src\EngineRenderer\VAOManager.cpp" />
     <ClCompile Include="src\EngineRenderer\WindowSystem.cpp" />
-    <ClCompile Include="src\TextureManager\C24BitBMPpixel.cpp" />
-    <ClCompile Include="src\TextureManager\cBasicTextureManager.cpp" />
-    <ClCompile Include="src\TextureManager\CTextureFromBMP.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\common\constants.h" />
     <ClInclude Include="include\common\Input.h" />
     <ClInclude Include="include\common\opengl.h" />
     <ClInclude Include="include\common\openglerrors.h" />
+    <ClInclude Include="include\EngineRenderer\TextureProperties.h" />
     <ClInclude Include="include\common\types.h" />
     <ClInclude Include="include\common\utils.h" />
     <ClInclude Include="include\common\utilsMat.h" />
@@ -87,6 +90,7 @@
     <ClInclude Include="include\components\Force.h" />
     <ClInclude Include="include\components\iComponent.h" />
     <ClInclude Include="include\components\Light.h" />
+    <ClInclude Include="include\components\Material.h" />
     <ClInclude Include="include\components\Script.h" />
     <ClInclude Include="include\components\Spawner.h" />
     <ClInclude Include="include\components\Tag.h" />
@@ -96,6 +100,10 @@
     <ClInclude Include="include\EngineMedia\AudioManager.h" />
     <ClInclude Include="include\EngineMedia\MediaPlayer.h" />
     <ClInclude Include="include\EngineRenderer\LightSystem.h" />
+    <ClInclude Include="include\EngineRenderer\MaterialManager.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\C24BitBMPpixel.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\cBasicTextureManager.h" />
+    <ClInclude Include="include\EngineRenderer\TextureManager\CTextureFromBMP.h" />
     <ClInclude Include="include\events\iCollisionListener.h" />
     <ClInclude Include="include\events\MouseEvent.h" />
     <ClInclude Include="include\events\sCollisionData.h" />

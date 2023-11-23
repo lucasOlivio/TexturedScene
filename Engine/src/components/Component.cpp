@@ -135,6 +135,20 @@ void Component::AddCompParInfo(const std::string& name,
     return;
 }
 
+void Component::AddCompParInfo(const std::string& name,
+    const std::string& type,
+    const std::vector<float>& value,
+    sComponentInfo& compInfoOut)
+{
+    sParameterInfo paramInfo;
+    paramInfo.parameterName = name;
+    paramInfo.parameterType = type;
+    paramInfo.parameterVecFloatValue = value;
+    compInfoOut.componentParameters.push_back(paramInfo);
+
+    return;
+}
+
 void Component::AddCompParInfo(const std::string& name, const std::string& type, const std::map<std::string, std::string>& value, sComponentInfo& compInfoOut)
 {
     sParameterInfo paramInfo;

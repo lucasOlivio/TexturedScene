@@ -59,6 +59,12 @@ public:
 		const std::vector<std::string>& value,
 		sComponentInfo& compInfoOut);
 
+	// vector<float>
+	virtual void AddCompParInfo(const std::string& name,
+		const std::string& type,
+		const std::vector<float>& value,
+		sComponentInfo& compInfoOut);
+
 	// map<string, string>
 	virtual void AddCompParInfo(const std::string& name,
 		const std::string& type,

@@ -5,6 +5,7 @@
 #include "components/Texture.h"
 #include "components/Tiling.h"
 #include "components/Light.h"
+#include "components/Material.h"
 
 Renderer::Renderer()
 {
@@ -12,9 +13,10 @@ Renderer::Renderer()
 
 Renderer::~Renderer()
 {
-	delete this->m_pCameraSystem;
-	delete this->m_pModelSystem;
-	delete this->m_pLightSystem;
+	delete m_pCameraSystem;
+	delete m_pModelSystem;
+	delete m_pLightSystem;
+	delete m_pMaterialManager;
 }
 
 bool Renderer::Initialize(std::string baseModelsPath,
@@ -23,81 +25,78 @@ bool Renderer::Initialize(std::string baseModelsPath,
 						  uint currShaderID,
 						  SceneView* pSceneView)
 {
-	if (this->m_isInitialized)
+	if (m_isInitialized)
 	{
 		return true;
 	}
 
-	this->m_pSceneView = pSceneView;
-	this->m_pShaderManager = pShaderManager;
-	this->m_currShaderID = currShaderID;
+	m_pSceneView = pSceneView;
+	m_pShaderManager = pShaderManager;
+	m_currShaderID = currShaderID;
 
-	this->m_pShaderProgram = this->m_pShaderManager->GetShaderProgramFromID(this->m_currShaderID);
-	this->m_pShaderManager->UseShaderProgram(this->m_currShaderID);
+	m_pShaderProgram = m_pShaderManager->GetShaderProgramFromID(m_currShaderID);
+	m_pShaderManager->UseShaderProgram(m_currShaderID);
 
 	printf("Initializing engine renderer...\n");
 	// All systems that update info in shaders must have the shader info
 	// To set their respectives uniforms and attributes
-	this->m_pCameraSystem = new CameraSystem(pSceneView);
-	this->m_pModelSystem = new ModelSystem(this->m_pShaderManager, pSceneView);
-	this->m_pLightSystem = new LightSystem(this->m_pShaderManager, pSceneView);
+	m_pCameraSystem = new CameraSystem(pSceneView);
+	m_pModelSystem = new ModelSystem(m_pShaderManager, pSceneView);
+	m_pLightSystem = new LightSystem(m_pShaderManager, pSceneView);
+	m_pMaterialManager = new MaterialManager(baseTexturesPath);
 
-	this->m_pCameraSystem->Initialize();
-
-	// Initializing and loading all textures
-	this->m_pTextureManager = new cBasicTextureManager();
-	this->m_pTextureManager->SetBasePath(baseTexturesPath);
+	m_pCameraSystem->Initialize();
 
 	// Loading models into VAO and getting IDs
-	bool sceneLoaded = this->LoadScene(baseModelsPath);
+	bool sceneLoaded = LoadScene(baseModelsPath);
 	if (!sceneLoaded)
 	{
 		return false;
 	}
 
 	// Setting up lights
-	bool isLSInitialized = this->m_pLightSystem->Initialize(this->m_currShaderID);
+	bool isLSInitialized = m_pLightSystem->Initialize(m_currShaderID);
 	if (!isLSInitialized)
 	{
 		CheckEngineError("setting up lights");
 		return false;
 	}
 
-	this->m_isInitialized = true;
-	this->m_isRunning = true;
+	m_isInitialized = true;
+	m_isRunning = true;
 
     return true;
 }
 
 void Renderer::Destroy()
 {
-	if (!this->m_isInitialized)
+	if (!m_isInitialized)
 	{
 		return;
 	}
 
-	this->m_isInitialized = false;
+	m_isInitialized = false;
 
 	return;
 }
 
 bool Renderer::LoadScene(std::string baseModelsPath)
 {
-	this->m_pCameraSystem->Initialize();
+	m_pCameraSystem->Initialize();
+
+	bool materialsLoaded = LoadMaterials();
+	if (!materialsLoaded)
+	{
+		return false;
+	}
 	
-	bool modelsLoaded = this->m_pModelSystem->LoadModels(baseModelsPath, this->m_currShaderID);
+	bool modelsLoaded = m_pModelSystem->LoadModels(baseModelsPath, m_currShaderID);
 	if (!modelsLoaded)
 	{
 		return false;
 	}
 
-	bool textureLoaded = this->LoadTextures();
-	if (!textureLoaded)
-	{
-		return false;
-	}
-
-	bool isLSInitialized = this->m_pLightSystem->Initialize(this->m_currShaderID);
+	bool isLSInitialized = m_pLightSystem->Initialize(m_currShaderID);
 	if (!isLSInitialized)
 	{
 		CheckEngineError("setting up lights");
@@ -107,18 +106,17 @@ bool Renderer::LoadScene(std::string baseModelsPath)
 	return true;
 }
 
-bool Renderer::LoadTextures()
+bool Renderer::LoadMaterials()
 {
-	for (this->m_pSceneView->First("texture"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())
+	for (m_pSceneView->First("material"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
-		EntityID entityID = this->m_pSceneView->CurrentKey();
-		TextureComponent* pTexture = this->m_pSceneView->GetComponent<TextureComponent>(entityID, "texture");
+		EntityID entityId = m_pSceneView->CurrentKey();
+		MaterialComponent* pMaterial = m_pSceneView->CurrentValue<MaterialComponent>();
 
-		bool textureLoaded = this->m_pTextureManager->Create2DTextureFromBMPFile(pTexture->fileName, 
-																				 pTexture->generateMIPMap);
-		if (!textureLoaded)
+		bool isMaterialLoaded = m_pMaterialManager->LoadMaterial(m_pSceneView, pMaterial);
+		if (!isMaterialLoaded)
 		{
-			CheckEngineError(this->m_pTextureManager->GetLastError().c_str());
+			CheckEngineError(("Not able to load " + pMaterial->materialName).c_str());
 			return false;
 		}
 	}
@@ -126,25 +124,13 @@ bool Renderer::LoadTextures()
 	return true;
 }
 
-void Renderer::BindTexture(std::string fileName, uint samplerId)
-{
-	uint textureId = this->m_pTextureManager->getTextureIDFromName(fileName);
-	uint textureUnit = this->m_pTextureManager->GetUnitFromSamplerId(samplerId);
-	std::string samplerName = this->m_pTextureManager->GetSamplerName(samplerId);
-
-	this->m_pShaderProgram->BindTexture(textureUnit, textureId);
-
-	//uniform sampler2D textureX;
-	this->m_pShaderProgram->SetUniformInt(samplerName.c_str(), samplerId);
-}
-
 void Renderer::UpdateCamera()
 {
 	using namespace glm;
 
 	// Updating camera view
-	mat4 matView = this->m_pCameraSystem->GetViewMat();
-	this->m_pShaderProgram->SetUniformMatrix4f("matView", matView);
+	mat4 matView = m_pCameraSystem->GetViewMat();
+	m_pShaderProgram->SetUniformMatrix4f("matView", matView);
 }
 
 void Renderer::RenderAllModels(double deltaTime)
@@ -152,12 +138,14 @@ void Renderer::RenderAllModels(double deltaTime)
 	using namespace glm;
 
 	// TODO: Find a better way to manage these rendering components and the mesh parents thing, is too messy right now
-	for (this->m_pSceneView->First("model"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())
+	for (m_pSceneView->First("model"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
-		EntityID entityID = this->m_pSceneView->CurrentKey();
-		ModelComponent* pModel = this->m_pSceneView->CurrentValue<ModelComponent>();
-		iComponent* pLightComp = this->m_pSceneView->GetComponent(entityID, "light");
-		iComponent* pTilingComp = this->m_pSceneView->GetComponent(entityID, "tiling");
+		EntityID entityID = m_pSceneView->CurrentKey();
+		ModelComponent* pModel = m_pSceneView->CurrentValue<ModelComponent>();
+		iComponent* pLightComp = m_pSceneView->GetComponent(entityID, "light");
+		iComponent* pTilingComp = m_pSceneView->GetComponent(entityID, "tiling");
+		iComponent* pMaterialComp = m_pSceneView->GetComponent(entityID, "material");
+
 		// Default we only draw 1 time in each axis
 		vec3 axis = vec3(1.0, 1.0, 1.0);
 		vec3 offset = vec3(0.0, 0.0, 0.0);
@@ -168,18 +156,16 @@ void Renderer::RenderAllModels(double deltaTime)
 			axis = pTiling->GetAxis();
 			offset = pTiling->GetOffset();
 		}
-		
-		// Texture set
-		iComponent* pTextureComp = this->m_pSceneView->GetComponent(entityID, "texture");
-		if (pTextureComp)
-		{
-			TextureComponent* pTexture = (TextureComponent*)pTextureComp;
 
-			this->BindTexture(pTexture->fileName, pTexture->samplerId);
+		// Bind material
+		if (pMaterialComp)
+		{
+			MaterialComponent* pMaterial = (MaterialComponent*)pMaterialComp;
+			m_pMaterialManager->BindMaterial(m_currShaderID, pMaterial);
 		}
 
 		// Update uniforms
-		TransformComponent* pTransform = this->m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
+		TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
 
 		pTransform->SetFramePosition();
 
@@ -207,20 +193,19 @@ void Renderer::RenderAllModels(double deltaTime)
 					mat4 transformMat = mat4(1.0);
 					if (pModel->parentTagName != "")
 					{
-						TransformComponent* parentTransform = this->m_pSceneView->GetComponentByTag<TransformComponent>(pModel->parentTagName, "transform");
+						TransformComponent* parentTransform = m_pSceneView->GetComponentByTag<TransformComponent>(pModel->parentTagName, "transform");
 
 						transformMat = parentTransform->GetTransformNoScale();
 					}
 
-					this->UpdateTransform(pTransform->GetTransform(transformMat));
+					UpdateTransform(pTransform->GetTransform(transformMat));
 
 					// Model update and render
 					pModel->Update(deltaTime);
 
 					sMesh* currMesh = pModel->GetCurrentMesh();
-					this->Draw(pModel->isWireframe,
+					Draw(pModel->isWireframe,
 						pModel->doNotLight,
-						pModel->useVertexColour,
 						currMesh->VAO_ID,
 						currMesh->numberOfIndices);
 
@@ -229,6 +214,12 @@ void Renderer::RenderAllModels(double deltaTime)
 				}
 			}
 		}
+
+		// Unbind for the next model
+		if (pMaterialComp)
+		{
+			m_pMaterialManager->UnbindMaterial(m_currShaderID);
+		}
 	}
 }
 
@@ -236,14 +227,14 @@ void Renderer::RenderScene(double deltaTime)
 {
 	using namespace glm;
 
-	if (!this->m_isInitialized)
+	if (!m_isInitialized)
 	{
 		return;
 	}
 
-	this->UpdateCamera();
+	UpdateCamera();
 
-	this->RenderAllModels(deltaTime);
+	RenderAllModels(deltaTime);
 
 	return;
 }
@@ -251,24 +242,22 @@ void Renderer::RenderScene(double deltaTime)
 void Renderer::UpdateTransform(glm::mat4 matModel)
 {
 	// Update model matrix on shader
-	this->m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
+	m_pShaderProgram->SetUniformMatrix4f("matModel", matModel);
 
 	// Also calculate and pass the "inverse transpose" for the model matrix
 	glm::mat4 matModelIT = glm::inverse(glm::transpose(matModel));
-	this->m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
+	m_pShaderProgram->SetUniformMatrix4f("matModel_IT", matModelIT);
 
 	return;
 }
 
 void Renderer::Draw(bool isWireFrame,
 					bool doNotLight,
-					bool useVertexColour,
 					int VAO_ID, 
 					int numberOfIndices)
 {
-	this->m_pShaderProgram->IsWireframe(isWireFrame);
-	this->m_pShaderProgram->SetUniformFloat("doNotLight", doNotLight);
-	this->m_pShaderProgram->SetUniformFloat("bUseVertexColour", useVertexColour);
+	m_pShaderProgram->IsWireframe(isWireFrame);
+	m_pShaderProgram->SetUniformFloat("doNotLight", doNotLight);
 
 	glBindVertexArray(VAO_ID); //  enable VAO (and everything else)
 	glDrawElements(GL_TRIANGLES,
@@ -280,7 +269,7 @@ void Renderer::Draw(bool isWireFrame,
 
 bool Renderer::IsRunning()
 {
-	if (this->m_isRunning)
+	if (m_isRunning)
 	{
 		return true;
 	}
@@ -292,5 +281,5 @@ bool Renderer::IsRunning()
 
 CameraSystem* Renderer::GetCamera()
 {
-	return this->m_pCameraSystem;
+	return m_pCameraSystem;
 }

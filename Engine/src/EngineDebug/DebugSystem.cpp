@@ -82,7 +82,7 @@ bool DebugSystem::Initialize(SceneView* pScene, ShaderManager* pShaderManager, s
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     // Load the other debug objects
-    std::string sphereFile = "debug/sphere.ply";
+    std::string sphereFile = "debugmodels/sphere.ply";
     m_pSphereMesh = m_pVAOManager->LoadModelIntoVAO(sphereFile, m_debugShaderID, true, false, false);
 
     m_sizeOfLineVBO = 0;
@@ -258,6 +258,8 @@ void DebugSystem::m_AddCollisions()
 
 void DebugSystem::m_AddNormals()
 {
+    // TODO: Improve performance, impossible to use in a medium scene size
+
     using namespace glm;
 
     const int NORMAL_SIZE = 10;
@@ -272,7 +274,7 @@ void DebugSystem::m_AddNormals()
         sMesh* pMesh = pModel->GetCurrentMesh();
         
         // Draw the normal for each face (cross product of 2 edges)
-        for (int i = 0; i < pMesh->numberOfIndices;)
+        for (unsigned int i = 0; i < pMesh->numberOfIndices;)
         {
             // Face indices
             int i1 = pMesh->pIndices[i];

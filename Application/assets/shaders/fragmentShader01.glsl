@@ -4,29 +4,39 @@
 in vec4 colour;
 in vec4 vertexWorldPos;			// vertex in "world space"
 in vec4 vertexWorldNormal;	
-in vec2 textureCoords;	
+in vec2 textureCoords;
+in float height;
 
 out vec4 outputColour;		// To the frame buffer (aka screen)
-
-//uniform vec3 directionalLightColour;
-// rgb are the rgb of the light colour
-//uniform vec4 directionalLight_Direction_power;
-// xyz is the normalized direction, w = power (between 0 and 1)
-
-// If true, then passes the colour without calculating lighting
-uniform bool doNotLight;
 
 uniform vec4 eyeLocation;
 
 uniform bool bUseDebugColour;	// if this is true, then use debugColourRGBA for the colour
 uniform vec4 debugColourRGBA;	
 
-uniform bool bUseVertexColour;		// If true, then use vertex instead of texture colours
+// TEXTURES
+// -----------------------------------------------------------------
+uniform bool bUseColorTexture;		// If false, then use vertex colors instead of texture colours
+uniform bool bUseHeightMapTexture;
+uniform bool bUseTransparencyTexture;
+uniform bool bUseNormalTexture;
+uniform bool bUseDiscardTexture;
+uniform bool bUseCubeTexture;
 
-uniform sampler2D texture0;			// 2D meaning x,y or s,t or u,v
-//uniform sampler2D texture1;
-//uniform sampler2D texture2;
-//uniform samplerCube skyBox;
+const int NUMBEROFTEXTURES = 4;
+
+uniform sampler2D textures[NUMBEROFTEXTURES];
+uniform float ratioTextures[NUMBEROFTEXTURES];
+
+uniform sampler2D heightMapTexture;
+uniform sampler2D transparencyTexture;
+uniform sampler2D normalTexture;
+uniform sampler2D discardTexture;
+uniform samplerCube cubeTexture;
+
+// LIGHTS
+// -----------------------------------------------------------------
+uniform bool doNotLight; // If true, then passes the colour without calculating lighting
 
 struct sLight
 {
@@ -48,36 +58,27 @@ const int DIRECTIONAL_LIGHT_TYPE = 2;
 
 const int NUMBEROFLIGHTS = 40;
 uniform sLight theLights[NUMBEROFLIGHTS];  	// 70 uniforms
-//... is really:
-//uniform vec4 theLights[0].position;
-//uniform vec4 theLights[1].position;
-//uniform vec4 theLights[2].position;
-// etc...
 
 
 vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 
+vec4 calculateColorTextures();
 
 void main()
 {
-//	gl_FragColor = vec4(color, 1.0);
-
-	vec4 textureColour = texture( texture0, textureCoords.st ).rgba;		// s,t is the x,y
-
-	// Make the 'vertex colour' the texture colour we sampled...
-	vec4 vertexRGBA = textureColour;	
-	
-	// ...unless we want to use the vertex colours
-	if (bUseVertexColour)
+	if (bUseDebugColour)
 	{
-		// Use model vertex colour and NOT the texture colour
-		vertexRGBA = colour;
+		outputColour = debugColourRGBA;
+		return;
 	}
+
+	// Use model vertex as default
+	vec4 vertexRGBA = colour;
 	
-	if ( bUseDebugColour )
-	{	
-		vertexRGBA = debugColourRGBA;
+	if (bUseColorTexture)
+	{
+		vertexRGBA = calculateColorTextures();
 	}
 	
 	if ( doNotLight )
@@ -252,15 +253,13 @@ vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	return finalObjectColour;
 }
 
+vec4 calculateColorTextures()
+{
+	vec4 tempColor = vec4(0);
+	for (int i = 0; i <= NUMBEROFTEXTURES; i++)
+	{
+		tempColor += texture(textures[i], textureCoords.st).rgba * ratioTextures[i];
+	}
 
-//	// For now, just trust Michael
-//	// Very basic directional shader
-//	vec3 lightContrib = directionalLightColour * directionalLight_Direction_power.w;
-//	// 
-//	// Get the dot product of the light and normalize
-//	float dotProduct = dot( -directionalLight_Direction_power.xyz,  
-//							vertexWorldNormal.xyz );	
-//	// Clamp this to a positive number
-//	dotProduct = max( 0.0f, dotProduct );		// 0 to 1		
-//	
-//	lightContrib *= dotProduct;		
+	return tempColor;
+}

@@ -20,6 +20,7 @@ struct sParameterInfo
 	float parameterFloatValue;
 	glm::vec3 parameterVec3Value;
 	glm::vec4 parameterVec4Value;
+	std::vector<float> parameterVecFloatValue;
 	std::vector<std::string> parameterVecStrValue;
 	std::map<std::string, std::string> parameterMapValue;
 };

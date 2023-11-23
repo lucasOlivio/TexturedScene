@@ -57,6 +57,18 @@ void Editor::m_PrintParameter(std::string parName, std::vector<std::string> parV
 	printf("]\n");
 }
 
+void Editor::m_PrintParameter(std::string parName, std::vector<float>& parValue)
+{
+	printf("%s: [ ", parName.c_str());
+
+	for (float val : parValue)
+	{
+		printf("%.3f ", val);
+	}
+
+	printf("]\n");
+}
+
 Editor::Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow)
 			: m_pSceneView(pSceneView), m_pSceneDirector(pSceneDirector), m_pWindow(pWindow)
 {
@@ -111,8 +123,8 @@ void Editor::RedrawEntityUI()
 
 	printf("Toggle collision mode: C\n");
 	printf("Debug collision mode: %d\n", (int)pDebug->IsModesOn(eDebugMode::COLLISION));
-	printf("Toggle normal mode: N\n");
-	printf("Debug normal mode: %d\n\n", (int)pDebug->IsModesOn(eDebugMode::NORMAL));
+	// printf("Toggle normal mode: N\n");
+	// printf("Debug normal mode: %d\n\n", (int)pDebug->IsModesOn(eDebugMode::NORMAL));
 
 	printf("Change step floats: %.2f\n", changeStepFloat);
 	printf("Change step ints: %d\n", changeStepInt);
@@ -157,6 +169,10 @@ void Editor::RedrawEntityUI()
 		else if (parameterInfo.parameterType == "vec4")
 		{
 			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVec4Value);
+		}
+		else if (parameterInfo.parameterType == "vecFloat")
+		{
+			m_PrintParameter(parameterInfo.parameterName, parameterInfo.parameterVecFloatValue);
 		}
 		else if (parameterInfo.parameterType == "vecStr")
 		{
@@ -305,6 +321,8 @@ bool Editor::KeyActions(sKeyInfo keyInfo)
 	if (keyInfo.pressedKey == GLFW_KEY_F5 && (keyInfo.action == GLFW_PRESS))
 	{
 		m_pSceneDirector->LoadScene();
+		m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
+		m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
 		return true;
 	}
 
@@ -418,11 +436,11 @@ bool Editor::KeyActions(sKeyInfo keyInfo)
 		pDebug->ToggleMode(eDebugMode::COLLISION);
 		return true;
 	}
-	if (keyInfo.pressedKey == GLFW_KEY_N && keyInfo.action == GLFW_PRESS)
-	{
-		pDebug->ToggleMode(eDebugMode::NORMAL);
-		return true;
-	}
+	//if (keyInfo.pressedKey == GLFW_KEY_N && keyInfo.action == GLFW_PRESS)
+	//{
+	//	pDebug->ToggleMode(eDebugMode::NORMAL);
+	//	return true;
+	//}
 
 	// Parameter edition
 	// --------------------------------------------
@@ -547,14 +565,14 @@ void Editor::m_ModifySelected(glm::vec4& value, int orientation, int axis)
 	value[axis] += (float)(orientation * changeStepFloat);
 }
 
-void Editor::m_ModifySelectedCamera(glm::vec3& value, int orientation, int axis)
+void Editor::m_ModifySelected(std::vector<float>& value, int orientation, int axis)
 {
-	if (axis > 2)
+	if (axis > value.size())
 	{
 		return;
 	}
 
-	value[axis] += (orientation * changeStepInt	);
+	value[axis] += (orientation * (float)changeStepFloat);
 }
 
 void Editor::m_UpdateCamera(float xpos, float ypos)
@@ -628,19 +646,15 @@ void Editor::ModifySelectedParameter(int axis, int orientation)
 	}
 	else if (paramInfo.parameterType == "vec3")
 	{
-		// Avoid using floats for the camera
-		if (compInfo.componentName == "camera")
-		{
-			m_ModifySelectedCamera(paramInfo.parameterVec3Value, orientation, axis);
-		}
-		else
-		{
-			m_ModifySelected(paramInfo.parameterVec3Value, orientation, axis);
-		}
+		m_ModifySelected(paramInfo.parameterVec3Value, orientation, axis);
 	}
 	else if (paramInfo.parameterType == "vec4")
 	{
 		m_ModifySelected(paramInfo.parameterVec4Value, orientation, axis);
+	}
+	else if (paramInfo.parameterType == "vecFloat")
+	{
+		m_ModifySelected(paramInfo.parameterVecFloatValue, orientation, axis);
 	}
 
 	iComponent* pComponent = m_pSceneView->GetComponent<iComponent>(m_selectedEntity, 

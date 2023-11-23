@@ -45,13 +45,14 @@ private:
 	void m_PrintParameter(std::string parName, glm::vec4 parValue);
 	void m_PrintParameter(std::string parName, bool parValue);
 	void m_PrintParameter(std::string parName, std::vector<std::string> parValue);
+	void m_PrintParameter(std::string parName, std::vector<float>& parValue);
 
 	void m_ModifySelected(int& value, int orientation);
 	void m_ModifySelected(bool& value, int orientation);
 	void m_ModifySelected(float& value, int orientation);
 	void m_ModifySelected(glm::vec3& value, int orientation, int axis);
 	void m_ModifySelected(glm::vec4& value, int orientation, int axis);
-	void m_ModifySelectedCamera(glm::vec3& value, int orientation, int axis);
+	void m_ModifySelected(std::vector<float>& value, int orientation, int axis);
 
 	void m_UpdateCamera(float xpos, float ypos);
 public:

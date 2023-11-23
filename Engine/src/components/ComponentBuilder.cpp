@@ -42,6 +42,10 @@ iComponent* ComponentBuilder::BuildComponent(sComponentInfo& componentInfo, Enti
 	{
 		newComponent = new TextureComponent();
 	}
+	else if (componentInfo.componentName == "material")
+	{
+		newComponent = new MaterialComponent();
+	}
 	else if (componentInfo.componentName == "tiling")
 	{
 		newComponent = new TilingComponent();

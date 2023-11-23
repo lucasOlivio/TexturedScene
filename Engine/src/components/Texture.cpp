@@ -9,8 +9,7 @@ void TextureComponent::GetInfo(sComponentInfo& compInfoOut)
     compInfoOut.componentParameters.clear();
 
     this->AddCompParInfo("fileName", "string", this->fileName, compInfoOut);
-    this->AddCompParInfo("samplerId", "int", this->samplerId, compInfoOut);
-    this->AddCompParInfo("generateMIPMap", "bool", this->generateMIPMap, compInfoOut);
+    this->AddCompParInfo("textureType", "int", this->textureType, compInfoOut);
 }
 
 void TextureComponent::SetParameter(sParameterInfo& parameterIn)
@@ -20,11 +19,8 @@ void TextureComponent::SetParameter(sParameterInfo& parameterIn)
     if (parameterIn.parameterName == "fileName") {
         this->fileName = parameterIn.parameterStrValue;
     }
-    else if (parameterIn.parameterName == "samplerId") {
-        this->samplerId = parameterIn.parameterIntValue;
-    }
-    else if (parameterIn.parameterName == "generateMIPMap") {
-        this->generateMIPMap = parameterIn.parameterBoolValue;
+    else if (parameterIn.parameterName == "textureType") {
+        this->textureType = (eTextureType)parameterIn.parameterIntValue;
     }
 
     return;

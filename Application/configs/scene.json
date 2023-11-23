@@ -45,15 +45,15 @@
         },
         "transform": {
             "position": [
-                -1286.2081298828125,
-                864.141845703125,
-                960.9486083984375
+                -770.1787719726563,
+                716.0524291992188,
+                956.197021484375
             ],
             "scale": 1.0,
             "orientation": [
-                -29.123449325561523,
-                -1.8258299827575684,
-                -0.00014000000373926014
+                -38.62371063232422,
+                -15.275919914245605,
+                -0.0001500000071246177
             ]
         }
     },
@@ -67,6 +67,72 @@
         },
         "tag": {
             "name": "GM"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "Dungeons_2_Texture_01_A.bmp"
+        },
+        "texture": {
+            "fileName": "Dungeons_2_Texture_01_A.bmp",
+            "textureType": 0
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "Water_Texture_01.bmp"
+        },
+        "texture": {
+            "fileName": "Water_Texture_01.bmp",
+            "textureType": 0
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "NvF5e_height_map.bmp"
+        },
+        "texture": {
+            "fileName": "NvF5e_height_map.bmp",
+            "textureType": 8
         },
         "transform": {
             "position": [
@@ -103,6 +169,19 @@
                 0.0
             ]
         },
+        "material": {
+            "materialName": "wall",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp"
+            ],
+            "colorTexturesRatios": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": ""
+        },
         "model": {
             "models": [
                 "walls/SM_Env_Dwarf_Wall_01.ply"
@@ -111,7 +190,6 @@
             "friendlyName": "wall1",
             "parentTagName": "",
             "isWireframe": false,
-            "useVertexColour": true,
             "doNotLight": true,
             "isActive": true
         },
@@ -134,10 +212,39 @@
     },
     {
         "collision": {
-            "shape": 1,
+            "shape": 4,
             "bodyType": 0,
             "isActive": true,
-            "radius": 119.0
+            "minXYZ": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "maxXYZ": [
+                501.0,
+                501.0,
+                68.0
+            ],
+            "offset": [
+                0.0,
+                0.0,
+                0.0
+            ]
+        },
+        "material": {
+            "materialName": "water",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp",
+                "Water_Texture_01.bmp"
+            ],
+            "colorTexturesRatios": [
+                0.8999999761581421,
+                0.10000000149011612,
+                0.0
+            ],
+            "useHeightMap": true,
+            "heightMapTexture": "NvF5e_height_map.bmp",
+            "heightScale": 25.0
         },
         "model": {
             "models": [
@@ -147,7 +254,6 @@
             "friendlyName": "wall1",
             "parentTagName": "",
             "isWireframe": false,
-            "useVertexColour": true,
             "doNotLight": true,
             "isActive": true
         },
@@ -156,11 +262,55 @@
         },
         "transform": {
             "position": [
-                748.0,
+                605.0,
                 0.0,
                 0.0
             ],
             "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "terrain",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp",
+                "Water_Texture_01.bmp"
+            ],
+            "colorTexturesRatios": [
+                0.1,
+                0.9,
+                0.0
+            ],
+            "useHeightMap": true,
+            "heightMapTexture": "NvF5e_height_map.bmp",
+            "heightScale": 25.0
+        },
+        "model": {
+            "models": [
+                "Terrain_xyz_n_rgba_uv.ply"
+            ],
+            "collisionName": "",
+            "friendlyName": "sd",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "s"
+        },
+        "transform": {
+            "position": [
+                605.0,
+                -100.0,
+                0.0
+            ],
+            "scale": 5.0,
             "orientation": [
                 0.0,
                 -0.0,

@@ -41,6 +41,11 @@ public:
 				   const std::vector<std::string>& valueIn,
 				   rapidjson::Document::AllocatorType& allocator);
 
+	bool GetVecFloat(rapidjson::Value& jsonObject, std::vector<float>& valueOut);
+	bool SetVecFloat(rapidjson::Value& jsonObject,
+		const std::vector<float>& valueIn,
+		rapidjson::Document::AllocatorType& allocator);
+
 	bool SetValue(rapidjson::Value& jsonObject,
 				  sParameterInfo& valueIn, 
 				  rapidjson::Document::AllocatorType& allocator);

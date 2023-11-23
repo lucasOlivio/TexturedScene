@@ -5,7 +5,7 @@
 #include "CameraSystem.h"
 #include "ModelSystem.h"
 #include "LightSystem.h"
-#include "TextureManager/cBasicTextureManager.h"
+#include "MaterialManager.h"
 #include "scene/SceneView.h"
 
 class Renderer
@@ -22,7 +22,7 @@ private:
 	ModelSystem* m_pModelSystem;
 	LightSystem* m_pLightSystem;
 
-	cBasicTextureManager* m_pTextureManager;
+	MaterialManager* m_pMaterialManager;
 
 	SceneView* m_pSceneView;
 
@@ -45,9 +45,7 @@ public:
 	// Go through the scene loading each model component to the VAO
 	bool LoadScene(std::string baseModelsPath);
 
-	bool LoadTextures();
-
-	void BindTexture(std::string fileName, uint samplerId);
+	bool LoadMaterials();
 
 	void UpdateCamera();
 	void RenderAllModels(double deltaTime);
@@ -59,7 +57,6 @@ public:
 	// Uses opengl to draw the vao
 	void Draw(bool isWireFrame,
 			  bool doNotLight,
-			  bool useVertexColour,
 			  int VAO_ID,
 			  int numberOfIndices);
 

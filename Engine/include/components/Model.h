@@ -26,7 +26,6 @@ public:
 	std::string parentTagName;
 	bool isWireframe;
 	bool doNotLight;
-	bool useVertexColour;
 
 	sMesh* pCollisionMesh;
 
