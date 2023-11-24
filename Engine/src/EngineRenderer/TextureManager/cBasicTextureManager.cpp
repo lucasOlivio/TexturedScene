@@ -21,20 +21,28 @@ cBasicTextureManager::~cBasicTextureManager()
 	}
 }
 
-void cBasicTextureManager::BindTexture(GLuint shaderProgramId, std::string textureName, eTextureType textureType, float ratio)
+void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProgram, std::string textureName, 
+									   eTextureType textureType, float ratio)
 {
 	int unitId = GL_TEXTURE0;
 	GLuint textureId = GetTextureIDFromName(textureName);
 	int samplerId = GetSamplerId(textureType);
 
 	sSamplerInfo* pSampler;
-	pSampler = GetSamplerInfo(shaderProgramId, textureType);
+	pSampler = GetSamplerInfo(pShaderProgram, textureType);
 
 	unitId += samplerId;
 
 	glActiveTexture(unitId);
-	// TODO: Get different texture bind if cube texture
-	glBindTexture(GL_TEXTURE_2D, textureId);
+
+	if (textureType == eTextureType::CUBE)
+	{
+		glBindTexture(GL_TEXTURE_CUBE_MAP, textureId);
+	}
+	else
+	{
+		glBindTexture(GL_TEXTURE_2D, textureId);
+	}
 
 	glUniform1i(pSampler->samplerToggleUL, true);
 	glUniform1i(pSampler->samplerUL, samplerId);
@@ -43,7 +51,7 @@ void cBasicTextureManager::BindTexture(GLuint shaderProgramId, std::string textu
 	return;
 }
 
-void cBasicTextureManager::ResetSamplers(GLuint shaderProgramId)
+void cBasicTextureManager::ResetSamplers()
 {
 	m_nextColorSamplerId = 0;
 
@@ -129,7 +137,7 @@ GLuint cBasicTextureManager::GetSamplerId(eTextureType textureType)
 	}
 }
 
-sSamplerInfo* cBasicTextureManager::GetSamplerInfo(GLuint shaderProgramId, eTextureType textureTypeIn)
+sSamplerInfo* cBasicTextureManager::GetSamplerInfo(ShaderManager::ShaderProgram* pShaderProgram, eTextureType textureTypeIn)
 {
 	sSamplerInfo* pSamplerInfo;
 	std::string samplerName = "";
@@ -183,9 +191,9 @@ sSamplerInfo* cBasicTextureManager::GetSamplerInfo(GLuint shaderProgramId, eText
 
 	// Load sampler info and store in cache
 	pSamplerInfo = new sSamplerInfo();
-	pSamplerInfo->samplerUL = glGetUniformLocation(shaderProgramId, samplerName.c_str());
-	pSamplerInfo->samplerRatioUL = glGetUniformLocation(shaderProgramId, samplerRatioName.c_str());
-	pSamplerInfo->samplerToggleUL = glGetUniformLocation(shaderProgramId, samplerToggle.c_str());
+	pSamplerInfo->samplerUL = pShaderProgram->GetUniformIDFromName(samplerName.c_str());
+	pSamplerInfo->samplerRatioUL = pShaderProgram->GetUniformIDFromName(samplerRatioName.c_str());
+	pSamplerInfo->samplerToggleUL = pShaderProgram->GetUniformIDFromName(samplerToggle.c_str());
 
 	m_mapSamplerNameToInfo[samplerName.c_str()] = pSamplerInfo;
 

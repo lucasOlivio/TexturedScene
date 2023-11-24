@@ -296,6 +296,7 @@ void Engine::ChangeMode()
 {
 	bool editorRunning = m_pEditor->IsRunning();
 
+	bool isLoaded = true;
 	if (editorRunning)
 	{
 		// Entering play mode
@@ -305,15 +306,21 @@ void Engine::ChangeMode()
 		m_pPhysics->SetRunning(true);
 		m_pScene->SetPlaying(true);
 
-		LoadScene();
+		isLoaded = LoadScene();
 	}
 	else
 	{
 		m_pPhysics->SetRunning(false);
 		m_pScene->SetPlaying(false);
 
-		LoadScene();
+		isLoaded = LoadScene();
 		m_pEditor->SetRunning(true);
+	}
+
+	if (!isLoaded)
+	{
+		CheckEngineError("Scene loading error\n\n");
+		Exit();
 	}
 
 	return;
@@ -340,7 +347,7 @@ void Engine::SaveScene()
 	SaveScene(sceneFilePath);
 }
 
-void Engine::LoadScene(std::string filePath)
+bool Engine::LoadScene(std::string filePath)
 {
 	m_pScene->Clear();
 
@@ -350,17 +357,34 @@ void Engine::LoadScene(std::string filePath)
 	if (!isSceneLoaded)
 	{
 		CheckEngineError("Scene loading from file");
-		return;
+		Exit();
+
+		return false;
 	}
 
 	delete pConfigrw; // Used only to load configs
 
-	m_pRenderer->LoadScene(baseModelPath);
+	bool isLoaded = m_pRenderer->LoadScene(baseModelPath);
+	if (isLoaded)
+	{
+		return true;
+	}
 
-	return;
+	CheckEngineError("Scene loading error\n\n");
+	Exit();
+	system("pause");
+	exit(EXIT_FAILURE);
+
+	return false;
 }
 
-void Engine::LoadScene()
+bool Engine::LoadScene()
 {
-	LoadScene(sceneFilePath);
+	bool isLoaded = LoadScene(sceneFilePath);
+	if (isLoaded)
+	{
+		return true;
+	}
+
+	return false;
 }

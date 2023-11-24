@@ -9,7 +9,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-float cameraSpeed      = 400;
+float cameraSpeed      = 750;
 double changeStepFloat = 0.01;
 int changeStepInt      = 1;
 
@@ -321,6 +321,7 @@ bool Editor::KeyActions(sKeyInfo keyInfo)
 	if (keyInfo.pressedKey == GLFW_KEY_F5 && (keyInfo.action == GLFW_PRESS))
 	{
 		m_pSceneDirector->LoadScene();
+
 		m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
 		m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
 		return true;
@@ -416,15 +417,10 @@ bool Editor::KeyActions(sKeyInfo keyInfo)
 
 	if ((keyInfo.mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL)
 	{
-
-		if (keyInfo.pressedKey == GLFW_KEY_KP_ADD && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
+		// Duplicate entity
+		if (keyInfo.pressedKey == GLFW_KEY_D && (keyInfo.action == GLFW_PRESS))
 		{
-			changeStepInt += 1;
-			return true;
-		}
-		if (keyInfo.pressedKey == GLFW_KEY_KP_SUBTRACT && (keyInfo.action == GLFW_PRESS || keyInfo.action == GLFW_REPEAT))
-		{
-			changeStepInt -= 1;
+			m_pSceneView->CreateEntity(m_selectedEntity);
 			return true;
 		}
 	}

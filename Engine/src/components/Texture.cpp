@@ -10,6 +10,7 @@ void TextureComponent::GetInfo(sComponentInfo& compInfoOut)
 
     this->AddCompParInfo("fileName", "string", this->fileName, compInfoOut);
     this->AddCompParInfo("textureType", "int", this->textureType, compInfoOut);
+    this->AddCompParInfo("vecTextures", "vecStr", this->vecTextures, compInfoOut);
 }
 
 void TextureComponent::SetParameter(sParameterInfo& parameterIn)
@@ -21,6 +22,9 @@ void TextureComponent::SetParameter(sParameterInfo& parameterIn)
     }
     else if (parameterIn.parameterName == "textureType") {
         this->textureType = (eTextureType)parameterIn.parameterIntValue;
+    }
+    else if (parameterIn.parameterName == "vecTextures") {
+        this->vecTextures = parameterIn.parameterVecStrValue;
     }
 
     return;

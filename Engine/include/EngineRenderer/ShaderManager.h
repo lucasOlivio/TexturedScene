@@ -50,7 +50,7 @@ public:
 		// Returns -1 (just like OpenGL) if NOT found
 		int GetAttributeIDFromName(const char* name);
 		// Look up the uniform location and save it.
-		bool LoadUniformLocation(const char* variableName);
+		int LoadUniformLocation(const char* variableName);
 		// Look up the attribute location and save it.
 		bool LoadAttributeLocation(const char* variableName);
 
@@ -62,6 +62,7 @@ public:
 		void SetUniformInt(const char* variableName, int value);
 		void SetUniformMatrix4f(const char* variableName, const glm::mat4& value);
 		void SetUniformVec4(const char* variableName, const glm::vec4& value);
+		void SetUniformVec2(const char* variableName, const glm::vec4& value);
 
 		void BindTexture(uint textureUnit, uint textureId);
 	};

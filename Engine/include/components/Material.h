@@ -19,5 +19,14 @@ public:
 	std::string heightMapTexture;
 	float heightScale;
 
+	bool useNormalTexture;
+	std::string normalTexture;
+
+	bool useCubeTexture;
+	std::string cubeTexture;
+
+	// Material transparency
+	float alphaValue;
+
 	std::vector<TextureComponent*> texturesComponents;
 };

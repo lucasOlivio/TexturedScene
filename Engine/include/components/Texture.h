@@ -10,6 +10,9 @@ public:
 	std::string fileName;
 	eTextureType textureType;
 
+	// Cube map list of texture sides
+	std::vector<std::string> vecTextures;
+
 	virtual void GetInfo(sComponentInfo& compInfoOut);
 	virtual void SetParameter(sParameterInfo& parameterIn);
 };

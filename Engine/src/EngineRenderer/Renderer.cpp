@@ -144,11 +144,11 @@ void Renderer::RenderAllModels(double deltaTime)
 		ModelComponent* pModel = m_pSceneView->CurrentValue<ModelComponent>();
 		iComponent* pLightComp = m_pSceneView->GetComponent(entityID, "light");
 		iComponent* pTilingComp = m_pSceneView->GetComponent(entityID, "tiling");
-		iComponent* pMaterialComp = m_pSceneView->GetComponent(entityID, "material");
+		iComponent* pMaterialComp = m_pSceneView->GetComponentByTag(pModel->material, "material");
 
 		// Default we only draw 1 time in each axis
-		vec3 axis = vec3(1.0, 1.0, 1.0);
-		vec3 offset = vec3(0.0, 0.0, 0.0);
+		vec3 axis = vec3(1.0);
+		vec3 offset = vec3(0.0);
 		// If has tiling then we draw X times per axis based on the offset
 		if (pTilingComp)
 		{
@@ -161,7 +161,7 @@ void Renderer::RenderAllModels(double deltaTime)
 		if (pMaterialComp)
 		{
 			MaterialComponent* pMaterial = (MaterialComponent*)pMaterialComp;
-			m_pMaterialManager->BindMaterial(m_currShaderID, pMaterial);
+			m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
 		}
 
 		// Update uniforms
@@ -218,7 +218,7 @@ void Renderer::RenderAllModels(double deltaTime)
 		// Unbind for the next model
 		if (pMaterialComp)
 		{
-			m_pMaterialManager->UnbindMaterial(m_currShaderID);
+			m_pMaterialManager->UnbindMaterials();
 		}
 	}
 }

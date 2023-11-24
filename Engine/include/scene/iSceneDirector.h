@@ -14,6 +14,6 @@ public:
 	virtual void SaveScene() = 0;
 	virtual void SaveScene(std::string filePath) = 0;
 
-	virtual void LoadScene() = 0;
-	virtual void LoadScene(std::string filePath) = 0;
+	virtual bool LoadScene() = 0;
+	virtual bool LoadScene(std::string filePath) = 0;
 };

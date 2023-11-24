@@ -3,6 +3,7 @@
 #include "TextureManager/cBasicTextureManager.h"
 #include "scene/SceneView.h"
 #include "components/Material.h"
+#include "ShaderManager.h"
 
 class MaterialManager
 {
@@ -13,8 +14,8 @@ public:
 	// Load material textures
 	bool LoadMaterial(SceneView* pScene, MaterialComponent* pMaterial);
 
-	void BindMaterial(GLuint shaderProgramId, MaterialComponent* pMaterial);
-	void UnbindMaterial(GLuint shaderProgramId);
+	void BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial);
+	void UnbindMaterials();
 private:
 	cBasicTextureManager* m_pTextureManager;
 

@@ -35,13 +35,15 @@ bool ModelSystem::LoadModels(int shaderID)
             pModel->SetMesh(i, pMesh);
         }
 
-        if (pModel->collisionName != "")
+        if (pModel->collisionName == "")
         {
-            pModel->pCollisionMesh = this->m_pVAOManager->LoadModelIntoVAO(pModel->collisionName, shaderID, false);
-            if (!pModel->pCollisionMesh)
-            {
-                return false;
-            }
+            continue;
+        }
+
+        pModel->pCollisionMesh = this->m_pVAOManager->LoadModelIntoVAO(pModel->collisionName, shaderID, false);
+        if (!pModel->pCollisionMesh)
+        {
+            return false;
         }
     }
 
@@ -52,9 +54,12 @@ bool ModelSystem::LoadModels(std::string basePath, int shaderID)
 {
     this->m_pVAOManager->SetBasePath(basePath);
 
-    this->LoadModels(shaderID);
-
-    return true;
+    bool isLoaded = this->LoadModels(shaderID);
+    if (isLoaded)
+    {
+        return true;
+    }
+    return false;
 }
 
 void ModelSystem::Destroy()
@@ -69,3 +74,4 @@ void ModelSystem::Destroy()
         }
     }
 }
+

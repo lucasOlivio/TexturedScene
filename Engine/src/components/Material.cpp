@@ -11,6 +11,11 @@ void MaterialComponent::GetInfo(sComponentInfo& compInfoOut)
     AddCompParInfo("useHeightMap", "bool", useHeightMap, compInfoOut);
     AddCompParInfo("heightMapTexture", "string", heightMapTexture, compInfoOut);
     AddCompParInfo("heightScale", "float", heightScale, compInfoOut);
+    AddCompParInfo("useNormalTexture", "bool", useNormalTexture, compInfoOut);
+    AddCompParInfo("normalTexture", "string", normalTexture, compInfoOut);
+    AddCompParInfo("useCubeTexture", "bool", useCubeTexture, compInfoOut);
+    AddCompParInfo("cubeTexture", "string", cubeTexture, compInfoOut);
+    AddCompParInfo("alphaValue", "float", alphaValue, compInfoOut);
 }
 
 void MaterialComponent::SetParameter(sParameterInfo& parameterIn)
@@ -32,6 +37,21 @@ void MaterialComponent::SetParameter(sParameterInfo& parameterIn)
     }
     else if (parameterIn.parameterName == "heightScale") {
         heightScale = parameterIn.parameterFloatValue;
+    }
+    else if (parameterIn.parameterName == "useNormalTexture") {
+        useNormalTexture = parameterIn.parameterBoolValue;
+    }
+    else if (parameterIn.parameterName == "normalTexture") {
+        normalTexture = parameterIn.parameterStrValue;
+    }
+    else if (parameterIn.parameterName == "useCubeTexture") {
+        useCubeTexture = parameterIn.parameterBoolValue;
+    }
+    else if (parameterIn.parameterName == "cubeTexture") {
+        cubeTexture = parameterIn.parameterStrValue;
+    }
+    else if (parameterIn.parameterName == "alphaValue") {
+        alphaValue = parameterIn.parameterFloatValue;
     }
 
     return;

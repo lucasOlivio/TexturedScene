@@ -79,6 +79,6 @@ public:
 	virtual void SaveScene();
 
 	// Load all components data from file
-	virtual void LoadScene(std::string filePath);
-	virtual void LoadScene();
+	virtual bool LoadScene(std::string filePath);
+	virtual bool LoadScene();
 };

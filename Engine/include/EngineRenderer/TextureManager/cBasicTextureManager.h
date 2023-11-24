@@ -4,6 +4,7 @@
 #include "CTextureFromBMP.h"
 #include "common/types.h"
 #include "EngineRenderer/TextureProperties.h"
+#include "EngineRenderer/ShaderManager.h"
 #include <string>
 #include <map>
 
@@ -39,14 +40,15 @@ public:
 	// gets the sampler to be used based on the texture type
 	GLuint GetSamplerId(eTextureType textureType);
 
-	sSamplerInfo* GetSamplerInfo(GLuint shaderProgramId, eTextureType textureTypeIn);
+	sSamplerInfo* GetSamplerInfo(ShaderManager::ShaderProgram* pShaderProgram, eTextureType textureTypeIn);
 	sSamplerInfo* GetSamplerInfoFromName(std::string samplerName);
 
 	// If texture not already in any sampler, then loads into next available
-	void BindTexture(GLuint shaderProgramId, std::string textureName, eTextureType textureType, float ratio);
+	void BindTexture(ShaderManager::ShaderProgram* pShaderProgram, std::string textureName, 
+					 eTextureType textureType, float ratio);
 	
 	// Reset all ratios to 0
-	void ResetSamplers(GLuint shaderProgramId);
+	void ResetSamplers();
 
 	void SetBasePath(std::string basepath);
 

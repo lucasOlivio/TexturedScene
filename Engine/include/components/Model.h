@@ -22,6 +22,7 @@ public:
 
 	std::vector<std::string> models;
 	std::string collisionName;
+	std::string material;
 	std::string friendlyName;
 	std::string parentTagName;
 	bool isWireframe;

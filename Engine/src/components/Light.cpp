@@ -5,21 +5,21 @@
 // ctors dtors
 LightComponent::LightComponent()
 {
-	this->position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);     // Center of everything
-	this->diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);		// White color
-	this->specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);     // White LightComponent
-	this->atten = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);		// No attenuation
-	this->direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);	// Defaults to straight down
-	this->params = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	    // LightComponent_TYPE POINT
-	this->status = false;	                                // Off
+	position = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);     // Center of everything
+	diffuse = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);		// White color
+	specular = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);     // White LightComponent
+	atten = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);		// No attenuation
+	direction = glm::vec4(0.0f, -1.0f, 0.0f, 1.0f);	// Defaults to straight down
+	params = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	    // LightComponent_TYPE POINT
+	status = false;	                                // Off
 
-	this->m_position_UL = -1;
-	this->m_diffuse_UL = -1;
-	this->m_specular_UL = -1;
-	this->m_atten_UL = -1;
-	this->m_direction_UL = -1;
-	this->m_params_UL = -1;
-	this->m_status_UL = -1;
+	m_position_UL = -1;
+	m_diffuse_UL = -1;
+	m_specular_UL = -1;
+	m_atten_UL = -1;
+	m_direction_UL = -1;
+	m_params_UL = -1;
+	m_status_UL = -1;
 }
 
 LightComponent::~LightComponent()
@@ -34,181 +34,181 @@ void LightComponent::SetupLight(GLint shaderProgramID, std::string ulBasePath)
 	{
 		ulBasePath += ".";
 	}
-	this->m_ulBasePath = ulBasePath;
-	this->m_position_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "position").c_str());
-	this->m_diffuse_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "diffuse").c_str());
-	this->m_specular_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "specular").c_str());
-	this->m_atten_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "atten").c_str());
-	this->m_direction_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "direction").c_str());
-	this->m_params_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "params").c_str());
-	this->m_status_UL = glGetUniformLocation(shaderProgramID, (this->m_ulBasePath + "status").c_str());
+	m_ulBasePath = ulBasePath;
+	m_position_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "position").c_str());
+	m_diffuse_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "diffuse").c_str());
+	m_specular_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "specular").c_str());
+	m_atten_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "atten").c_str());
+	m_direction_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "direction").c_str());
+	m_params_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "params").c_str());
+	m_status_UL = glGetUniformLocation(shaderProgramID, (m_ulBasePath + "status").c_str());
 
-	glUniform4f(this->m_position_UL, this->position.x,
-		this->position.y, this->position.z,
-		this->position.w);
-	glUniform4f(this->m_diffuse_UL, this->diffuse.r,
-		this->diffuse.g, this->diffuse.b,
-		this->diffuse.a);
-	glUniform4f(this->m_specular_UL, this->specular.r,
-		this->specular.g, this->specular.b,
-		this->specular.a);
-	glUniform4f(this->m_atten_UL, this->atten.x,
-		this->atten.y, this->atten.z,
-		this->atten.w);
-	glUniform4f(this->m_direction_UL, this->direction.x,
-		this->direction.y, this->direction.z,
-		this->direction.w);
-	glUniform4f(this->m_direction_UL, this->direction.x,
-		this->direction.y, this->direction.z,
-		this->direction.w);
-	glUniform4f(this->m_params_UL, this->params.x,
-		this->params.y, this->params.z,
-		this->params.w);
-	glUniform4f(this->m_status_UL, this->status, 0, 0, 0);
+	glUniform4f(m_position_UL, position.x,
+		position.y, position.z,
+		position.w);
+	glUniform4f(m_diffuse_UL, diffuse.r,
+		diffuse.g, diffuse.b,
+		diffuse.a);
+	glUniform4f(m_specular_UL, specular.r,
+		specular.g, specular.b,
+		specular.a);
+	glUniform4f(m_atten_UL, atten.x,
+		atten.y, atten.z,
+		atten.w);
+	glUniform4f(m_direction_UL, direction.x,
+		direction.y, direction.z,
+		direction.w);
+	glUniform4f(m_direction_UL, direction.x,
+		direction.y, direction.z,
+		direction.w);
+	glUniform4f(m_params_UL, params.x,
+		params.y, params.z,
+		params.w);
+	glUniform4f(m_status_UL, status, 0, 0, 0);
 }
 
 // Getters
 glm::vec4 LightComponent::GetPosition()
 {
-	return this->position;
+	return position;
 }
 
 glm::vec4 LightComponent::GetDiffuse()
 {
-	return this->diffuse;
+	return diffuse;
 }
 
 glm::vec4 LightComponent::GetSpecular()
 {
-	return this->specular;
+	return specular;
 }
 
 glm::vec4 LightComponent::GetAtten()
 {
-	return this->atten;
+	return atten;
 }
 
 glm::vec4 LightComponent::GetDirection()
 {
-	return this->direction;
+	return direction;
 }
 
 glm::vec4 LightComponent::GetParams()
 {
-	return this->params;
+	return params;
 }
 
 bool LightComponent::GetStatus()
 {
-	return this->status;
+	return status;
 }
 
 // Setters
 void LightComponent::SetPosition(glm::vec4 newPosition)
 {
-	this->position = newPosition;
+	position = newPosition;
 
-	if (this->m_position_UL == -1)
+	if (m_position_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_position_UL, this->position.x,
-		this->position.y, this->position.z,
-		this->position.w);
+	glUniform4f(m_position_UL, position.x,
+		position.y, position.z,
+		position.w);
 }
 
 void LightComponent::SetDiffuse(glm::vec4 newDiffuse)
 {
-	this->diffuse = newDiffuse;
+	diffuse = newDiffuse;
 
-	if (this->m_diffuse_UL == -1)
+	if (m_diffuse_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_diffuse_UL, this->diffuse.r,
-		this->diffuse.g, this->diffuse.b,
-		this->diffuse.a);
+	glUniform4f(m_diffuse_UL, diffuse.r,
+		diffuse.g, diffuse.b,
+		diffuse.a);
 }
 
 void LightComponent::SetSpecular(glm::vec4 newSpecular)
 {
-	this->specular = newSpecular;
+	specular = newSpecular;
 
-	if (this->m_specular_UL == -1)
+	if (m_specular_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_specular_UL, this->specular.r,
-		this->specular.g, this->specular.b,
-		this->specular.a);
+	glUniform4f(m_specular_UL, specular.r,
+		specular.g, specular.b,
+		specular.a);
 }
 
 void LightComponent::SetAtten(glm::vec4 newAtten)
 {
-	this->atten = newAtten;
+	atten = newAtten;
 
-	if (this->m_atten_UL == -1)
+	if (m_atten_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_atten_UL, this->atten.x,
-		this->atten.y, this->atten.z,
-		this->atten.w);
+	glUniform4f(m_atten_UL, atten.x,
+		atten.y, atten.z,
+		atten.w);
 }
 
 void LightComponent::SetDirection(glm::vec4 newDirection)
 {
-	this->direction = newDirection;
+	direction = newDirection;
 
-	if (this->m_direction_UL == -1)
+	if (m_direction_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_direction_UL, this->direction.x,
-		this->direction.y, this->direction.z,
-		this->direction.w);
+	glUniform4f(m_direction_UL, direction.x,
+		direction.y, direction.z,
+		direction.w);
 }
 
 void LightComponent::SetParams(glm::vec4 newParams)
 {
-	this->params = newParams;
+	params = newParams;
 
-	if (this->m_params_UL == -1)
+	if (m_params_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_params_UL, this->params.x,
-		this->params.y, this->params.z,
-		this->params.w);
+	glUniform4f(m_params_UL, params.x,
+		params.y, params.z,
+		params.w);
 }
 
 void LightComponent::SetStatus(bool newStatus)
 {
-	this->status = newStatus;
+	status = newStatus;
 
-	if (this->m_status_UL == -1)
+	if (m_status_UL == -1)
 	{
 		return;
 	}
 
-	glUniform4f(this->m_status_UL, this->status, 0, 0, 0);
+	glUniform4f(m_status_UL, status, 0, 0, 0);
 }
 
 void LightComponent::SetLinearAtten(float value)
 {
-	this->atten[1] = value;
-	this->SetAtten(this->atten);
+	atten[1] = value;
+	SetAtten(atten);
 }
 
 void LightComponent::ResetAtten()
 {
-	this->SetAtten(this->initialAtten);
+	SetAtten(initialAtten);
 }
 
 void LightComponent::GetInfo(sComponentInfo& compInfoOut)
@@ -218,13 +218,13 @@ void LightComponent::GetInfo(sComponentInfo& compInfoOut)
 	compInfoOut.componentName = "light";
 	compInfoOut.componentParameters.clear();
 
-	this->AddCompParInfo("position", "vec4", this->position, compInfoOut);
-	this->AddCompParInfo("diffuse", "vec4", this->diffuse, compInfoOut);
-	this->AddCompParInfo("specular", "vec4", this->specular, compInfoOut);
-	this->AddCompParInfo("atten", "vec4", this->initialAtten, compInfoOut);
-	this->AddCompParInfo("direction", "vec4", this->direction, compInfoOut);
-	this->AddCompParInfo("params", "vec4", this->params, compInfoOut);
-	this->AddCompParInfo("status", "bool", this->status, compInfoOut);
+	AddCompParInfo("position", "vec4", position, compInfoOut);
+	AddCompParInfo("diffuse", "vec4", diffuse, compInfoOut);
+	AddCompParInfo("specular", "vec4", specular, compInfoOut);
+	AddCompParInfo("atten", "vec4", initialAtten, compInfoOut);
+	AddCompParInfo("direction", "vec4", direction, compInfoOut);
+	AddCompParInfo("params", "vec4", params, compInfoOut);
+	AddCompParInfo("status", "bool", status, compInfoOut);
 }
 
 void LightComponent::SetParameter(sParameterInfo& parameterIn)
@@ -232,26 +232,26 @@ void LightComponent::SetParameter(sParameterInfo& parameterIn)
 	using namespace myutils;
 
 	if (parameterIn.parameterName == "position") {
-		this->SetPosition(parameterIn.parameterVec4Value);
+		SetPosition(parameterIn.parameterVec4Value);
 	}
 	else if (parameterIn.parameterName == "diffuse") {
-		this->SetDiffuse(parameterIn.parameterVec4Value);
+		SetDiffuse(parameterIn.parameterVec4Value);
 	}
 	else if (parameterIn.parameterName == "specular") {
-		this->SetSpecular(parameterIn.parameterVec4Value);
+		SetSpecular(parameterIn.parameterVec4Value);
 	}
 	else if (parameterIn.parameterName == "atten") {
-		this->SetAtten(parameterIn.parameterVec4Value);
-		this->initialAtten = parameterIn.parameterVec4Value;
+		SetAtten(parameterIn.parameterVec4Value);
+		initialAtten = parameterIn.parameterVec4Value;
 	}
 	else if (parameterIn.parameterName == "direction") {
-		this->SetDirection(parameterIn.parameterVec4Value);
+		SetDirection(parameterIn.parameterVec4Value);
 	}
 	else if (parameterIn.parameterName == "params") {
-		this->SetParams(parameterIn.parameterVec4Value);
+		SetParams(parameterIn.parameterVec4Value);
 	}
 	else if (parameterIn.parameterName == "status") {
-		this->SetStatus(parameterIn.parameterBoolValue);
+		SetStatus(parameterIn.parameterBoolValue);
 	}
 
 	return;

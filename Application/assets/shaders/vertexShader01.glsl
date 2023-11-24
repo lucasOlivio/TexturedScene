@@ -7,11 +7,16 @@ uniform mat4 matProjection;
 uniform mat4 matModel;	
 uniform mat4 matModel_IT;	
 
-// Height texture
 uniform vec2 UVOffset;
+
+// Height texture
 uniform float heightScale;
 uniform bool bUseHeightMapTexture;
 uniform sampler2D heightMapTexture;
+
+// Normal texture
+uniform bool bUseNormalTexture;
+uniform sampler2D normalTexture;
 
 // Vertex variables
 in vec4 vCol;		
@@ -37,13 +42,21 @@ void main()
 	vertexWorldNormal.xyz = normalize(vertexWorldNormal.xyz);
 	vertexWorldNormal.w = 1.0f;
 
+	if (bUseNormalTexture)
+	{
+		vec3 normalMapColor = texture(normalTexture, textureCoords).xyz;
+
+		// Convert normal map color from [0,1] to [-1,1] range
+		vertexWorldNormal = vec4(normalize(normalMapColor * 2.0 - 1.0), 1.0);
+	}
+
 	if (bUseHeightMapTexture)
 	{
 		// Greyscale (black and white) heightmap image
 		float height = texture(heightMapTexture, UVFinal.st).r;
 
 		// Adjust the height of the y axis from this vertice
-		vertexModelPosition += vertexWorldNormal * (height * heightScale);
+		vertexModelPosition += normalize(vertexWorldNormal * height) * heightScale;
 	}
 
 	mat4 matMVP = matProjection * matView * matModel;

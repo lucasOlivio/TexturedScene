@@ -74,6 +74,7 @@ void ModelComponent::GetInfo(sComponentInfo& compInfoOut)
 
     this->AddCompParInfo("models", "vecStr", this->models, compInfoOut);
     this->AddCompParInfo("collisionName", "string", this->collisionName, compInfoOut);
+    this->AddCompParInfo("material", "string", this->material, compInfoOut);
 	this->AddCompParInfo("friendlyName", "string", this->friendlyName, compInfoOut);
     this->AddCompParInfo("parentTagName", "string", this->parentTagName, compInfoOut);
 	this->AddCompParInfo("isWireframe", "bool", this->isWireframe, compInfoOut);
@@ -89,6 +90,9 @@ void ModelComponent::SetParameter(sParameterInfo& parameterIn)
         this->m_currFrame = 0;
         this->models = parameterIn.parameterVecStrValue;
         this->m_pMeshes.resize(this->models.size(), nullptr);
+    }
+    else if (parameterIn.parameterName == "material") {
+        this->material = parameterIn.parameterStrValue;
     }
     else if (parameterIn.parameterName == "collisionName") {
         this->collisionName = parameterIn.parameterStrValue;
