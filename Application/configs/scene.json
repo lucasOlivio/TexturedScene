@@ -323,7 +323,7 @@
             "normalTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
-            "alphaValue": 0.5
+            "alphaValue": 0.7
         },
         "tag": {
             "name": "matwater"

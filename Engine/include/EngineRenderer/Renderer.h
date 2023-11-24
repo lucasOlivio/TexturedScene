@@ -7,25 +7,10 @@
 #include "LightSystem.h"
 #include "MaterialManager.h"
 #include "scene/SceneView.h"
+#include "components/Model.h"
 
 class Renderer
 {
-private:
-	bool m_isRunning;
-	bool m_isInitialized;
-
-	ShaderManager* m_pShaderManager;
-	ShaderManager::ShaderProgram* m_pShaderProgram;
-	uint m_currShaderID;
-
-	CameraSystem* m_pCameraSystem;
-	ModelSystem* m_pModelSystem;
-	LightSystem* m_pLightSystem;
-
-	MaterialManager* m_pMaterialManager;
-
-	SceneView* m_pSceneView;
-
 public:
 	// ctors & dtors
 	Renderer();
@@ -49,6 +34,7 @@ public:
 
 	void UpdateCamera();
 	void RenderAllModels(double deltaTime);
+	void RenderModel(EntityID entityID, ModelComponent* pModel, double deltaTime);
 
 	// Update respectives UL and render model
 	void RenderScene(double deltaTime);
@@ -63,4 +49,22 @@ public:
 	bool IsRunning();
 
 	CameraSystem* GetCamera();
+
+private:
+	bool m_isRunning;
+	bool m_isInitialized;
+
+	ShaderManager* m_pShaderManager;
+	ShaderManager::ShaderProgram* m_pShaderProgram;
+	uint m_currShaderID;
+
+	CameraSystem* m_pCameraSystem;
+	ModelSystem* m_pModelSystem;
+	LightSystem* m_pLightSystem;
+
+	MaterialManager* m_pMaterialManager;
+
+	SceneView* m_pSceneView;
+
+	std::vector<EntityID> m_vecTransparentModels;
 };

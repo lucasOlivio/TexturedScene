@@ -255,8 +255,6 @@ vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 			}
 						
 		}// if ( intLightType == 1 )
-		
-		
 					
 		finalObjectColour.rgb += (vertexMaterialColour.rgb * lightDiffuseContrib.rgb)
 								  + (vertexSpecular.rgb  * lightSpecularContrib.rgb );

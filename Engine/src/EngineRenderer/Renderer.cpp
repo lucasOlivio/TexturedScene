@@ -1,6 +1,5 @@
 #include "EngineRenderer/Renderer.h"
 #include "common/utils.h"
-#include "components/Model.h"
 #include "components/Transform.h"
 #include "components/Texture.h"
 #include "components/Tiling.h"
@@ -138,87 +137,121 @@ void Renderer::RenderAllModels(double deltaTime)
 	using namespace glm;
 
 	// TODO: Find a better way to manage these rendering components and the mesh parents thing, is too messy right now
+	// Render all "not transparent" models
 	for (m_pSceneView->First("model"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
 		EntityID entityID = m_pSceneView->CurrentKey();
 		ModelComponent* pModel = m_pSceneView->CurrentValue<ModelComponent>();
-		iComponent* pLightComp = m_pSceneView->GetComponent(entityID, "light");
-		iComponent* pTilingComp = m_pSceneView->GetComponent(entityID, "tiling");
-		iComponent* pMaterialComp = m_pSceneView->GetComponentByTag(pModel->material, "material");
-
-		// Default we only draw 1 time in each axis
-		vec3 axis = vec3(1.0);
-		vec3 offset = vec3(0.0);
-		// If has tiling then we draw X times per axis based on the offset
-		if (pTilingComp)
-		{
-			TilingComponent* pTiling = (TilingComponent*)pTilingComp;
-			axis = pTiling->GetAxis();
-			offset = pTiling->GetOffset();
-		}
 
 		// Bind material
+		iComponent* pMaterialComp = m_pSceneView->GetComponentByTag(pModel->material, "material");
 		if (pMaterialComp)
 		{
 			MaterialComponent* pMaterial = (MaterialComponent*)pMaterialComp;
+
+			// Transparent objects must be rendered after
+			if (pMaterial->alphaValue < 1.0)
+			{
+ 				m_vecTransparentModels.push_back(entityID);
+				continue;
+			}
+
 			m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
 		}
 
-		// Update uniforms
-		TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
-
-		pTransform->SetFramePosition();
-
-		// Now go for each axis tiling to draw adding the offset
-		for (int x = 0; x < axis[0]; x++)
-		{
-			for (int y = 0; y < axis[1]; y++)
-			{
-				for (int z = 0; z < axis[2]; z++)
-				{
-					if (pLightComp)
-					{
-						// Setting object always behind light
-						LightComponent* pLight = (LightComponent*)pLightComp;
-						pTransform->SetPosition(pLight->GetPosition() + pLight->GetDirection());
-					}
-
-					vec3 delta = offset;
-					delta.x = offset.x * x;
-					delta.y = offset.y * y;
-					delta.z = offset.z * z;
-					pTransform->Move(delta);
-
-					// If the model have a parent we must use the parents transform
-					mat4 transformMat = mat4(1.0);
-					if (pModel->parentTagName != "")
-					{
-						TransformComponent* parentTransform = m_pSceneView->GetComponentByTag<TransformComponent>(pModel->parentTagName, "transform");
-
-						transformMat = parentTransform->GetTransformNoScale();
-					}
-
-					UpdateTransform(pTransform->GetTransform(transformMat));
-
-					// Model update and render
-					pModel->Update(deltaTime);
-
-					sMesh* currMesh = pModel->GetCurrentMesh();
-					Draw(pModel->isWireframe,
-						pModel->doNotLight,
-						currMesh->VAO_ID,
-						currMesh->numberOfIndices);
-
-					// Come back to initial frame place
-					pTransform->ResetFramePosition();
-				}
-			}
-		}
+		RenderModel(entityID, pModel, deltaTime);
 
 		// Unbind for the next model
 		if (pMaterialComp)
 		{
 			m_pMaterialManager->UnbindMaterials();
+		}
+	}
+
+	// Render all transparent models 
+	for (EntityID entityID : m_vecTransparentModels)
+	{
+		ModelComponent* pModel = m_pSceneView->GetComponent<ModelComponent>(entityID, "model");
+
+		// Bind material
+		MaterialComponent* pMaterial = m_pSceneView->GetComponentByTag<MaterialComponent>(pModel->material, "material");
+		m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
+
+		RenderModel(entityID, pModel, deltaTime);
+
+		// Unbind for the next model
+		m_pMaterialManager->UnbindMaterials();
+	}
+	m_vecTransparentModels.clear();
+}
+
+void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, double deltaTime)
+{
+	using namespace glm;
+
+	iComponent* pLightComp = m_pSceneView->GetComponent(entityID, "light");
+	iComponent* pTilingComp = m_pSceneView->GetComponent(entityID, "tiling");
+
+	// Default we only draw 1 time in each axis
+	vec3 axis = vec3(1.0);
+	vec3 offset = vec3(0.0);
+	// If has tiling then we draw X times per axis based on the offset
+	if (pTilingComp)
+	{
+		TilingComponent* pTiling = (TilingComponent*)pTilingComp;
+		axis = pTiling->GetAxis();
+		offset = pTiling->GetOffset();
+	}
+
+	// Update uniforms
+	TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
+
+	// Move light
+	if (pLightComp)
+	{
+		// Setting object always behind light
+		LightComponent* pLight = (LightComponent*)pLightComp;
+		pLight->SetPosition(vec4(pTransform->GetPosition(), 1.0) - pLight->GetDirection());
+	}
+
+	pTransform->SetFramePosition();
+
+	// Now go for each axis tiling to draw adding the offset
+	for (int x = 0; x < axis[0]; x++)
+	{
+		for (int y = 0; y < axis[1]; y++)
+		{
+			for (int z = 0; z < axis[2]; z++)
+			{
+				vec3 delta = offset;
+				delta.x = offset.x * x;
+				delta.y = offset.y * y;
+				delta.z = offset.z * z;
+				pTransform->Move(delta);
+
+				// If the model have a parent we must use the parents transform
+				mat4 transformMat = mat4(1.0);
+				if (pModel->parentTagName != "")
+				{
+					TransformComponent* parentTransform = m_pSceneView->GetComponentByTag<TransformComponent>(pModel->parentTagName, "transform");
+
+					transformMat = parentTransform->GetTransformNoScale();
+				}
+
+				UpdateTransform(pTransform->GetTransform(transformMat));
+
+				// Model update and render
+				pModel->Update(deltaTime);
+
+				sMesh* currMesh = pModel->GetCurrentMesh();
+				Draw(pModel->isWireframe,
+					pModel->doNotLight,
+					currMesh->VAO_ID,
+					currMesh->numberOfIndices);
+
+				// Come back to initial frame place
+				pTransform->ResetFramePosition();
+			}
 		}
 	}
 }

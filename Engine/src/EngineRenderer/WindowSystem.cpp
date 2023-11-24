@@ -86,8 +86,12 @@ void WindowSystem::NewFrame(int shaderID)
 
     // Clear frame
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     // While drawing a pixel, see if the pixel that's already there is closer or not?
     glEnable(GL_DEPTH_TEST);
+    // Activate transparency
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // set to not draw "back facing" triangles
     glCullFace(GL_BACK);
 }
