@@ -8,6 +8,7 @@
 #include "MaterialManager.h"
 #include "scene/SceneView.h"
 #include "components/Model.h"
+#include "components/Transform.h"
 
 class Renderer
 {
@@ -34,7 +35,7 @@ public:
 
 	void UpdateCamera();
 	void RenderAllModels(double deltaTime);
-	void RenderModel(EntityID entityID, ModelComponent* pModel, double deltaTime);
+	void RenderModel(EntityID entityID, ModelComponent* pModel, TransformComponent* pTransform, double deltaTime);
 
 	// Update respectives UL and render model
 	void RenderScene(double deltaTime);
@@ -43,6 +44,7 @@ public:
 	// Uses opengl to draw the vao
 	void Draw(bool isWireFrame,
 			  bool doNotLight,
+			  bool useColorTexture,
 			  int VAO_ID,
 			  int numberOfIndices);
 
@@ -65,6 +67,4 @@ private:
 	MaterialManager* m_pMaterialManager;
 
 	SceneView* m_pSceneView;
-
-	std::vector<EntityID> m_vecTransparentModels;
 };

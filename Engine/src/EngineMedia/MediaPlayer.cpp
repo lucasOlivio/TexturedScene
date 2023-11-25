@@ -34,11 +34,20 @@ bool MediaPlayer::Initialize(std::string baseAudiosPath, SceneView* pSceneView)
 {
     this->m_pSceneView = pSceneView;
 
+    this->m_pAudioManager->SetBasePath(baseAudiosPath);
+
     bool isAudioInit = this->m_pAudioManager->Initialize(this->m_pSceneView->GetNumComponents("channel"));
     if (!isAudioInit)
     {
         return false;
     }
+
+    return true;
+}
+
+bool MediaPlayer::LoadScene()
+{
+    printf("Loading media player...\n");
 
     bool isChannelsLoaded = this->LoadChannels();
     if (!isChannelsLoaded)
@@ -52,8 +61,6 @@ bool MediaPlayer::Initialize(std::string baseAudiosPath, SceneView* pSceneView)
         return false;
     }
 
-    this->m_pAudioManager->SetBasePath(baseAudiosPath);
-
     bool isAudiosLoaded = this->LoadAudios();
     if (!isAudiosLoaded)
     {
@@ -65,6 +72,8 @@ bool MediaPlayer::Initialize(std::string baseAudiosPath, SceneView* pSceneView)
 
 bool MediaPlayer::LoadOcclusions()
 {
+    printf("Loading occlusions...\n");
+
     using namespace myutils;
     using namespace std;
     using namespace glm;
@@ -98,6 +107,8 @@ bool MediaPlayer::LoadOcclusions()
 
 bool MediaPlayer::LoadChannels()
 {
+    printf("Loading channels...\n");
+
     this->m_pAudioManager->ClearChannels();
 
     for (this->m_pSceneView->First("channel"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())
@@ -117,6 +128,8 @@ bool MediaPlayer::LoadChannels()
 
 bool MediaPlayer::LoadAudios()
 {
+    printf("Loading audios...\n");
+
     this->m_pAudioManager->ClearAudios();
 
     for (this->m_pSceneView->First("audio"); !this->m_pSceneView->IsDone(); this->m_pSceneView->Next())

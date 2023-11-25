@@ -25,6 +25,7 @@ uniform vec2 UVOffset;
 uniform bool bUseColorTexture;		// If false, then use vertex colors instead of texture colours
 uniform bool bUseHeightMapTexture;
 uniform bool bUseNormalTexture;
+uniform bool bUseSpecularTexture;
 uniform bool bUseDiscardTexture;
 uniform bool bUseCubeTexture;
 
@@ -35,6 +36,7 @@ uniform float ratioTextures[NUMBEROFTEXTURES];
 
 uniform sampler2D heightMapTexture;
 uniform sampler2D normalTexture;
+uniform sampler2D specularTexture;
 uniform sampler2D discardTexture;
 uniform samplerCube cubeTexture;
 
@@ -102,8 +104,12 @@ void main()
 	}
 	
 	// *************************************
-	// Hard code the specular (for now)
-	vec4 vertexSpecular = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	vec4 vertexSpecular = vec4(0.1f, 0.1f, 0.1f, 1.0f);
+	if (bUseSpecularTexture)
+	{
+		vertexSpecular = texture(specularTexture, UVFinal.st).rgba;
+	}
+
 	// xyzw or rgba or stuw
 	// RGB is the specular highglight colour (usually white or the colour of the light)
 	// 4th value is the specular POWER (STARTS at 1, and goes to 1000000s)
@@ -164,13 +170,12 @@ vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 			// NOTE: There isn't any attenuation, like with sunlight.
 			// (This is part of the reason directional lights are fast to calculate)
 
-
-			return finalObjectColour;		
+			continue;		
 		}
 		
 		// Assume it's a point light 
 		// intLightType = 0
-		
+
 		// Contribution for this light
 		vec3 vLightToVertex = theLights[index].position.xyz - vertexWorldPos.xyz;
 		float distanceToLight = length(vLightToVertex);	
@@ -209,12 +214,9 @@ vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 		lightDiffuseContrib *= attenuation;
 		lightSpecularContrib *= attenuation;
 		
-		
 		// But is it a spot light
 		if ( intLightType == SPOT_LIGHT_TYPE )		// = 1
-		{	
-		
-
+		{
 			// Yes, it's a spotlight
 			// Calcualate light vector (light to vertex, in world)
 			vec3 vertexToLight = vertexWorldPos.xyz - theLights[index].position.xyz;

@@ -7,5 +7,6 @@ enum eTextureType
 	HEIGHTMAP = 8,
 	NORMAL = 12,
 	DISCARD = 16,
-	CUBE = 20
+	CUBE = 20,
+	SPECULAR = 24
 };

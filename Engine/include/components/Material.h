@@ -22,6 +22,9 @@ public:
 	bool useNormalTexture;
 	std::string normalTexture;
 
+	bool useSpecularTexture;
+	std::string specularTexture;
+
 	bool useCubeTexture;
 	std::string cubeTexture;
 

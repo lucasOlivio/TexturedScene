@@ -7,15 +7,6 @@
 
 class ModelComponent : public Component
 {
-private:
-	bool m_isActive;
-	int m_currFrame;
-	double m_elapsedTime;
-
-	std::vector <sMesh*> m_pMeshes;
-
-	void m_UpdateFrames(double deltaTime);
-
 public:
 	ModelComponent();
 	virtual ~ModelComponent() {};
@@ -27,6 +18,7 @@ public:
 	std::string parentTagName;
 	bool isWireframe;
 	bool doNotLight;
+	bool useColorTexture;
 
 	sMesh* pCollisionMesh;
 
@@ -45,4 +37,13 @@ public:
 	virtual void SetParameter(sParameterInfo& parameterIn);
 
 	void Update(double deltaTime);
+
+private:
+	bool m_isActive;
+	int m_currFrame;
+	double m_elapsedTime;
+
+	std::vector <sMesh*> m_pMeshes;
+
+	void m_UpdateFrames(double deltaTime);
 };

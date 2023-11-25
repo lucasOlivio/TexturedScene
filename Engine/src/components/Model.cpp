@@ -10,25 +10,6 @@ ModelComponent::ModelComponent()
     this->m_pMeshes.clear();
 }
 
-void ModelComponent::m_UpdateFrames(double deltaTime)
-{
-    this->m_elapsedTime += deltaTime;
-
-    if (this->m_elapsedTime < FRAME_DURATION)
-    {
-        return;
-    }
-
-    // Update the animation index
-    this->m_currFrame++;
-    if (this->m_currFrame >= this->m_pMeshes.size()) {
-        this->m_currFrame = 0;  // Loop the animation if needed
-    }
-
-    // Reset the elapsed time
-    this->m_elapsedTime = 0.0;
-}
-
 void ModelComponent::SetMeshes(std::vector<sMesh*> meshes)
 {
     this->m_pMeshes = meshes;
@@ -79,6 +60,7 @@ void ModelComponent::GetInfo(sComponentInfo& compInfoOut)
     this->AddCompParInfo("parentTagName", "string", this->parentTagName, compInfoOut);
 	this->AddCompParInfo("isWireframe", "bool", this->isWireframe, compInfoOut);
 	this->AddCompParInfo("doNotLight", "bool", this->doNotLight, compInfoOut);
+    this->AddCompParInfo("useColorTexture", "bool", this->useColorTexture, compInfoOut);
     this->AddCompParInfo("isActive", "bool", this->m_isActive, compInfoOut);
 }
 
@@ -108,6 +90,9 @@ void ModelComponent::SetParameter(sParameterInfo& parameterIn)
     }
     else if (parameterIn.parameterName == "doNotLight") {
         this->doNotLight = parameterIn.parameterBoolValue;
+    }
+    else if (parameterIn.parameterName == "useColorTexture") {
+        this->useColorTexture = parameterIn.parameterBoolValue;
     }
     else if (parameterIn.parameterName == "isActive") {
         this->m_isActive = parameterIn.parameterBoolValue;
@@ -143,4 +128,23 @@ bool ModelComponent::IsActive()
     {
         return false;
     }
+}
+
+void ModelComponent::m_UpdateFrames(double deltaTime)
+{
+    this->m_elapsedTime += deltaTime;
+
+    if (this->m_elapsedTime < FRAME_DURATION)
+    {
+        return;
+    }
+
+    // Update the animation index
+    this->m_currFrame++;
+    if (this->m_currFrame >= this->m_pMeshes.size()) {
+        this->m_currFrame = 0;  // Loop the animation if needed
+    }
+
+    // Reset the elapsed time
+    this->m_elapsedTime = 0.0;
 }

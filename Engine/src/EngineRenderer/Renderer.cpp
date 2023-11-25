@@ -1,10 +1,10 @@
 #include "EngineRenderer/Renderer.h"
 #include "common/utils.h"
-#include "components/Transform.h"
 #include "components/Texture.h"
 #include "components/Tiling.h"
 #include "components/Light.h"
 #include "components/Material.h"
+#include <algorithm>
 
 Renderer::Renderer()
 {
@@ -44,23 +44,6 @@ bool Renderer::Initialize(std::string baseModelsPath,
 	m_pLightSystem = new LightSystem(m_pShaderManager, pSceneView);
 	m_pMaterialManager = new MaterialManager(baseTexturesPath);
 
-	m_pCameraSystem->Initialize();
-
-	// Loading models into VAO and getting IDs
-	bool sceneLoaded = LoadScene(baseModelsPath);
-	if (!sceneLoaded)
-	{
-		return false;
-	}
-
-	// Setting up lights
-	bool isLSInitialized = m_pLightSystem->Initialize(m_currShaderID);
-	if (!isLSInitialized)
-	{
-		CheckEngineError("setting up lights");
-		return false;
-	}
-
 	m_isInitialized = true;
 	m_isRunning = true;
 
@@ -81,17 +64,21 @@ void Renderer::Destroy()
 
 bool Renderer::LoadScene(std::string baseModelsPath)
 {
+	printf("Loading renderer...\n\n");
+
 	m_pCameraSystem->Initialize();
 
 	bool materialsLoaded = LoadMaterials();
 	if (!materialsLoaded)
 	{
+		CheckEngineError("loading materials");
 		return false;
 	}
 	
 	bool modelsLoaded = m_pModelSystem->LoadModels(baseModelsPath, m_currShaderID);
 	if (!modelsLoaded)
 	{
+		CheckEngineError("loading models");
 		return false;
 	}
 
@@ -100,13 +87,14 @@ bool Renderer::LoadScene(std::string baseModelsPath)
 	{
 		CheckEngineError("setting up lights");
 		return false;
-	}
+	};
 
 	return true;
 }
 
 bool Renderer::LoadMaterials()
 {
+	printf("Loading materials...\n");
 	for (m_pSceneView->First("material"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
 		EntityID entityId = m_pSceneView->CurrentKey();
@@ -136,12 +124,15 @@ void Renderer::RenderAllModels(double deltaTime)
 {
 	using namespace glm;
 
+	std::vector<TransformComponent*> vecTransparentEntities;
+
 	// TODO: Find a better way to manage these rendering components and the mesh parents thing, is too messy right now
 	// Render all "not transparent" models
 	for (m_pSceneView->First("model"); !m_pSceneView->IsDone(); m_pSceneView->Next())
 	{
 		EntityID entityID = m_pSceneView->CurrentKey();
 		ModelComponent* pModel = m_pSceneView->CurrentValue<ModelComponent>();
+		TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
 
 		// Bind material
 		iComponent* pMaterialComp = m_pSceneView->GetComponentByTag(pModel->material, "material");
@@ -152,40 +143,44 @@ void Renderer::RenderAllModels(double deltaTime)
 			// Transparent objects must be rendered after
 			if (pMaterial->alphaValue < 1.0)
 			{
- 				m_vecTransparentModels.push_back(entityID);
+				float distToCamera = distance(pTransform->GetPosition(), m_pCameraSystem->GetCameraPosition());
+				pTransform->SetDistanceToCamera(distToCamera);
+				vecTransparentEntities.push_back(pTransform);
 				continue;
 			}
 
 			m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
 		}
 
-		RenderModel(entityID, pModel, deltaTime);
+		RenderModel(entityID, pModel, pTransform, deltaTime);
 
 		// Unbind for the next model
 		if (pMaterialComp)
 		{
-			m_pMaterialManager->UnbindMaterials();
+			m_pMaterialManager->UnbindMaterials(m_pShaderProgram);
 		}
 	}
 
 	// Render all transparent models 
-	for (EntityID entityID : m_vecTransparentModels)
+	std::sort(vecTransparentEntities.begin(), vecTransparentEntities.end(), SortTransformFromCamera);
+	for (TransformComponent* pTransform : vecTransparentEntities)
 	{
+		EntityID entityID = pTransform->GetEntityID();
 		ModelComponent* pModel = m_pSceneView->GetComponent<ModelComponent>(entityID, "model");
 
 		// Bind material
 		MaterialComponent* pMaterial = m_pSceneView->GetComponentByTag<MaterialComponent>(pModel->material, "material");
 		m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
 
-		RenderModel(entityID, pModel, deltaTime);
+		RenderModel(entityID, pModel, pTransform, deltaTime);
 
 		// Unbind for the next model
-		m_pMaterialManager->UnbindMaterials();
+		m_pMaterialManager->UnbindMaterials(m_pShaderProgram);
 	}
-	m_vecTransparentModels.clear();
+	vecTransparentEntities.clear();
 }
 
-void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, double deltaTime)
+void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, TransformComponent* pTransform, double deltaTime)
 {
 	using namespace glm;
 
@@ -201,17 +196,6 @@ void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, double del
 		TilingComponent* pTiling = (TilingComponent*)pTilingComp;
 		axis = pTiling->GetAxis();
 		offset = pTiling->GetOffset();
-	}
-
-	// Update uniforms
-	TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(entityID, "transform");
-
-	// Move light
-	if (pLightComp)
-	{
-		// Setting object always behind light
-		LightComponent* pLight = (LightComponent*)pLightComp;
-		pLight->SetPosition(vec4(pTransform->GetPosition(), 1.0) - pLight->GetDirection());
 	}
 
 	pTransform->SetFramePosition();
@@ -246,6 +230,7 @@ void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, double del
 				sMesh* currMesh = pModel->GetCurrentMesh();
 				Draw(pModel->isWireframe,
 					pModel->doNotLight,
+					pModel->useColorTexture,
 					currMesh->VAO_ID,
 					currMesh->numberOfIndices);
 
@@ -264,6 +249,8 @@ void Renderer::RenderScene(double deltaTime)
 	{
 		return;
 	}
+
+	m_pLightSystem->Update(deltaTime);
 
 	UpdateCamera();
 
@@ -286,11 +273,18 @@ void Renderer::UpdateTransform(glm::mat4 matModel)
 
 void Renderer::Draw(bool isWireFrame,
 					bool doNotLight,
+					bool useColorTexture,
 					int VAO_ID, 
 					int numberOfIndices)
 {
 	m_pShaderProgram->IsWireframe(isWireFrame);
 	m_pShaderProgram->SetUniformFloat("doNotLight", doNotLight);
+	m_pShaderProgram->SetUniformFloat("bUseColorTexture", useColorTexture);
+
+	if (useColorTexture == false)
+	{
+		printf("");
+	}
 
 	glBindVertexArray(VAO_ID); //  enable VAO (and everything else)
 	glDrawElements(GL_TRIANGLES,

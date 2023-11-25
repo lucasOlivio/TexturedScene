@@ -14,6 +14,7 @@ public:
 	LightSystem(iShaderInfo* pShaderInfo, SceneView* pSceneView);
 	~LightSystem();
 
-	// Called each frame
 	bool Initialize(int shaderID);
+
+	void Update(double deltatime);
 };

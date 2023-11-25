@@ -15,7 +15,7 @@ public:
 	bool LoadMaterial(SceneView* pScene, MaterialComponent* pMaterial);
 
 	void BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial);
-	void UnbindMaterials();
+	void UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram);
 private:
 	cBasicTextureManager* m_pTextureManager;
 

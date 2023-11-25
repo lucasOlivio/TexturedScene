@@ -21,6 +21,7 @@ public:
 
 	// Where we really start/destroy everything that could go wrong
 	bool Initialize(std::string baseAudiosPath, SceneView* pSceneView);
+	bool LoadScene();
 	bool LoadOcclusions();
 	bool LoadChannels();
 	bool LoadAudios();

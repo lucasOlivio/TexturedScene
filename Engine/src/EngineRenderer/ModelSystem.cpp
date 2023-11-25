@@ -52,6 +52,7 @@ bool ModelSystem::LoadModels(int shaderID)
 
 bool ModelSystem::LoadModels(std::string basePath, int shaderID)
 {
+    printf("Loading models...\n");
     this->m_pVAOManager->SetBasePath(basePath);
 
     bool isLoaded = this->LoadModels(shaderID);

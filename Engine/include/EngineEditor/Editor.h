@@ -13,6 +13,37 @@
 // and handling keycallbacks from glfw
 class Editor : public iListener
 {
+public:
+	// ctors & dtors
+	Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow);
+	~Editor();
+
+	bool LoadScene();
+	void Update(double deltaTime);
+
+	// Draw selected entity UI info
+	void RedrawEntityUI();
+	void DrawSelectedEntity();
+
+	// On key callback we manage entities on the scene accordingly
+	virtual void Notify(std::string eventName, iEvent* pEvent);
+
+	bool IsRunning();
+	void SetRunning(bool isRunning);
+
+	void ChangeSelected(int& selected, int orientation, int count);
+	void ChangeSelectedEntity(int orientation);
+	void ChangeSelectedComponent(int orientation);
+	void ChangeSelectedParameter(int orientation);
+
+	void MouseActions();
+	// Actions to take based on key pressed
+	bool KeyActions(sKeyInfo keyInfo);
+	void MoveCamera(double deltaTime);
+
+	void ModifySelectedParameter(int axis, int orientation);
+	void SetParameterManually(int axis);
+
 private:
 	int m_selectedEntity;
 	int m_selectedComponent;
@@ -55,33 +86,4 @@ private:
 	void m_ModifySelected(std::vector<float>& value, int orientation, int axis);
 
 	void m_UpdateCamera(float xpos, float ypos);
-public:
-	// ctors & dtors
-	Editor(KeyEvent* pKeyEvent, SceneView* pSceneView, iSceneDirector* pSceneDirector, WindowSystem* pWindow);
-	~Editor();
-
-	void Update(double deltaTime);
-
-	// Draw selected entity UI info
-	void RedrawEntityUI();
-	void DrawSelectedEntity();
-
-	// On key callback we manage entities on the scene accordingly
-	virtual void Notify(std::string eventName, iEvent* pEvent);
-
-	bool IsRunning();
-	void SetRunning(bool isRunning);
-
-	void ChangeSelected(int& selected, int orientation, int count);
-	void ChangeSelectedEntity(int orientation);
-	void ChangeSelectedComponent(int orientation);
-	void ChangeSelectedParameter(int orientation);
-
-	void MouseActions();
-	// Actions to take based on key pressed
-	bool KeyActions(sKeyInfo keyInfo);
-	void MoveCamera(double deltaTime);
-
-	void ModifySelectedParameter(int axis, int orientation);
-	void SetParameterManually(int axis);
 };

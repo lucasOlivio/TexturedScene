@@ -20,4 +20,6 @@ public:
 	void Initialize();
 
 	glm::mat4 GetViewMat();
+
+	glm::vec3 GetCameraPosition();
 };

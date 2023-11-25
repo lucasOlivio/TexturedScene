@@ -51,6 +51,16 @@ void TransformComponent::SetPosition(glm::vec3 value)
 	return;
 }
 
+void TransformComponent::SetDistanceToCamera(float value)
+{
+	m_distanceToCamera = value;
+}
+
+float TransformComponent::GetDistanceToCamera()
+{
+	return m_distanceToCamera;
+}
+
 void TransformComponent::ResetPosition()
 {
 	this->m_position = this->m_initialPosition;
@@ -179,4 +189,11 @@ void TransformComponent::SetParameter(sParameterInfo& parameterIn)
 	}
 
 	return;
+}
+
+bool SortTransformFromCamera(TransformComponent* pTransformA,
+							 TransformComponent* pTransformB)
+{
+	// Compare the values of the objects the pointers point to
+	return pTransformA->GetDistanceToCamera() < pTransformB->GetDistanceToCamera();
 }

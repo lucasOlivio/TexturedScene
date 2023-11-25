@@ -9,14 +9,6 @@
 
 class TransformComponent : public Component
 {
-private:
-	glm::quat m_qOrientation; // Rotation in quaternions
-	glm::vec3 m_initialPosition;
-	glm::vec3 m_oldPosition;
-	glm::vec3 m_framePosition;
-	glm::vec3 m_position;
-	float m_scale;
-
 public:
 	// Convert orientation from degrees angles to quaternions
 	void SetOrientation(glm::vec3 value);
@@ -30,6 +22,9 @@ public:
 	void SetFramePosition();
 	// This will set the initial position
 	void SetPosition(glm::vec3 value);
+
+	void SetDistanceToCamera(float value);
+	float GetDistanceToCamera();
 
 	// This will reset to the initial position
 	void ResetPosition();
@@ -59,4 +54,19 @@ public:
 
 	virtual void GetInfo(sComponentInfo& compInfoOut);
 	virtual void SetParameter(sParameterInfo& parameterIn);
+
+private:
+	glm::quat m_qOrientation; // Rotation in quaternions
+	glm::vec3 m_initialPosition;
+	glm::vec3 m_oldPosition;
+	glm::vec3 m_framePosition;
+	glm::vec3 m_position;
+	float m_scale;
+
+	// Sorting entity in relation to camera
+	float m_distanceToCamera;
 };
+
+// Custom comparison function for sorting vector of transforms in relation to camera
+bool SortTransformFromCamera(TransformComponent* pTransformA,
+							 TransformComponent* pTransformB);

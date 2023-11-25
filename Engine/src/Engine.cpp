@@ -57,6 +57,9 @@ bool Engine::Initialize(const std::string& sceneName)
 		return true;
 	}
 
+	sceneFilePath = baseConfigsPath + sceneName + ".json";
+	windowName = sceneName;
+
 	// Events
 	m_pCollisionEvent = new CollisionEvent();
 	m_pKeyEvent = new KeyEvent();
@@ -64,28 +67,8 @@ bool Engine::Initialize(const std::string& sceneName)
 	GLFWWrapper::SetKeyEvent(m_pKeyEvent);
 	GLFWWrapper::SetMouseEvent(m_pMouseEvent);
 
-	printf("Initializing creation of scene '%s'\n", sceneName.c_str());
-
-	m_pScene = new Scene(m_pKeyEvent, m_pCollisionEvent);
-	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite("json");
-
-	// TODO: This should come from a config file
-	// Load all config variables 
-	sceneFilePath = baseConfigsPath + sceneName + ".json";
-	windowName = sceneName;
-
-	printf("Loading configs...\n");
-	// Load scene components and entities from database file
-	bool isSceneLoaded = pConfigrw->ReadScene(sceneFilePath, m_pScene);
-	if (!isSceneLoaded)
-	{
-		CheckEngineError("Scene loading");
-		return false;
-	}
-
-	delete pConfigrw; // Used only to load all configs
-
 	printf("Creating systems...\n");
+	m_pScene = new Scene(m_pKeyEvent, m_pCollisionEvent);
 	m_pShaderManager = new ShaderManager(baseShadersPath);
 	m_pRenderer = new Renderer();
 	m_pWindowSystem = new WindowSystem(m_pShaderManager);
@@ -99,11 +82,11 @@ bool Engine::Initialize(const std::string& sceneName)
 	// Initializes all systems
 
 	bool isWSInitialized = m_pWindowSystem->Initialize(windowWidth,
-		windowHeight,
-		windowName,
-		GLFWWrapper::KeyCallback,
-		GLFWWrapper::MousePressCallback,
-		GLFWWrapper::MousePosCallback);
+													   windowHeight,
+													   windowName,
+													   GLFWWrapper::KeyCallback,
+													   GLFWWrapper::MousePressCallback,
+													   GLFWWrapper::MousePosCallback);
 	if (!isWSInitialized)
 	{
 		CheckEngineError("initializing Window system");
@@ -121,10 +104,10 @@ bool Engine::Initialize(const std::string& sceneName)
 	m_currShaderID = m_pShaderManager->GetIDFromShaderProgramName(shaderProgramName);
 
 	bool isERInitialized = m_pRenderer->Initialize(baseModelPath,
-														 baseTexturesPath,
-														 m_pShaderManager,
-														 m_currShaderID,
-														 m_pScene);
+												   baseTexturesPath,
+												   m_pShaderManager,
+												   m_currShaderID,
+												   m_pScene);
 	if (!isERInitialized)
 	{
 		CheckEngineError("Engine renderer initialization");
@@ -135,6 +118,12 @@ bool Engine::Initialize(const std::string& sceneName)
 	if (!isMediaInit)
 	{
 		CheckEngineError("Engine media player initialization");
+		return false;
+	}
+
+	bool sceneLoaded = LoadScene();
+	if (!sceneLoaded)
+	{
 		return false;
 	}
 
@@ -267,6 +256,16 @@ void Engine::Exit()
 	return;
 }
 
+void Engine::Exit(std::string errorMsg)
+{
+	Exit();
+
+	CheckEngineError(errorMsg.c_str());
+	exit(EXIT_FAILURE);
+
+	return;
+}
+
 GLFWwindow* Engine::GetWindow()
 {
 	return m_pWindowSystem->GetWindow();
@@ -349,33 +348,43 @@ void Engine::SaveScene()
 
 bool Engine::LoadScene(std::string filePath)
 {
+	m_pShaderManager->UseShaderProgram(m_currShaderID);
+
 	m_pScene->Clear();
 
-	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite(filePath);
+	iConfigReadWrite* pConfigrw = ConfigReadWriteFactory::CreateConfigReadWrite("json");
 
-	bool isSceneLoaded = pConfigrw->ReadScene(filePath, m_pScene);
-	if (!isSceneLoaded)
+	bool isLoaded = pConfigrw->ReadScene(filePath, m_pScene);
+	if (!isLoaded)
 	{
-		CheckEngineError("Scene loading from file");
-		Exit();
-
+		Exit("Scene loading error\n\n");
 		return false;
 	}
 
 	delete pConfigrw; // Used only to load configs
 
-	bool isLoaded = m_pRenderer->LoadScene(baseModelPath);
-	if (isLoaded)
+	isLoaded = m_pRenderer->LoadScene(baseModelPath);
+	if (!isLoaded)
 	{
-		return true;
+		Exit("Renderer loading error\n\n");
+		return false;
 	}
 
-	CheckEngineError("Scene loading error\n\n");
-	Exit();
-	system("pause");
-	exit(EXIT_FAILURE);
+	isLoaded = m_pEditor->LoadScene();
+	if (!isLoaded)
+	{
+		Exit("Editor loading error\n\n");
+		return false;
+	}
 
-	return false;
+	isLoaded = m_pMediaPlayer->LoadScene();
+	if (!isLoaded)
+	{
+		Exit("Media loading error\n\n");
+		return false;
+	}
+
+	return true;
 }
 
 bool Engine::LoadScene()

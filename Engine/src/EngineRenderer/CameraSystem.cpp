@@ -35,3 +35,8 @@ glm::mat4 CameraSystem::GetViewMat()
                   cameraUpVector);
 }
 
+glm::vec3 CameraSystem::GetCameraPosition()
+{
+    return m_pTransform->GetPosition();
+}
+

@@ -77,7 +77,7 @@ bool AudioManager::Initialize(int maxChannels)
 	// Initializes FMOD system and creates #channels in vector
 	if (this->m_isInitialized)
 	{
-		return false;
+		return true;
 	}
 
 	this->m_maxChannels = maxChannels;

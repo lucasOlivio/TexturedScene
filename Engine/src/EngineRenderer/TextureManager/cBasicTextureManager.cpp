@@ -21,8 +21,8 @@ cBasicTextureManager::~cBasicTextureManager()
 	}
 }
 
-void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProgram, std::string textureName, 
-									   eTextureType textureType, float ratio)
+void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProgram, std::string textureName,
+	eTextureType textureType, float ratio)
 {
 	int unitId = GL_TEXTURE0;
 	GLuint textureId = GetTextureIDFromName(textureName);
@@ -44,7 +44,11 @@ void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProg
 		glBindTexture(GL_TEXTURE_2D, textureId);
 	}
 
-	glUniform1i(pSampler->samplerToggleUL, true);
+	// Color textures are the only one been setted by the renderer now, on Draw function
+	if (textureType != eTextureType::COLOR)
+	{
+		glUniform1i(pSampler->samplerToggleUL, true);
+	}
 	glUniform1i(pSampler->samplerUL, samplerId);
 	glUniform1f(pSampler->samplerRatioUL, ratio);
 
@@ -168,6 +172,12 @@ sSamplerInfo* cBasicTextureManager::GetSamplerInfo(ShaderManager::ShaderProgram*
 		samplerName = "normalTexture";
 		samplerRatioName = "";
 		samplerToggle = "bUseNormalTexture";
+	}
+	else if (textureTypeIn == eTextureType::SPECULAR)
+	{
+		samplerName = "specularTexture";
+		samplerRatioName = "";
+		samplerToggle = "bUseSpecularTexture";
 	}
 	else if (textureTypeIn == eTextureType::DISCARD)
 	{

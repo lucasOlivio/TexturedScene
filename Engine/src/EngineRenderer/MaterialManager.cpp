@@ -55,6 +55,18 @@ bool MaterialManager::LoadMaterial(SceneView* pScene, MaterialComponent* pMateri
 		pMaterial->texturesComponents.push_back(pTexture);
 	}
 
+	// Load specular texture
+	if (pMaterial->useSpecularTexture)
+	{
+		TextureComponent* pTexture = m_LoadTexture(pScene, pMaterial->specularTexture);
+		if (pTexture == nullptr)
+		{
+			return false;
+		}
+
+		pMaterial->texturesComponents.push_back(pTexture);
+	}
+
 	// Load cube texture
 	if (pMaterial->useCubeTexture)
 	{
@@ -74,6 +86,8 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 {
 	std::vector<TextureComponent*> vecTexturesComp = pMaterial->texturesComponents;
 
+	pShaderProgram->SetUniformFloat("alphaValue", pMaterial->alphaValue);
+
 	// Bind color textures
 	for (int i = 0; i < pMaterial->colorTextures.size(); i++)
 	{
@@ -81,8 +95,6 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 									   vecTexturesComp[i]->fileName, 
 									   vecTexturesComp[i]->textureType, 
 									   pMaterial->colorTexturesRatios[i]);
-
-		pShaderProgram->SetUniformFloat("alphaValue", pMaterial->alphaValue);
 	}
 
 	// TODO: Remove names dependency, now have to be same name tag and file name to work
@@ -97,11 +109,20 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 	}
 
 	// Bind normal textures
-	if (pMaterial->useHeightMap)
+	if (pMaterial->useNormalTexture)
 	{
 		m_pTextureManager->BindTexture(pShaderProgram,
 			pMaterial->normalTexture,
 			eTextureType::NORMAL,
+			0);
+	}
+
+	// Bind specular textures
+	if (pMaterial->useSpecularTexture)
+	{
+		m_pTextureManager->BindTexture(pShaderProgram,
+			pMaterial->specularTexture,
+			eTextureType::SPECULAR,
 			0);
 	}
 
@@ -115,9 +136,10 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 	}
 }
 
-void MaterialManager::UnbindMaterials()
+void MaterialManager::UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram)
 {
 	m_pTextureManager->ResetSamplers();
+	pShaderProgram->SetUniformFloat("alphaValue", 1.0f);
 }
 
 TextureComponent* MaterialManager::m_LoadTexture(SceneView* pScene, std::string textureName)

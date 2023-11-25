@@ -13,6 +13,8 @@ void MaterialComponent::GetInfo(sComponentInfo& compInfoOut)
     AddCompParInfo("heightScale", "float", heightScale, compInfoOut);
     AddCompParInfo("useNormalTexture", "bool", useNormalTexture, compInfoOut);
     AddCompParInfo("normalTexture", "string", normalTexture, compInfoOut);
+    AddCompParInfo("useSpecularTexture", "bool", useSpecularTexture, compInfoOut);
+    AddCompParInfo("specularTexture", "string", specularTexture, compInfoOut);
     AddCompParInfo("useCubeTexture", "bool", useCubeTexture, compInfoOut);
     AddCompParInfo("cubeTexture", "string", cubeTexture, compInfoOut);
     AddCompParInfo("alphaValue", "float", alphaValue, compInfoOut);
@@ -43,6 +45,12 @@ void MaterialComponent::SetParameter(sParameterInfo& parameterIn)
     }
     else if (parameterIn.parameterName == "normalTexture") {
         normalTexture = parameterIn.parameterStrValue;
+    }
+    else if (parameterIn.parameterName == "useSpecularTexture") {
+        useSpecularTexture = parameterIn.parameterBoolValue;
+    }
+    else if (parameterIn.parameterName == "specularTexture") {
+        specularTexture = parameterIn.parameterStrValue;
     }
     else if (parameterIn.parameterName == "useCubeTexture") {
         useCubeTexture = parameterIn.parameterBoolValue;
