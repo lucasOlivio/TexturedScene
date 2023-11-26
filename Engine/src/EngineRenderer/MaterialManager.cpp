@@ -84,6 +84,13 @@ bool MaterialManager::LoadMaterial(SceneView* pScene, MaterialComponent* pMateri
 
 void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial)
 {
+	if (pMaterial->materialName == m_currMaterial)
+	{
+		return;
+	}
+
+	UnbindMaterials(pShaderProgram);
+	m_currMaterial = pMaterial->materialName;
 	std::vector<TextureComponent*> vecTexturesComp = pMaterial->texturesComponents;
 
 	pShaderProgram->SetUniformFloat("alphaValue", pMaterial->alphaValue);
@@ -97,7 +104,7 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 									   pMaterial->colorTexturesRatios[i]);
 	}
 
-	// TODO: Remove names dependency, now have to be same name tag and file name to work
+	// TODO: Remove repetition, all could be in a vector or map
 	// Bind heightmap textures
 	if (pMaterial->useHeightMap)
 	{

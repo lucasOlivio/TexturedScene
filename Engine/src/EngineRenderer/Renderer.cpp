@@ -153,12 +153,6 @@ void Renderer::RenderAllModels(double deltaTime)
 		}
 
 		RenderModel(entityID, pModel, pTransform, deltaTime);
-
-		// Unbind for the next model
-		if (pMaterialComp)
-		{
-			m_pMaterialManager->UnbindMaterials(m_pShaderProgram);
-		}
 	}
 
 	// Render all transparent models 
@@ -173,9 +167,6 @@ void Renderer::RenderAllModels(double deltaTime)
 		m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
 
 		RenderModel(entityID, pModel, pTransform, deltaTime);
-
-		// Unbind for the next model
-		m_pMaterialManager->UnbindMaterials(m_pShaderProgram);
 	}
 	vecTransparentEntities.clear();
 }

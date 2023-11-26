@@ -18,6 +18,8 @@ public:
 	void UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram);
 private:
 	cBasicTextureManager* m_pTextureManager;
+	// Textures and variables in the uniforms and units at the moment
+	std::string m_currMaterial;
 
 	// Load bitmap texture from file using texture manager
 	TextureComponent* m_LoadTexture(SceneView* pScene, std::string textureName);

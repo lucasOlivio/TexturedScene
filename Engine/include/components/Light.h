@@ -6,17 +6,6 @@
 
 class LightComponent : public Component
 {
-private:
-	std::string m_ulBasePath;
-
-	// Parameters uniform locations
-	GLint m_position_UL;
-	GLint m_diffuse_UL;
-	GLint m_specular_UL;
-	GLint m_atten_UL;
-	GLint m_direction_UL;
-	GLint m_params_UL;
-	GLint m_status_UL;
 public:
 	enum LIGHT_TYPE {
 		POINT,
@@ -64,4 +53,16 @@ public:
 	glm::vec4 direction; // Spot, directional lights
 	glm::vec4 params;	 // x = Light::LIGHT_TYPE, y = inner angle, z = outer angle, w = TBD
 	bool status;	     // x = 0 for off, 1 for on
+
+private:
+	std::string m_ulBasePath;
+
+	// Parameters uniform locations
+	GLint m_position_UL;
+	GLint m_diffuse_UL;
+	GLint m_specular_UL;
+	GLint m_atten_UL;
+	GLint m_direction_UL;
+	GLint m_params_UL;
+	GLint m_status_UL;
 };

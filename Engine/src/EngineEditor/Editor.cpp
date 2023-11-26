@@ -9,7 +9,7 @@
 #include <glm/gtx/string_cast.hpp>
 #include <iostream>
 
-float cameraSpeed      = 750;
+float cameraSpeed      = 1000;
 double changeStepFloat = 0.01;
 int changeStepInt      = 1;
 
