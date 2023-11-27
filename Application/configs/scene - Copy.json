@@ -45,15 +45,15 @@
         },
         "transform": {
             "position": [
-                2122.690185546875,
-                415.49609375,
-                3954.23291015625
+                2693.060302734375,
+                229.07891845703125,
+                1294.751220703125
             ],
             "scale": 1.0,
             "orientation": [
-                -71.05245208740234,
-                -32.136688232421875,
-                -0.00026000000070780516
+                -87.74815368652344,
+                4.910470008850098,
+                -0.00033000000985339284
             ]
         }
     },
@@ -84,7 +84,7 @@
     },
     {
         "material": {
-            "materialName": "matcubesunnyday",
+            "materialName": "matcubetext",
             "colorTextures": [],
             "colorTexturesRatios": [
                 0.0,
@@ -96,11 +96,14 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": false,
+            "specularTexture": "",
             "useCubeTexture": true,
-            "cubeTexture": "textcubesunnyday"
+            "cubeTexture": "textcube",
+            "alphaValue": 1.0
         },
         "tag": {
-            "name": "matcubesunnyday"
+            "name": "matcubetext"
         },
         "transform": {
             "position": [
@@ -132,8 +135,11 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "13457_Pile_of_Treasure_doubloon_specular.bmp",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 1.0
         },
         "tag": {
             "name": "Treasure1"
@@ -168,11 +174,133 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "bright_full_spec.bmp",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 1.0
         },
         "tag": {
             "name": "Treasurepile"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "matruby",
+            "colorTextures": [
+                "ruby.bmp"
+            ],
+            "colorTexturesRatios": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": "",
+            "heightScale": 3.0,
+            "useNormalTexture": false,
+            "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "full_spec.bmp",
+            "useCubeTexture": false,
+            "cubeTexture": "",
+            "alphaValue": 0.6499999761581421
+        },
+        "tag": {
+            "name": "matruby"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp",
+                "mossy_rock_diff_4k.bmp"
+            ],
+            "colorTexturesRatios": [
+                0.6000000238418579,
+                0.4000000059604645,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": "",
+            "heightScale": 3.0,
+            "useNormalTexture": false,
+            "normalTexture": "",
+            "useSpecularTexture": false,
+            "specularTexture": "",
+            "useCubeTexture": false,
+            "cubeTexture": "",
+            "alphaValue": 1.0
+        },
+        "tag": {
+            "name": "Dungeons_2_Texture_01_A_Medium_mossy"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "Dungeons_2_Texture_01_A_Super_mossy",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp",
+                "mossy_rock_diff_4k.bmp"
+            ],
+            "colorTexturesRatios": [
+                0.4000000059604645,
+                0.6000000238418579,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": "",
+            "heightScale": 3.0,
+            "useNormalTexture": false,
+            "normalTexture": "",
+            "useSpecularTexture": false,
+            "specularTexture": "",
+            "useCubeTexture": false,
+            "cubeTexture": "",
+            "alphaValue": 1.0
+        },
+        "tag": {
+            "name": "Dungeons_2_Texture_01_A_Super_mossy"
         },
         "transform": {
             "position": [
@@ -205,11 +333,53 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": false,
+            "specularTexture": "",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 1.0
         },
         "tag": {
             "name": "Dungeons_2_Texture_01_A"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "matcrystal",
+            "colorTextures": [
+                "Dungeons_2_Texture_01_A.bmp"
+            ],
+            "colorTexturesRatios": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": "",
+            "heightScale": 3.0,
+            "useNormalTexture": false,
+            "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "full_spec.bmp",
+            "useCubeTexture": false,
+            "cubeTexture": "",
+            "alphaValue": 0.6000000238418579
+        },
+        "tag": {
+            "name": "matcrystal"
         },
         "transform": {
             "position": [
@@ -242,8 +412,11 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "full_spec.bmp",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 1.0
         },
         "tag": {
             "name": "Dungeon_rust_metal"
@@ -279,8 +452,11 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": false,
+            "specularTexture": "",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 1.0
         },
         "tag": {
             "name": "Texture_01_A"
@@ -315,8 +491,11 @@
             "heightScale": 3.0,
             "useNormalTexture": false,
             "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "full_spec.bmp",
             "useCubeTexture": false,
-            "cubeTexture": ""
+            "cubeTexture": "",
+            "alphaValue": 0.699999988079071
         },
         "tag": {
             "name": "matwater"
@@ -429,19 +608,88 @@
     },
     {
         "tag": {
-            "name": "textcubesunnyday"
+            "name": "textcube"
         },
         "texture": {
-            "fileName": "textcubesunnyday",
+            "fileName": "textcube",
             "textureType": 20,
             "vecTextures": [
-                "cubesunnyday/TropicalSunnyDayLeft2048.bmp",
-                "cubesunnyday/TropicalSunnyDayRight2048.bmp",
-                "cubesunnyday/TropicalSunnyDayUp2048.bmp",
-                "cubesunnyday/TropicalSunnyDayDown2048.bmp",
-                "cubesunnyday/TropicalSunnyDayFront2048.bmp",
-                "cubesunnyday/TropicalSunnyDayBack2048.bmp"
+                "cubetexture/SpaceBox_left2_negX.bmp",
+                "cubetexture/SpaceBox_right1_posX.bmp",
+                "cubetexture/SpaceBox_top3_posY.bmp",
+                "cubetexture/SpaceBox_bottom4_negY.bmp",
+                "cubetexture/SpaceBox_front5_posZ.bmp",
+                "cubetexture/SpaceBox_back6_negZ.bmp"
             ]
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "ruby.bmp"
+        },
+        "texture": {
+            "fileName": "ruby.bmp",
+            "textureType": 0,
+            "vecTextures": []
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "bright_full_spec.bmp"
+        },
+        "texture": {
+            "fileName": "bright_full_spec.bmp",
+            "textureType": 24,
+            "vecTextures": []
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "full_spec.bmp"
+        },
+        "texture": {
+            "fileName": "full_spec.bmp",
+            "textureType": 24,
+            "vecTextures": []
         },
         "transform": {
             "position": [
@@ -486,6 +734,29 @@
         },
         "texture": {
             "fileName": "Dungeons_2_Texture_01_A.bmp",
+            "textureType": 0,
+            "vecTextures": []
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "13457_Pile_of_Treasure_doubloon_specular.bmp"
+        },
+        "texture": {
+            "fileName": "13457_Pile_of_Treasure_doubloon_specular.bmp",
             "textureType": 0,
             "vecTextures": []
         },
@@ -559,7 +830,8 @@
             "friendlyName": "floor01",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -601,7 +873,8 @@
             "friendlyName": "floor01",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -643,7 +916,8 @@
             "friendlyName": "floor02",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -685,7 +959,8 @@
             "friendlyName": "floor02",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -727,7 +1002,8 @@
             "friendlyName": "floor03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -769,7 +1045,8 @@
             "friendlyName": "floor03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -811,7 +1088,8 @@
             "friendlyName": "floor02",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -853,7 +1131,8 @@
             "friendlyName": "floor02",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -895,7 +1174,8 @@
             "friendlyName": "wall01",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -937,7 +1217,8 @@
             "friendlyName": "wall02",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -979,7 +1260,8 @@
             "friendlyName": "wall01",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1005,9 +1287,9 @@
             ],
             "scale": 1.0,
             "orientation": [
-                180.0,
+                -180.0,
                 -0.000009999999747378752,
-                180.0
+                -180.0
             ]
         }
     },
@@ -1021,7 +1303,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1063,7 +1346,8 @@
             "friendlyName": "archway",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1093,7 +1377,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1135,7 +1420,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1177,7 +1463,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1219,7 +1506,8 @@
             "friendlyName": "vine2",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1233,9 +1521,9 @@
             ],
             "scale": 115.0,
             "orientation": [
-                -180.0,
+                180.0,
                 -0.000009999999747378752,
-                -180.0
+                180.0
             ]
         }
     },
@@ -1249,7 +1537,8 @@
             "friendlyName": "vine2",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1279,7 +1568,8 @@
             "friendlyName": "floor10",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1321,7 +1611,8 @@
             "friendlyName": "floor10",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1363,7 +1654,8 @@
             "friendlyName": "floor10",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1405,7 +1697,8 @@
             "friendlyName": "floor10",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1447,7 +1740,8 @@
             "friendlyName": "archway",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1489,7 +1783,8 @@
             "friendlyName": "vine",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1531,7 +1826,8 @@
             "friendlyName": "wallwindow03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1573,7 +1869,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1615,7 +1912,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1645,7 +1943,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1675,7 +1974,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1705,7 +2005,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1747,7 +2048,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1777,7 +2079,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1819,7 +2122,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1849,7 +2153,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1879,7 +2184,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1921,7 +2227,8 @@
             "friendlyName": "torch",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1963,7 +2270,8 @@
             "friendlyName": "treasurepile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -1998,36 +2306,6 @@
     {
         "model": {
             "models": [
-                "props/SM_Prop_Anvil_01.ply"
-            ],
-            "collisionName": "",
-            "material": "Dungeon_rust_metal",
-            "friendlyName": "anvil",
-            "parentTagName": "",
-            "isWireframe": false,
-            "doNotLight": true,
-            "isActive": true
-        },
-        "tag": {
-            "name": "anvil"
-        },
-        "transform": {
-            "position": [
-                3786.0,
-                25.0,
-                -3318.0
-            ],
-            "scale": 2.0,
-            "orientation": [
-                0.0,
-                89.98021697998047,
-                0.0
-            ]
-        }
-    },
-    {
-        "model": {
-            "models": [
                 "floorwalls/SM_Env_Dwarf_Wall_03.ply"
             ],
             "collisionName": "",
@@ -2035,7 +2313,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2065,7 +2344,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2095,7 +2375,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2125,7 +2406,8 @@
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2151,11 +2433,12 @@
                 "floorwalls/SM_Env_Dwarf_Wall_Window_03.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
             "friendlyName": "wallwindow03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2193,11 +2476,12 @@
                 "floorwalls/SM_Env_Dwarf_Wall_03.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2235,11 +2519,12 @@
                 "floorwalls/SM_Env_Dwarf_Wall_03.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
             "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2277,11 +2562,12 @@
                 "props/SM_Prop_Dwarf_Torch_01.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
             "friendlyName": "waterpile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2319,11 +2605,12 @@
                 "props/SM_Prop_Dwarf_Torch_01.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
             "friendlyName": "waterpile",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2358,14 +2645,237 @@
     {
         "model": {
             "models": [
+                "props/water.ply"
+            ],
+            "collisionName": "",
+            "material": "matwater",
+            "friendlyName": "water",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "water"
+        },
+        "transform": {
+            "position": [
+                1610.0,
+                11.0,
+                4416.0
+            ],
+            "scale": 11.0,
+            "orientation": [
+                0.0,
+                -45.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "floorwalls/SM_Env_Dwarf_Floor_Corner_01.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "friendlyName": "floor01",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "cornerfloorwaterfallroom"
+        },
+        "transform": {
+            "position": [
+                2000.0,
+                0.0,
+                3500.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                89.98021697998047,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "floorwalls/SM_Env_Dwarf_Floor_Corner_01.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "friendlyName": "floor01",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "cornerfloorwaterfallroom"
+        },
+        "transform": {
+            "position": [
+                2500.0,
+                0.0,
+                4000.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                89.98021697998047,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "floorwalls/SM_Env_Dwarf_Floor_10.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "friendlyName": "floor10",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "floorwaterroom"
+        },
+        "tiling": {
+            "axis": [
+                4.0,
+                1.0,
+                4.0
+            ],
+            "offset": [
+                500.0,
+                0.0,
+                500.0
+            ]
+        },
+        "transform": {
+            "position": [
+                1000.0,
+                -120.0,
+                3000.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "floorwalls/SM_Env_Dwarf_Wall_03.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "friendlyName": "wall03",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "wall03verticalwaterroom"
+        },
+        "tiling": {
+            "axis": [
+                4.0,
+                1.0,
+                1.0
+            ],
+            "offset": [
+                500.0,
+                0.0,
+                -2000.0
+            ]
+        },
+        "transform": {
+            "position": [
+                1000.0,
+                -500.0,
+                5000.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "floorwalls/SM_Env_Dwarf_Wall_03.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeons_2_Texture_01_A",
+            "friendlyName": "wall03",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "wall03verticalwaterroom"
+        },
+        "tiling": {
+            "axis": [
+                4.0,
+                1.0,
+                1.0
+            ],
+            "offset": [
+                500.0,
+                0.0,
+                -2000.0
+            ]
+        },
+        "transform": {
+            "position": [
+                1000.0,
+                -500.0,
+                3000.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
                 "sphereskybox.ply"
             ],
             "collisionName": "",
-            "material": "matcubesunnyday",
+            "material": "matcubetext",
             "friendlyName": "sphere",
             "parentTagName": "",
             "isWireframe": false,
             "doNotLight": true,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
@@ -2388,56 +2898,436 @@
     {
         "model": {
             "models": [
-                "props/water.ply"
+                "floorwalls/SM_Env_Dwarf_Wall_03.ply"
             ],
             "collisionName": "",
-            "material": "matwater",
-            "friendlyName": "water",
+            "material": "Dungeons_2_Texture_01_A",
+            "friendlyName": "wall03",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
-            "name": "water"
+            "name": "wall03verticalwaterroom"
+        },
+        "tiling": {
+            "axis": [
+                1.0,
+                1.0,
+                4.0
+            ],
+            "offset": [
+                500.0,
+                0.0,
+                500.0
+            ]
         },
         "transform": {
             "position": [
-                1325.0,
-                27.0,
-                4621.0
+                1000.0,
+                -500.0,
+                3500.0
             ],
-            "scale": 10.0,
+            "scale": 1.0,
             "orientation": [
                 0.0,
-                -45.0,
+                89.98021697998047,
                 0.0
             ]
         }
     },
     {
+        "light": {
+            "position": [
+                2500.0,
+                -128.0,
+                4000.0,
+                1.0
+            ],
+            "direction": [
+                61.0,
+                82.5,
+                -80.0,
+                1.0
+            ],
+            "positionOffset": [
+                61.0,
+                82.5,
+                -80.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.75,
+                0.800000011920929,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.009999999776482582,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
         "model": {
             "models": [
-                "floorwalls/SM_Env_Dwarf_Floor_Half_01.ply"
+                "props/SM_Prop_Crystal_Rock_A_01.ply"
             ],
             "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
-            "friendlyName": "floor01",
+            "material": "matcrystal",
+            "friendlyName": "crystal",
             "parentTagName": "",
             "isWireframe": false,
-            "doNotLight": true,
+            "doNotLight": false,
+            "useColorTexture": true,
             "isActive": true
         },
         "tag": {
-            "name": "halffloorwaterfallroom"
+            "name": "crystal"
         },
         "transform": {
             "position": [
-                2250.0,
-                0.0,
-                3000.0
+                2500.0,
+                -128.0,
+                4000.0
             ],
             "scale": 1.0,
+            "orientation": [
+                0.0,
+                89.98021697998047,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2015.0,
+                -125.0,
+                4430.0,
+                1.0
+            ],
+            "direction": [
+                65.0,
+                85.5,
+                -12.0,
+                1.0
+            ],
+            "positionOffset": [
+                65.0,
+                85.5,
+                -12.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.75,
+                0.800000011920929,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.009999999776482582,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/SM_Prop_Crystal_Rock_A_01.ply"
+            ],
+            "collisionName": "",
+            "material": "matcrystal",
+            "friendlyName": "crystal",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "crystal"
+        },
+        "transform": {
+            "position": [
+                2015.0,
+                -125.0,
+                4430.0
+            ],
+            "scale": 0.800000011920929,
+            "orientation": [
+                -0.0001500000071246177,
+                24.980180740356445,
+                -0.000009999999747378752
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                1725.0,
+                -150.0,
+                3570.0,
+                1.0
+            ],
+            "direction": [
+                106.0,
+                98.5,
+                36.0,
+                0.0
+            ],
+            "positionOffset": [
+                106.0,
+                98.5,
+                36.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.75,
+                0.800000011920929,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.009999999776482582,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/SM_Prop_Crystal_Rock_A_01.ply"
+            ],
+            "collisionName": "",
+            "material": "matcrystal",
+            "friendlyName": "crystal",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "crystal"
+        },
+        "transform": {
+            "position": [
+                1725.0,
+                -150.0,
+                3570.0
+            ],
+            "scale": 1.2999999523162842,
+            "orientation": [
+                -0.0001500000071246177,
+                11.980179786682129,
+                0.000009999999747378752
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3786.0,
+                25.0,
+                -3318.0,
+                1.0
+            ],
+            "direction": [
+                0.0,
+                148.5,
+                -181.0,
+                0.0
+            ],
+            "positionOffset": [
+                0.0,
+                148.5,
+                -181.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.03999999910593033,
+                0.000009999999747378752,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/SM_Prop_Anvil_01.ply"
+            ],
+            "collisionName": "",
+            "material": "Dungeon_rust_metal",
+            "friendlyName": "anvil",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "anvil"
+        },
+        "transform": {
+            "position": [
+                3786.0,
+                25.0,
+                -3318.0
+            ],
+            "scale": 2.0,
+            "orientation": [
+                0.0,
+                89.98021697998047,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3786.0,
+                25.0,
+                -3318.0,
+                1.0
+            ],
+            "direction": [
+                131.0,
+                148.5,
+                -180.0,
+                0.0
+            ],
+            "positionOffset": [
+                131.0,
+                148.5,
+                -180.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.03999999910593033,
+                0.000009999999747378752,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "anvillightback"
+        },
+        "transform": {
+            "position": [
+                3786.0,
+                25.0,
+                -3318.0
+            ],
+            "scale": 2.0,
             "orientation": [
                 0.0,
                 -0.0,
@@ -2446,28 +3336,1642 @@
         }
     },
     {
-        "model": {
-            "models": [
-                "floorwalls/SM_Env_Dwarf_Floor_Half_01.ply"
+        "light": {
+            "position": [
+                3786.0,
+                0.0,
+                -3318.0,
+                1.0
             ],
-            "collisionName": "",
-            "material": "Dungeons_2_Texture_01_A",
-            "friendlyName": "floor01",
-            "parentTagName": "",
-            "isWireframe": false,
-            "doNotLight": true,
-            "isActive": true
+            "direction": [
+                91.0,
+                267.5,
+                -87.0,
+                0.0
+            ],
+            "positionOffset": [
+                91.0,
+                267.5,
+                -87.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                0.8299999833106995,
+                0.8299999833106995,
+                0.8500000238418579,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.03999999910593033,
+                0.000009999999747378752,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
         },
         "tag": {
-            "name": "halffloorwaterfallroom"
+            "name": "anvillighttop"
         },
         "transform": {
             "position": [
-                2250.0,
+                3786.0,
                 0.0,
-                3000.0
+                -3318.0
             ],
-            "scale": 1.0,
+            "scale": 2.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3225.0,
+                288.0,
+                -2559.0,
+                1.0
+            ],
+            "direction": [
+                -34.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "positionOffset": [
+                -34.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                3225.0,
+                288.0,
+                -2559.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                4223.0,
+                288.0,
+                -2559.0,
+                1.0
+            ],
+            "direction": [
+                -4.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "positionOffset": [
+                -4.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                4223.0,
+                288.0,
+                -2559.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3723.0,
+                288.0,
+                -2559.0,
+                1.0
+            ],
+            "direction": [
+                -4.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "positionOffset": [
+                -4.0,
+                13.5,
+                -54.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                3723.0,
+                288.0,
+                -2559.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                4431.0,
+                288.0,
+                -4027.0,
+                1.0
+            ],
+            "direction": [
+                -30.0,
+                13.5,
+                6.0,
+                1.0
+            ],
+            "positionOffset": [
+                -30.0,
+                13.5,
+                6.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                4431.0,
+                288.0,
+                -4027.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                4433.0,
+                288.0,
+                -3025.0,
+                1.0
+            ],
+            "direction": [
+                -34.0,
+                13.5,
+                4.0,
+                1.0
+            ],
+            "positionOffset": [
+                -34.0,
+                13.5,
+                4.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                4433.0,
+                288.0,
+                -3025.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                4431.0,
+                288.0,
+                -3527.0,
+                1.0
+            ],
+            "direction": [
+                -24.0,
+                13.5,
+                -4.0,
+                1.0
+            ],
+            "positionOffset": [
+                -24.0,
+                13.5,
+                -4.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                4431.0,
+                288.0,
+                -3527.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2613.0,
+                288.0,
+                -3003.0,
+                1.0
+            ],
+            "direction": [
+                50.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "positionOffset": [
+                50.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                2613.0,
+                288.0,
+                -3003.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2613.0,
+                288.0,
+                -3503.0,
+                1.0
+            ],
+            "direction": [
+                48.0,
+                13.5,
+                34.0,
+                1.0
+            ],
+            "positionOffset": [
+                48.0,
+                13.5,
+                34.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                2613.0,
+                288.0,
+                -3503.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2609.0,
+                288.0,
+                -4001.0,
+                1.0
+            ],
+            "direction": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "positionOffset": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorchtreasureroom"
+        },
+        "transform": {
+            "position": [
+                2609.0,
+                288.0,
+                -4001.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3229.0,
+                326.0,
+                -4455.0,
+                1.0
+            ],
+            "direction": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "positionOffset": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.8500000238418579,
+                0.20000000298023224,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "treasurelight"
+        },
+        "transform": {
+            "position": [
+                3229.0,
+                326.0,
+                -4455.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3229.0,
+                250.0,
+                -4255.0,
+                1.0
+            ],
+            "direction": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "positionOffset": [
+                40.0,
+                13.5,
+                48.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.8500000238418579,
+                0.20000000298023224,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "treasurelight"
+        },
+        "transform": {
+            "position": [
+                3229.0,
+                250.0,
+                -4255.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                3786.0,
+                0.0,
+                -3318.0,
+                1.0
+            ],
+            "direction": [
+                97.0,
+                267.5,
+                -238.0,
+                0.0
+            ],
+            "positionOffset": [
+                97.0,
+                267.5,
+                -238.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                0.8299999833106995,
+                0.8299999833106995,
+                0.8500000238418579,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.03999999910593033,
+                0.000009999999747378752,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "anvillighttop"
+        },
+        "transform": {
+            "position": [
+                3786.0,
+                0.0,
+                -3318.0
+            ],
+            "scale": 2.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2723.0,
+                286.6999816894531,
+                4939.0,
+                1.0
+            ],
+            "direction": [
+                14.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "positionOffset": [
+                14.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                2723.0,
+                286.6999816894531,
+                4939.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                3499.0,
+                1.0
+            ],
+            "direction": [
+                69.0,
+                9.5,
+                9.0,
+                1.0
+            ],
+            "positionOffset": [
+                69.0,
+                9.5,
+                9.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                3499.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                2223.0,
+                286.6999816894531,
+                4939.0,
+                1.0
+            ],
+            "direction": [
+                39.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "positionOffset": [
+                39.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                2223.0,
+                286.6999816894531,
+                4939.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                1723.0,
+                286.6999816894531,
+                4939.0,
+                1.0
+            ],
+            "direction": [
+                39.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "positionOffset": [
+                39.0,
+                13.5,
+                -40.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                1723.0,
+                286.6999816894531,
+                4939.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                4499.0,
+                1.0
+            ],
+            "direction": [
+                64.0,
+                13.5,
+                0.0,
+                1.0
+            ],
+            "positionOffset": [
+                64.0,
+                13.5,
+                0.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                4499.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                3999.0,
+                1.0
+            ],
+            "direction": [
+                64.0,
+                13.5,
+                0.0,
+                1.0
+            ],
+            "positionOffset": [
+                64.0,
+                13.5,
+                0.0,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                1.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.004999999888241291,
+                0.00004999999873689376,
+                1.0
+            ],
+            "params": [
+                0.0,
+                1.0,
+                0.0,
+                1.0
+            ],
+            "status": true
+        },
+        "model": {
+            "models": [
+                "props/ruby.ply"
+            ],
+            "collisionName": "",
+            "material": "matruby",
+            "friendlyName": "ruby",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "rubytorch"
+        },
+        "transform": {
+            "position": [
+                1108.0,
+                286.6999816894531,
+                3999.0
+            ],
+            "scale": 21.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "direction": [
+                -1.0,
+                -1.0,
+                -0.5,
+                1.0
+            ],
+            "positionOffset": [
+                -1.0,
+                -1.0,
+                -0.5,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                0.4000000059604645,
+                0.4000000059604645,
+                0.4000000059604645,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "params": [
+                2.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "directionallight"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "direction": [
+                1.0,
+                1.0,
+                0.5,
+                1.0
+            ],
+            "positionOffset": [
+                1.0,
+                1.0,
+                0.5,
+                1.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "diffuse": [
+                0.4000000059604645,
+                0.4000000059604645,
+                0.4000000059604645,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "params": [
+                2.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "directionallight2"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.0,
             "orientation": [
                 0.0,
                 -0.0,
