@@ -20,6 +20,8 @@ public:
 	// Getters
 	glm::vec4 GetPosition();
 	glm::vec4 GetDirection();
+	glm::vec4 GetPositionOffset();
+	glm::vec4 GetDirectionOffset();
 	glm::vec4 GetDiffuse();
 	glm::vec4 GetSpecular();
 	glm::vec4 GetAtten();

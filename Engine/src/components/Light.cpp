@@ -81,6 +81,16 @@ glm::vec4 LightComponent::GetDirection()
 	return m_direction;
 }
 
+glm::vec4 LightComponent::GetPositionOffset()
+{
+	return m_positionOffset;
+}
+
+glm::vec4 LightComponent::GetDirectionOffset()
+{
+	return m_directionOffset;
+}
+
 glm::vec4 LightComponent::GetParams()
 {
 	return m_params;
@@ -226,7 +236,7 @@ void LightComponent::SetParameter(sParameterInfo& parameterIn)
 
 void LightComponent::m_UpdatePositionUL()
 {
-	glm::vec4 newPosition = m_position + m_positionOffset;
+	glm::vec4 newPosition = m_position;
 	glUniform4f(m_position_UL, newPosition.x,
 		newPosition.y, newPosition.z,
 		newPosition.w);

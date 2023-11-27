@@ -1,6 +1,8 @@
 #include "EngineRenderer/LightSystem.h"
 #include "components/Light.h"
 #include "components/Transform.h"
+#include "common/utilsMat.h"
+#include <glm/gtc/quaternion.hpp>
 
 LightSystem::LightSystem(iShaderInfo* pShaderInfo, SceneView* pSceneView)
 {
@@ -40,12 +42,22 @@ void LightSystem::Update(double deltatime)
         TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(pLight->GetEntityID(),
             "transform");
 
+
+        glm::mat4 rotationMatrix = glm::mat4_cast(pTransform->GetQuatOrientation());
+        glm::vec3 rotatedOffset = glm::mat3(rotationMatrix) * pLight->GetPositionOffset();
+        glm::vec3 lightPosition = pTransform->GetPosition() + rotatedOffset;
+
+        if (pLight->GetParams().x == 1.0)
+        {
+            printf("");
+        }
+
         // Light direction temporary just relative to the angle the transform is facing
         // TODO: confirm this is the best way to do this and how it works properly
         glm::vec3 degrees = pTransform->GetOrientation();
-        glm::vec3 direction = degrees / 90.0f;
+        glm::vec3 direction = myutils::GetDirectionFromDegrees(degrees);
 
-        pLight->SetPosition(vec4(pTransform->GetPosition(), 1.0));
+        pLight->SetPosition(vec4(lightPosition, 1.0));
         pLight->SetDirection(vec4(direction, 1.0));
     }
 }
