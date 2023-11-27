@@ -27,14 +27,9 @@ void CameraComponent::SetParameter(sParameterInfo& parameterIn)
 
 glm::vec3 CameraComponent::GetCameraFront(const glm::vec3& cameraPosition, const glm::vec3& rotation)
 {
-	using namespace glm;
+	glm::vec3 front = myutils::GetDirectionFromDegrees(rotation);
 
-	vec3 front;
-	front.x = cos(radians(rotation.x)) * cos(radians(rotation.y));
-	front.y = sin(radians(rotation.y));
-	front.z = sin(radians(rotation.x)) * cos(radians(rotation.y));
-
-	return glm::normalize(front);
+	return front;
 }
 
 glm::vec3 CameraComponent::GetCameraTarget(const glm::vec3& cameraPosition, const glm::vec3& rotation)
