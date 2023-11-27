@@ -42,21 +42,21 @@ void main()
 	vertexWorldNormal.xyz = normalize(vertexWorldNormal.xyz);
 	vertexWorldNormal.w = 1.0f;
 
+	if (bUseHeightMapTexture)
+	{
+		// Greyscale (black and white) heightmap image
+		vec4 height = texture(heightMapTexture, UVFinal.st);
+
+		// Adjust the height of the normal relative axis from this vertice
+		vertexModelPosition += normalize(vertexWorldNormal * height) * heightScale;
+	}
+
 	if (bUseNormalTexture)
 	{
 		vec3 normalMapColor = texture(normalTexture, textureCoords).xyz;
 
 		// Convert normal map color from [0,1] to [-1,1] range
 		vertexWorldNormal = vec4(normalize(normalMapColor * 2.0 - 1.0), 1.0);
-	}
-
-	if (bUseHeightMapTexture)
-	{
-		// Greyscale (black and white) heightmap image
-		float height = texture(heightMapTexture, UVFinal.st).r;
-
-		// Adjust the height of the y axis from this vertice
-		vertexModelPosition += normalize(vertexWorldNormal * height) * heightScale;
 	}
 
 	mat4 matMVP = matProjection * matView * matModel;

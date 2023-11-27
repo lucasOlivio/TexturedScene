@@ -93,7 +93,7 @@ void ShaderManager::ShaderProgram::SetUniformVec4(const char* variableName, cons
 	glUniform4f(vecUL, value.x, value.y, value.z, value.w);
 }
 
-void ShaderManager::ShaderProgram::SetUniformVec2(const char* variableName, const glm::vec4& value)
+void ShaderManager::ShaderProgram::SetUniformVec2(const char* variableName, const glm::vec2& value)
 {
 	GLint vecUL = GetUniformIDFromName(variableName);
 	glUniform2f(vecUL, value.x, value.y);

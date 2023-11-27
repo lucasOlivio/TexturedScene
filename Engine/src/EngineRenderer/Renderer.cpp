@@ -148,7 +148,7 @@ void Renderer::RenderAllModels(double deltaTime)
 				continue;
 			}
 
-			m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
+			m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial, deltaTime);
 		}
 
 		RenderModel(entityID, pModel, pTransform, deltaTime);
@@ -163,7 +163,7 @@ void Renderer::RenderAllModels(double deltaTime)
 
 		// Bind material
 		MaterialComponent* pMaterial = m_pSceneView->GetComponentByTag<MaterialComponent>(pModel->material, "material");
-		m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial);
+		m_pMaterialManager->BindMaterial(m_pShaderProgram, pMaterial, deltaTime);
 
 		RenderModel(entityID, pModel, pTransform, deltaTime);
 	}

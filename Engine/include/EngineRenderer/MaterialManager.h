@@ -14,8 +14,11 @@ public:
 	// Load material textures
 	bool LoadMaterial(SceneView* pScene, MaterialComponent* pMaterial);
 
-	void BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial);
+	void BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial, double deltatime);
 	void UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram);
+
+	// TODO: Offset movement could be in an animation system that would also handle the models animations
+	void UpdateOffset(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial, double deltatime);
 private:
 	cBasicTextureManager* m_pTextureManager;
 	// Textures and variables in the uniforms and units at the moment

@@ -6,6 +6,7 @@ void MaterialComponent::GetInfo(sComponentInfo& compInfoOut)
     compInfoOut.componentParameters.clear();
 
     AddCompParInfo("materialName", "string", materialName, compInfoOut);
+    AddCompParInfo("offsetMove", "vec3", offsetMove, compInfoOut);
     AddCompParInfo("colorTextures", "vecStr", colorTextures, compInfoOut);
     AddCompParInfo("colorTexturesRatios", "vec3", colorTexturesRatios, compInfoOut);
     AddCompParInfo("useHeightMap", "bool", useHeightMap, compInfoOut);
@@ -24,6 +25,9 @@ void MaterialComponent::SetParameter(sParameterInfo& parameterIn)
 {
     if (parameterIn.parameterName == "materialName") {
         materialName = parameterIn.parameterStrValue;
+    }
+    else if (parameterIn.parameterName == "offsetMove") {
+        offsetMove = parameterIn.parameterVec3Value;
     }
     else if (parameterIn.parameterName == "colorTextures") {
         colorTextures = parameterIn.parameterVecStrValue;

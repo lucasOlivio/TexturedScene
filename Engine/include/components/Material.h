@@ -12,6 +12,9 @@ public:
 
 	std::string materialName;
 
+	glm::vec3 currOffset;
+	glm::vec3 offsetMove;
+
 	std::vector<std::string> colorTextures;
 	glm::vec3 colorTexturesRatios;
 

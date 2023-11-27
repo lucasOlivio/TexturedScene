@@ -27,9 +27,9 @@
                 0.0
             ],
             "diffuse": [
-                0.1,
-                0.1,
-                0.1,
+                0.10000000149011612,
+                0.10000000149011612,
+                0.10000000149011612,
                 1.0
             ],
             "specular": [
@@ -97,9 +97,9 @@
                 0.0
             ],
             "diffuse": [
-                0.1,
-                0.1,
-                0.1,
+                0.10000000149011612,
+                0.10000000149011612,
+                0.10000000149011612,
                 1.0
             ],
             "specular": [
@@ -174,15 +174,15 @@
         },
         "light": {
             "position": [
-                1448.18896484375,
-                211.9101104736328,
-                282.243896484375,
+                2760.567138671875,
+                329.14849853515625,
+                3889.398193359375,
                 1.0
             ],
             "direction": [
-                0.9998300075531006,
-                0.017309999093413353,
-                -0.005909999832510948,
+                0.07836999744176865,
+                -0.1986600011587143,
+                -0.9769300222396851,
                 1.0
             ],
             "distanceOffset": 175.0,
@@ -212,8 +212,8 @@
             ],
             "atten": [
                 0.0,
-                0.0001,
-                0.00001,
+                0.00009999999747378752,
+                0.000009999999747378752,
                 1.0
             ],
             "params": [
@@ -237,15 +237,15 @@
         },
         "transform": {
             "position": [
-                1448.18896484375,
-                211.9101104736328,
-                282.243896484375
+                2760.567138671875,
+                329.14849853515625,
+                3889.398193359375
             ],
             "scale": 1.0,
             "orientation": [
-                -0.3386000096797943,
-                0.9919700026512146,
-                0.005419999826699495
+                -85.41351318359375,
+                -11.458569526672363,
+                0.005429999902844429
             ]
         }
     },
@@ -277,6 +277,11 @@
     {
         "material": {
             "materialName": "matcubetext",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [],
             "colorTexturesRatios": [
                 0.0,
@@ -314,6 +319,11 @@
     {
         "material": {
             "materialName": "Treasure1",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "13457_Pile_of_Treasure_doubloon_diff.bmp"
             ],
@@ -353,6 +363,11 @@
     {
         "material": {
             "materialName": "Treasurepile",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Gold_Diffuse.bmp"
             ],
@@ -392,6 +407,11 @@
     {
         "material": {
             "materialName": "matruby",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "ruby.bmp"
             ],
@@ -431,6 +451,11 @@
     {
         "material": {
             "materialName": "Dungeons_2_Texture_01_A_Medium_mossy",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Dungeons_2_Texture_01_A.bmp",
                 "mossy_rock_diff_4k.bmp"
@@ -471,6 +496,11 @@
     {
         "material": {
             "materialName": "Dungeons_2_Texture_01_A_Super_mossy",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Dungeons_2_Texture_01_A.bmp",
                 "mossy_rock_diff_4k.bmp"
@@ -511,6 +541,11 @@
     {
         "material": {
             "materialName": "Dungeons_2_Texture_01_A",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Dungeons_2_Texture_01_A.bmp",
                 "mossy_rock_diff_4k.bmp"
@@ -551,6 +586,11 @@
     {
         "material": {
             "materialName": "matcrystal",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Dungeons_2_Texture_01_A.bmp"
             ],
@@ -590,6 +630,11 @@
     {
         "material": {
             "materialName": "Dungeon_rust_metal",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Dungeons_2_Texture_01_A.bmp",
                 "MetalCastRusted001_COL_1K.bmp"
@@ -630,6 +675,11 @@
     {
         "material": {
             "materialName": "Texture_01_A",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
             "colorTextures": [
                 "Texture_01_A.bmp",
                 "mossy_rock_diff_4k.bmp"
@@ -641,7 +691,7 @@
             ],
             "useHeightMap": false,
             "heightMapTexture": "",
-            "heightScale": 3.0,
+            "heightScale": 1.0,
             "useNormalTexture": false,
             "normalTexture": "",
             "useSpecularTexture": false,
@@ -670,6 +720,11 @@
     {
         "material": {
             "materialName": "matwater",
+            "offsetMove": [
+                0.05000000074505806,
+                0.05000000074505806,
+                0.0
+            ],
             "colorTextures": [
                 "Water_Texture_01.bmp"
             ],
@@ -678,11 +733,11 @@
                 0.0,
                 0.0
             ],
-            "useHeightMap": false,
-            "heightMapTexture": "",
-            "heightScale": 3.0,
-            "useNormalTexture": false,
-            "normalTexture": "",
+            "useHeightMap": true,
+            "heightMapTexture": "water_height.bmp",
+            "heightScale": 10.0,
+            "useNormalTexture": true,
+            "normalTexture": "water_normal.bmp",
             "useSpecularTexture": true,
             "specularTexture": "full_spec.bmp",
             "useCubeTexture": false,
@@ -691,6 +746,52 @@
         },
         "tag": {
             "name": "matwater"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "water_normal.bmp"
+        },
+        "texture": {
+            "fileName": "water_normal.bmp",
+            "textureType": 12,
+            "vecTextures": []
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "water_height.bmp"
+        },
+        "texture": {
+            "fileName": "water_height.bmp",
+            "textureType": 8,
+            "vecTextures": []
         },
         "transform": {
             "position": [
@@ -1479,9 +1580,9 @@
             ],
             "scale": 1.0,
             "orientation": [
-                -180.0,
+                180.0,
                 -0.000009999999747378752,
-                -180.0
+                180.0
             ]
         }
     },
@@ -1713,9 +1814,9 @@
             ],
             "scale": 115.0,
             "orientation": [
-                180.0,
+                -180.0,
                 -0.000009999999747378752,
-                180.0
+                -180.0
             ]
         }
     },
@@ -2837,7 +2938,7 @@
     {
         "model": {
             "models": [
-                "props/water.ply"
+                "props/plane.ply"
             ],
             "collisionName": "",
             "material": "matwater",
@@ -2854,7 +2955,7 @@
         "transform": {
             "position": [
                 3000.0,
-                11.0,
+                -115.0,
                 2911.0
             ],
             "scale": 11.0,
@@ -5054,6 +5155,37 @@
                 0.0,
                 -0.0,
                 0.0
+            ]
+        }
+    },
+    {
+        "model": {
+            "models": [
+                "props/plane.ply"
+            ],
+            "collisionName": "",
+            "material": "",
+            "friendlyName": "gate",
+            "parentTagName": "",
+            "isWireframe": false,
+            "doNotLight": false,
+            "useColorTexture": true,
+            "isActive": true
+        },
+        "tag": {
+            "name": "gatewaterroom"
+        },
+        "transform": {
+            "position": [
+                2584.0,
+                18.0,
+                2993.0
+            ],
+            "scale": 1.2999999523162842,
+            "orientation": [
+                90.0,
+                -0.0,
+                90.0
             ]
         }
     }

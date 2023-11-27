@@ -1,6 +1,7 @@
 #include "EngineRenderer/MaterialManager.h"
 #include "common/utils.h"
 #include "components/Texture.h"
+#include "common/constants.h"
 
 MaterialManager::MaterialManager(std::string baseTexturesPath)
 {
@@ -82,8 +83,12 @@ bool MaterialManager::LoadMaterial(SceneView* pScene, MaterialComponent* pMateri
 	return true;
 }
 
-void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial)
-{
+void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial,
+									double deltatime)
+{	
+	UpdateOffset(pShaderProgram, pMaterial, deltatime);
+
+	// Only change material if not already binded
 	if (pMaterial->materialName == m_currMaterial)
 	{
 		return;
@@ -147,6 +152,23 @@ void MaterialManager::UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgr
 {
 	m_pTextureManager->ResetSamplers();
 	pShaderProgram->SetUniformFloat("alphaValue", 1.0f);
+}
+
+void MaterialManager::UpdateOffset(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial, 
+								   double deltatime)
+{
+	pMaterial->currOffset += pMaterial->offsetMove * (float)deltatime;
+
+	// Clamp offset between 0 and 1
+	if (pMaterial->currOffset.x > 1)
+	{
+		pMaterial->currOffset.x = 0;
+	}
+	if (pMaterial->currOffset.y > 1)
+	{
+		pMaterial->currOffset.y = 0;
+	}
+	pShaderProgram->SetUniformVec2("UVOffset", pMaterial->currOffset);
 }
 
 TextureComponent* MaterialManager::m_LoadTexture(SceneView* pScene, std::string textureName)
