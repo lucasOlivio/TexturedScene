@@ -36,12 +36,6 @@ void main()
 
 	vec2 UVFinal = vTextureCoords.st + UVOffset.yx;
 
-	// Rotate the normal by the inverse transpose of the model matrix
-	// (so that it only is impacted by the rotation, not translation or scale)
-	vertexWorldNormal = matModel_IT * vec4(vNormal.xyz, 1.0f);
-	vertexWorldNormal.xyz = normalize(vertexWorldNormal.xyz);
-	vertexWorldNormal.w = 1.0f;
-
 	if (bUseHeightMapTexture)
 	{
 		// Greyscale (black and white) heightmap image
@@ -61,6 +55,12 @@ void main()
 
 	mat4 matMVP = matProjection * matView * matModel;
 	gl_Position = matMVP * vec4(vertexModelPosition.xyz, 1.0);
+
+	// Rotate the normal by the inverse transpose of the model matrix
+	// (so that it only is impacted by the rotation, not translation or scale)
+	vertexWorldNormal = matModel_IT * vec4(vNormal.xyz, 1.0f);
+	vertexWorldNormal.xyz = normalize(vertexWorldNormal.xyz);
+	vertexWorldNormal.w = 1.0f;
 	
 	vertexWorldPos = matModel * vec4(vertexModelPosition.xyz, 1.0f);
 	colour = vCol;
