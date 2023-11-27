@@ -31,8 +31,13 @@ uniform bool bUseCubeTexture;
 
 const int NUMBEROFTEXTURES = 4;
 
-uniform sampler2D textures[NUMBEROFTEXTURES];
-uniform float ratioTextures[NUMBEROFTEXTURES];
+uniform sampler2D colorTexture00;
+uniform sampler2D colorTexture01;
+uniform sampler2D colorTexture02;
+
+uniform float colorTextureRatio00;
+uniform float colorTextureRatio01;
+uniform float colorTextureRatio02;
 
 uniform sampler2D heightMapTexture;
 uniform sampler2D normalTexture;
@@ -69,7 +74,7 @@ uniform sLight theLights[NUMBEROFLIGHTS];  	// 70 uniforms
 vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal, 
                             vec3 vertexWorldPos, vec4 vertexSpecular );
 
-vec4 calculateColorTextures(vec2 UVFinal);
+vec3 calculateColorTextures(vec2 UVFinal);
 
 void main()
 {
@@ -83,18 +88,27 @@ void main()
 
 	// Use model vertex as default
 	vec4 vertexRGBA = colour;
+	vertexRGBA.a = alphaValue;
 	
 	if (bUseColorTexture)
 	{
-		vertexRGBA = calculateColorTextures(UVFinal);
+		vertexRGBA.rgb = calculateColorTextures(UVFinal);
 	}
 
 	if (bUseCubeTexture)
 	{
 		vec4 cubeSampleColour = texture(cubeTexture, vertexWorldNormal.xyz).rgba;
 		outputColour.rgb = cubeSampleColour.rgb;
-		outputColour.a = vertexRGBA.a;
 		return;
+	}
+
+	if (bUseDiscardTexture)
+	{
+		float discardValue = texture(discardTexture, UVFinal.st).r;
+		if (discardValue < 0.1)
+		{
+			discard;
+		}
 	}
 	
 	if ( doNotLight )
@@ -110,15 +124,6 @@ void main()
 		vertexSpecular = texture(specularTexture, UVFinal.st).rgba;
 	}
 
-	if (bUseDiscardTexture)
-	{
-		float discardValue = texture(discardTexture, UVFinal.st).r;
-		if (discardValue < 0.1)
-		{
-			discard;
-		}
-	}
-
 	// xyzw or rgba or stuw
 	// RGB is the specular highglight colour (usually white or the colour of the light)
 	// 4th value is the specular POWER (STARTS at 1, and goes to 1000000s)
@@ -128,9 +133,6 @@ void main()
 	// *************************************
 			
 	outputColour.rgb = vertexColourLit.rgb;
-	// TODO: gamma correction as curve
-	outputColour.rgb *= 1.35f;
-
 	outputColour.a = alphaValue;
 	return;
 }
@@ -277,13 +279,13 @@ vec4 calculateLightContrib( vec3 vertexMaterialColour, vec3 vertexNormal,
 	return finalObjectColour;
 }
 
-vec4 calculateColorTextures(vec2 UVFinal)
+vec3 calculateColorTextures(vec2 UVFinal)
 {
-	vec4 tempColor = vec4(0);
-	for (int i = 0; i <= NUMBEROFTEXTURES; i++)
-	{
-		tempColor += texture(textures[i], UVFinal.st).rgba * ratioTextures[i];
-	}
+	vec3 tempColor = vec3(0);
+	
+	tempColor = texture(colorTexture00, UVFinal.st).rgb * colorTextureRatio00
+				+ texture(colorTexture01, UVFinal.st).rgb * colorTextureRatio01
+				+ texture(colorTexture02, UVFinal.st).rgb * colorTextureRatio02;
 
 	return tempColor;
 }

@@ -29,8 +29,9 @@ void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProg
 
 	sSamplerInfo* pSampler;
 	pSampler = GetSamplerInfo(pShaderProgram, textureType);
+	int samplerId = GetSamplerId(textureType);
 
-	unitId += pSampler->samplerId;
+	unitId += samplerId;
 
 	glActiveTexture(unitId);
 
@@ -48,7 +49,7 @@ void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProg
 	{
 		glUniform1i(pSampler->samplerToggleUL, true);
 	}
-	glUniform1i(pSampler->samplerUL, pSampler->samplerId);
+	glUniform1i(pSampler->samplerUL, samplerId);
 	glUniform1f(pSampler->samplerRatioUL, ratio);
 
 	return;
@@ -150,8 +151,8 @@ sSamplerInfo* cBasicTextureManager::GetSamplerInfo(ShaderManager::ShaderProgram*
 	// Set names of ULs
 	if (textureTypeIn == eTextureType::COLOR)
 	{
-		samplerName = "textures[" + std::to_string(m_nextColorSamplerId) + "]";
-		samplerRatioName = "ratioTextures[" + std::to_string(m_nextColorSamplerId) + "]";
+		samplerName = "colorTexture0" + std::to_string(m_nextColorSamplerId);
+		samplerRatioName = "colorTextureRatio0" + std::to_string(m_nextColorSamplerId);
 		samplerToggle = "bUseColorTexture";
 	}
 	else if (textureTypeIn == eTextureType::HEIGHTMAP)
@@ -203,7 +204,6 @@ sSamplerInfo* cBasicTextureManager::GetSamplerInfo(ShaderManager::ShaderProgram*
 	pSamplerInfo->samplerUL = pShaderProgram->GetUniformIDFromName(samplerName.c_str());
 	pSamplerInfo->samplerRatioUL = pShaderProgram->GetUniformIDFromName(samplerRatioName.c_str());
 	pSamplerInfo->samplerToggleUL = pShaderProgram->GetUniformIDFromName(samplerToggle.c_str());
-	pSamplerInfo->samplerId = GetSamplerId(textureTypeIn);
 
 	m_mapSamplerNameToInfo[samplerName.c_str()] = pSamplerInfo;
 

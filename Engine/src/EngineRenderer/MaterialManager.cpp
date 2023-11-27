@@ -108,6 +108,7 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 	m_currMaterial = pMaterial->materialName;
 	std::vector<TextureComponent*> vecTexturesComp = pMaterial->texturesComponents;
 
+	// Update offset and alpha
 	UpdateOffset(pShaderProgram, pMaterial, deltatime);
 	pShaderProgram->SetUniformFloat("alphaValue", pMaterial->alphaValue);
 
@@ -171,7 +172,7 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 void MaterialManager::UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram)
 {
 	m_pTextureManager->ResetSamplers();
-	pShaderProgram->SetUniformVec2("UVOffset", glm::vec2(0));
+	pShaderProgram->SetUniformVec2("UVOffset", glm::vec2(0.0, 0.0));
 	pShaderProgram->SetUniformFloat("alphaValue", 1.0f);
 }
 
