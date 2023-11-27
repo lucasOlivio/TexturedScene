@@ -14,6 +14,7 @@ LightComponent::LightComponent()
 	m_atten = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);		// No attenuation
 	m_params = glm::vec4(0.0f, 1.0f, 1.0f, 1.0f);	    // LightComponent_TYPE POINT
 	m_status = false;
+	m_distanceOffset = 0.0f;
 
 	m_position_UL = -1;
 	m_diffuse_UL = -1;
@@ -99,6 +100,11 @@ glm::vec4 LightComponent::GetParams()
 bool LightComponent::GetStatus()
 {
 	return m_status;
+}
+
+float LightComponent::GetDistanceOffset()
+{
+	return m_distanceOffset;
 }
 
 // Setters
@@ -189,6 +195,7 @@ void LightComponent::GetInfo(sComponentInfo& compInfoOut)
 
 	AddCompParInfo("position", "vec4", m_position, compInfoOut);
 	AddCompParInfo("direction", "vec4", m_direction, compInfoOut);
+	AddCompParInfo("distanceOffset", "float", m_distanceOffset, compInfoOut);
 	AddCompParInfo("positionOffset", "vec4", m_positionOffset, compInfoOut);
 	AddCompParInfo("directionOffset", "vec4", m_directionOffset, compInfoOut);
 	AddCompParInfo("diffuse", "vec4", m_diffuse, compInfoOut);
@@ -207,6 +214,9 @@ void LightComponent::SetParameter(sParameterInfo& parameterIn)
 	}
 	else if (parameterIn.parameterName == "positionOffset") {
 		SetPositionOffset(parameterIn.parameterVec4Value);
+	}
+	else if (parameterIn.parameterName == "distanceOffset") {
+		m_distanceOffset = parameterIn.parameterFloatValue;
 	}
 	else if (parameterIn.parameterName == "direction") {
 		SetDirection(parameterIn.parameterVec4Value);
@@ -236,7 +246,8 @@ void LightComponent::SetParameter(sParameterInfo& parameterIn)
 
 void LightComponent::m_UpdatePositionUL()
 {
-	glm::vec4 newPosition = m_position;
+	glm::vec4 newPosition = GetPosition() + GetPositionOffset() + 
+						   (GetDirection() * GetDistanceOffset());
 	glUniform4f(m_position_UL, newPosition.x,
 		newPosition.y, newPosition.z,
 		newPosition.w);

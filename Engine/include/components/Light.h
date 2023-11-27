@@ -27,6 +27,7 @@ public:
 	glm::vec4 GetAtten();
 	glm::vec4 GetParams();
 	bool GetStatus();
+	float GetDistanceOffset();
 
 	// Setters
 	void SetPosition(glm::vec4 value);
@@ -54,6 +55,8 @@ private:
 	// Controls relative to transform component
 	glm::vec4 m_positionOffset;
 	glm::vec4 m_directionOffset;
+	// multiplied by the direction to put the light at N distance from the front of the object
+	float m_distanceOffset; 
 
 	// Light parameters
 	glm::vec4 m_position;
