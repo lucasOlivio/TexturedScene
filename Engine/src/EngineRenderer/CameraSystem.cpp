@@ -15,8 +15,8 @@ CameraSystem::~CameraSystem()
 
 void CameraSystem::Initialize()
 {
-    m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
-    m_pTransform = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
+    m_pCamera = m_pSceneView->GetComponentByTag<CameraComponent>("camera", "camera");
+    m_pTransform = m_pSceneView->GetComponentByTag<TransformComponent>("camera", "transform");
 }
 
 glm::mat4 CameraSystem::GetViewMat()

@@ -175,8 +175,8 @@ void Editor::DrawSelectedEntity()
 
 bool Editor::LoadScene()
 {
-	m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
-	m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
+	m_pTransformCamera = m_pSceneView->GetComponentByTag<TransformComponent>("camera", "transform");
+	m_pCamera = m_pSceneView->GetComponentByTag<CameraComponent>("camera", "camera");
 	m_vecCompInfos = m_pSceneView->GetComponentsInfo(m_selectedEntity);
 
 	return true;
@@ -215,8 +215,8 @@ void Editor::SetRunning(bool isRunning)
 {
 	if (isRunning)
 	{
-		m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
-		m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
+		m_pTransformCamera = m_pSceneView->GetComponentByTag<TransformComponent>("camera", "transform");
+		m_pCamera = m_pSceneView->GetComponentByTag<CameraComponent>("camera", "camera");
 	}
 
 	m_isRunning = isRunning;
@@ -274,8 +274,8 @@ bool Editor::KeyActions(sKeyInfo keyInfo)
 	{
 		m_pSceneDirector->LoadScene();
 
-		m_pTransformCamera = m_pSceneView->GetComponent<TransformComponent>(0, "transform");
-		m_pCamera = m_pSceneView->GetComponent<CameraComponent>(0, "camera");
+		m_pTransformCamera = m_pSceneView->GetComponentByTag<TransformComponent>("camera", "transform");
+		m_pCamera = m_pSceneView->GetComponentByTag<CameraComponent>("camera", "camera");
 		return true;
 	}
 

@@ -1,5 +1,143 @@
 [
     {
+        "light": {
+            "position": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "direction": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+            ],
+            "positionOffset": [
+                0.0,
+               0.0,
+                -0.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "diffuse": [
+                0.20,
+                0.20,
+                0.20,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "params": [
+                2.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "directionallight"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.0,
+            "orientation": [
+                -90.0,
+                -90.0,
+                -45.0
+            ]
+        }
+    },
+    {
+        "light": {
+            "position": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "direction": [
+                0.0,
+                -0.0,
+                0.0,
+                1.0
+            ],
+            "positionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "directionOffset": [
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
+            "diffuse": [
+                0.20,
+                0.20,
+                0.20,
+                1.0
+            ],
+            "specular": [
+                1.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "atten": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "params": [
+                2.0,
+                1.0,
+                1.0,
+                1.0
+            ],
+            "status": true
+        },
+        "tag": {
+            "name": "directionallight2"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 0.0,
+            "orientation": [
+                90.0,
+                90.0,
+                45.0
+            ]
+        }
+    },
+    {
         "camera": {
             "upVector": [
                 0.0,
@@ -41,7 +179,7 @@
             }
         },
         "tag": {
-            "name": "player"
+            "name": "camera"
         },
         "transform": {
             "position": [
@@ -2935,144 +3073,6 @@
                 0.0,
                 89.98021697998047,
                 0.0
-            ]
-        }
-    },
-    {
-        "light": {
-            "position": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "direction": [
-                0.0,
-                -0.0,
-                0.0,
-                1.0
-            ],
-            "positionOffset": [
-                0.0,
-               0.0,
-                -0.0,
-                0.0
-            ],
-            "directionOffset": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "diffuse": [
-                0.20,
-                0.20,
-                0.20,
-                1.0
-            ],
-            "specular": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "atten": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "params": [
-                2.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "status": true
-        },
-        "tag": {
-            "name": "directionallight"
-        },
-        "transform": {
-            "position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 0.0,
-            "orientation": [
-                -90.0,
-                -90.0,
-                -45.0
-            ]
-        }
-    },
-    {
-        "light": {
-            "position": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "direction": [
-                0.0,
-                -0.0,
-                0.0,
-                1.0
-            ],
-            "positionOffset": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "directionOffset": [
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "diffuse": [
-                0.20,
-                0.20,
-                0.20,
-                1.0
-            ],
-            "specular": [
-                1.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "atten": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "params": [
-                2.0,
-                1.0,
-                1.0,
-                1.0
-            ],
-            "status": true
-        },
-        "tag": {
-            "name": "directionallight2"
-        },
-        "transform": {
-            "position": [
-                0.0,
-                0.0,
-                0.0
-            ],
-            "scale": 0.0,
-            "orientation": [
-                90.0,
-                90.0,
-                45.0
             ]
         }
     },
