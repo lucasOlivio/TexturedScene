@@ -68,6 +68,18 @@ bool MaterialManager::LoadMaterial(SceneView* pScene, MaterialComponent* pMateri
 		pMaterial->texturesComponents.push_back(pTexture);
 	}
 
+	// Load discard texture
+	if (pMaterial->useDiscardTexture)
+	{
+		TextureComponent* pTexture = m_LoadTexture(pScene, pMaterial->discardTexture);
+		if (pTexture == nullptr)
+		{
+			return false;
+		}
+
+		pMaterial->texturesComponents.push_back(pTexture);
+	}
+
 	// Load cube texture
 	if (pMaterial->useCubeTexture)
 	{
@@ -86,8 +98,6 @@ bool MaterialManager::LoadMaterial(SceneView* pScene, MaterialComponent* pMateri
 void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial,
 									double deltatime)
 {	
-	UpdateOffset(pShaderProgram, pMaterial, deltatime);
-
 	// Only change material if not already binded
 	if (pMaterial->materialName == m_currMaterial)
 	{
@@ -98,6 +108,7 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 	m_currMaterial = pMaterial->materialName;
 	std::vector<TextureComponent*> vecTexturesComp = pMaterial->texturesComponents;
 
+	UpdateOffset(pShaderProgram, pMaterial, deltatime);
 	pShaderProgram->SetUniformFloat("alphaValue", pMaterial->alphaValue);
 
 	// Bind color textures
@@ -138,6 +149,15 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 			0);
 	}
 
+	// Bind discard textures
+	if (pMaterial->useDiscardTexture)
+	{
+		m_pTextureManager->BindTexture(pShaderProgram,
+			pMaterial->discardTexture,
+			eTextureType::DISCARD,
+			0);
+	}
+
 	// Bind cube textures
 	if (pMaterial->useCubeTexture)
 	{
@@ -151,12 +171,18 @@ void MaterialManager::BindMaterial(ShaderManager::ShaderProgram* pShaderProgram,
 void MaterialManager::UnbindMaterials(ShaderManager::ShaderProgram* pShaderProgram)
 {
 	m_pTextureManager->ResetSamplers();
+	pShaderProgram->SetUniformVec2("UVOffset", glm::vec2(0));
 	pShaderProgram->SetUniformFloat("alphaValue", 1.0f);
 }
 
 void MaterialManager::UpdateOffset(ShaderManager::ShaderProgram* pShaderProgram, MaterialComponent* pMaterial, 
 								   double deltatime)
 {
+	if (pMaterial->offsetMove == glm::vec3(0))
+	{
+		return;
+	}
+
 	pMaterial->currOffset += pMaterial->offsetMove * (float)deltatime;
 
 	// Clamp offset between 0 and 1

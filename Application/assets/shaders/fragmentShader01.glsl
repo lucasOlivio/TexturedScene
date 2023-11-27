@@ -110,6 +110,15 @@ void main()
 		vertexSpecular = texture(specularTexture, UVFinal.st).rgba;
 	}
 
+	if (bUseDiscardTexture)
+	{
+		float discardValue = texture(discardTexture, UVFinal.st).r;
+		if (discardValue < 0.1)
+		{
+			discard;
+		}
+	}
+
 	// xyzw or rgba or stuw
 	// RGB is the specular highglight colour (usually white or the colour of the light)
 	// 4th value is the specular POWER (STARTS at 1, and goes to 1000000s)

@@ -28,6 +28,9 @@ public:
 	bool useSpecularTexture;
 	std::string specularTexture;
 
+	bool useDiscardTexture;
+	std::string discardTexture;
+
 	bool useCubeTexture;
 	std::string cubeTexture;
 

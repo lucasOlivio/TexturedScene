@@ -174,15 +174,15 @@
         },
         "light": {
             "position": [
-                2760.567138671875,
-                329.14849853515625,
-                3889.398193359375,
+                2380.55322265625,
+                187.8716583251953,
+                3964.792236328125,
                 1.0
             ],
             "direction": [
-                0.07836999744176865,
-                -0.1986600011587143,
-                -0.9769300222396851,
+                0.9287199974060059,
+                0.07656999677419662,
+                0.36278000473976135,
                 1.0
             ],
             "distanceOffset": 175.0,
@@ -237,15 +237,15 @@
         },
         "transform": {
             "position": [
-                2760.567138671875,
-                329.14849853515625,
-                3889.398193359375
+                2380.55322265625,
+                187.8716583251953,
+                3964.792236328125
             ],
             "scale": 1.0,
             "orientation": [
-                -85.41351318359375,
-                -11.458569526672363,
-                0.005429999902844429
+                21.33687973022461,
+                4.391210079193115,
+                0.005410000216215849
             ]
         }
     },
@@ -295,6 +295,8 @@
             "normalTexture": "",
             "useSpecularTexture": false,
             "specularTexture": "",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": true,
             "cubeTexture": "textcube",
             "alphaValue": 1.0
@@ -339,6 +341,8 @@
             "normalTexture": "",
             "useSpecularTexture": true,
             "specularTexture": "13457_Pile_of_Treasure_doubloon_specular.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -383,6 +387,8 @@
             "normalTexture": "",
             "useSpecularTexture": true,
             "specularTexture": "bright_full_spec.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -427,6 +433,8 @@
             "normalTexture": "",
             "useSpecularTexture": true,
             "specularTexture": "full_spec.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 0.75
@@ -472,6 +480,8 @@
             "normalTexture": "",
             "useSpecularTexture": false,
             "specularTexture": "",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -517,6 +527,8 @@
             "normalTexture": "",
             "useSpecularTexture": false,
             "specularTexture": "",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -562,6 +574,8 @@
             "normalTexture": "",
             "useSpecularTexture": false,
             "specularTexture": "",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -606,6 +620,8 @@
             "normalTexture": "",
             "useSpecularTexture": true,
             "specularTexture": "full_spec.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 0.6000000238418579
@@ -651,6 +667,8 @@
             "normalTexture": "",
             "useSpecularTexture": true,
             "specularTexture": "full_spec.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
@@ -696,12 +714,60 @@
             "normalTexture": "",
             "useSpecularTexture": false,
             "specularTexture": "",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 1.0
         },
         "tag": {
             "name": "Texture_01_A"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "material": {
+            "materialName": "matgate",
+            "offsetMove": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "colorTextures": [
+                "metal_plate_diff_4k.bmp"
+            ],
+            "colorTexturesRatios": [
+                1.0,
+                0.0,
+                0.0
+            ],
+            "useHeightMap": false,
+            "heightMapTexture": "",
+            "heightScale": 1.0,
+            "useNormalTexture": false,
+            "normalTexture": "",
+            "useSpecularTexture": true,
+            "specularTexture": "full_spec.bmp",
+            "useDiscardTexture": true,
+            "discardTexture": "gate_discard.bmp",
+            "useCubeTexture": false,
+            "cubeTexture": "",
+            "alphaValue": 1.0
+        },
+        "tag": {
+            "name": "matgate"
         },
         "transform": {
             "position": [
@@ -740,12 +806,37 @@
             "normalTexture": "water_normal.bmp",
             "useSpecularTexture": true,
             "specularTexture": "full_spec.bmp",
+            "useDiscardTexture": false,
+            "discardTexture": "",
             "useCubeTexture": false,
             "cubeTexture": "",
             "alphaValue": 0.699999988079071
         },
         "tag": {
             "name": "matwater"
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "gate_discard.bmp"
+        },
+        "texture": {
+            "fileName": "gate_discard.bmp",
+            "textureType": 16,
+            "vecTextures": []
         },
         "transform": {
             "position": [
@@ -813,6 +904,29 @@
         },
         "texture": {
             "fileName": "Water_Texture_01.bmp",
+            "textureType": 0,
+            "vecTextures": []
+        },
+        "transform": {
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "scale": 1.0,
+            "orientation": [
+                0.0,
+                -0.0,
+                0.0
+            ]
+        }
+    },
+    {
+        "tag": {
+            "name": "metal_plate_diff_4k.bmp"
+        },
+        "texture": {
+            "fileName": "metal_plate_diff_4k.bmp",
             "textureType": 0,
             "vecTextures": []
         },
@@ -1580,9 +1694,9 @@
             ],
             "scale": 1.0,
             "orientation": [
-                180.0,
+                -180.0,
                 -0.000009999999747378752,
-                180.0
+                -180.0
             ]
         }
     },
@@ -1814,9 +1928,9 @@
             ],
             "scale": 115.0,
             "orientation": [
-                -180.0,
+                180.0,
                 -0.000009999999747378752,
-                -180.0
+                180.0
             ]
         }
     },
@@ -5161,10 +5275,10 @@
     {
         "model": {
             "models": [
-                "props/plane.ply"
+                "props/plane2k2.ply"
             ],
             "collisionName": "",
-            "material": "",
+            "material": "matgate",
             "friendlyName": "gate",
             "parentTagName": "",
             "isWireframe": false,
@@ -5173,19 +5287,19 @@
             "isActive": true
         },
         "tag": {
-            "name": "gatewaterroom"
+            "name": "gatetreasureroom"
         },
         "transform": {
             "position": [
-                2584.0,
-                18.0,
-                2993.0
+                2750.0,
+                153.0,
+                2969.0
             ],
-            "scale": 1.2999999523162842,
+            "scale": 2.0,
             "orientation": [
                 90.0,
                 -0.0,
-                90.0
+                0.0
             ]
         }
     }
