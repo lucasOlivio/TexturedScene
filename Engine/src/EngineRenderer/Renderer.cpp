@@ -244,7 +244,7 @@ void Renderer::RenderScene(double deltaTime)
 
 	RenderAllModels(deltaTime);
 
-	//m_pLightSystem->Update(deltaTime);
+	m_pLightSystem->Update(deltaTime);
 
 	return;
 }

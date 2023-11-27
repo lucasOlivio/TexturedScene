@@ -38,8 +38,14 @@ void LightSystem::Update(double deltatime)
     {
         LightComponent* pLight = m_pSceneView->CurrentValue<LightComponent>();
         TransformComponent* pTransform = m_pSceneView->GetComponent<TransformComponent>(pLight->GetEntityID(),
-                                                                                        "transform");
+            "transform");
 
-        pLight->SetPosition(vec4(pTransform->GetPosition(), 1.0) + pLight->GetDirection());
+        // Light direction temporary just relative to the angle the transform is facing
+        // TODO: confirm this is the best way to do this and how it works properly
+        glm::vec3 degrees = pTransform->GetOrientation();
+        glm::vec3 direction = degrees / 90.0f;
+
+        pLight->SetPosition(vec4(pTransform->GetPosition(), 1.0));
+        pLight->SetDirection(vec4(direction, 1.0));
     }
 }
