@@ -194,6 +194,6 @@ void TransformComponent::SetParameter(sParameterInfo& parameterIn)
 bool SortTransformFromCamera(TransformComponent* pTransformA,
 							 TransformComponent* pTransformB)
 {
-	// Compare the values of the objects the pointers point to
-	return pTransformA->GetDistanceToCamera() < pTransformB->GetDistanceToCamera();
+	// Sort from more distant, to closer
+	return pTransformA->GetDistanceToCamera() > pTransformB->GetDistanceToCamera();
 }
