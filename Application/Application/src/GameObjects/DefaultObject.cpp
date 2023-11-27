@@ -67,7 +67,7 @@ void DefaultObject::SetDirection(glm::vec3 value)
 	using namespace glm;
 	using namespace myutils;
 
-	vec3 rotation = vec3(0.0f, 0.0f, GetAngleToDirection(value.x, value.y));
+	vec3 rotation = vec3(0.0f, 0.0f, GetAngleToPoint(value.x, value.y));
 	this->m_pTransform->SetOrientation(rotation);
 
 	this->m_currDirection = value;

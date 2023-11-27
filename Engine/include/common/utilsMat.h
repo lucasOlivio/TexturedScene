@@ -9,7 +9,7 @@ namespace myutils
     void ApplyScale(float scale, glm::mat4& matModelOut);
 
     // TODO: Remove reference  to object here
-	void ApplyTransformInModelMat(iComponent* pTransform, glm::mat4& matModelOut);
+    void ApplyTransformInModelMat(iComponent* pTransform, glm::mat4& matModelOut);
     void ApplyTransformInModelMat(glm::vec3 position, glm::vec3 quaternions, float scale, glm::mat4& matModelOut);
 
     double distance(const glm::vec3& p1, const glm::vec3& p2);
@@ -55,7 +55,7 @@ namespace myutils
     // game-physics-engine-development-how-to-build-a-robust-commercial-grade-physics-engine-for-your-game-second-edition
     // Chapter 7
     void ResolveVelocity(glm::vec3& velocityA, glm::vec3& velocityB, glm::vec3 contactNormal, float restitution,
-                                    float inverseMassA, float inverseMassB);
+        float inverseMassA, float inverseMassB);
 
     // Impulse calculation for collision with a static object
     void ResolveVelocity(glm::vec3& velocity, glm::vec3 reflectionNormal, float inverseMass);
@@ -67,8 +67,11 @@ namespace myutils
     // https://gamedev.stackexchange.com/a/49300
     glm::vec3 GetCardinalDirection(glm::vec3 positionA, glm::vec3 positionB);
 
-    // Calculate the angle in degrees to point to the given direction
-    float GetAngleToDirection(float x, float y);
+    // Calculate the angle in degrees to the given point
+    float GetAngleToPoint(float x, float y);
+
+    // The direction that this angle represents, assuming on point 0
+    glm::vec3 GetDirectionFromDegrees(const glm::vec3& rotation);
 
     std::vector<glm::vec3> GenerateRectangleVertices(const glm::vec3& minXYZ, const glm::vec3& maxXYZ);
 }

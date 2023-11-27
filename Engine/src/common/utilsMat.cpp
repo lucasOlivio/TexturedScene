@@ -58,13 +58,13 @@ namespace myutils
         return;
     }
 
-    double distance(const glm::vec3& p1, const glm::vec3& p2) 
+    double distance(const glm::vec3& p1, const glm::vec3& p2)
     {
         return std::hypot(p1.x - p2.x, p1.y - p2.y);
     }
 
     // Function to determine if a point is inside the circumcircle of a triangle
-    bool IsInsideCircumcircle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& testPoint) 
+    bool IsInsideCircumcircle(const glm::vec3& p1, const glm::vec3& p2, const glm::vec3& p3, const glm::vec3& testPoint)
     {
         // Calculate the distances between the three points that form the triangle
         double d12 = distance(p1, p2);
@@ -237,7 +237,7 @@ namespace myutils
     }
 
     void ResolveVelocity(glm::vec3& velocityA, glm::vec3& velocityB, glm::vec3 contactNormal, float restitution,
-                                        float inverseMassA, float inverseMassB)
+        float inverseMassA, float inverseMassB)
     {
         // Find the velocity in the direction of the contact.
         float separatingVelocity = CalculateSeparatingVelocity(velocityA, velocityB, contactNormal);
@@ -297,14 +297,14 @@ namespace myutils
 
         // Possible directions
         const vec3 headings[8] = {
-            vec3(1, 0, 0), 
-            vec3(1, 1, 0), 
-            vec3(0, 1, 0), 
+            vec3(1, 0, 0),
+            vec3(1, 1, 0),
+            vec3(0, 1, 0),
             vec3(-1, 1, 0),
             vec3(-1, 0, 0),
             vec3(-1, -1, 0),
             vec3(0, -1, 0),
-            vec3(1, -1, 0) 
+            vec3(1, -1, 0)
         };
 
         // actual conversion code:
@@ -312,10 +312,10 @@ namespace myutils
         int fraction = int(8 * angle / (2 * PI) + 8.5);
         int octant = fraction % 8;
 
-       return headings[octant];
+        return headings[octant];
     }
 
-    float GetAngleToDirection(float x, float y) 
+    float GetAngleToPoint(float x, float y)
     {
         // Calculate the angle using atan2 and convert it to degrees
         float angleInRadians = std::atan2(y, x);
@@ -331,6 +331,22 @@ namespace myutils
         }
 
         return angleInDegrees;
+    }
+
+    glm::vec3 GetDirectionFromDegrees(const glm::vec3& rotation)
+    {
+        using namespace glm;
+
+        vec3 rotationRadians = radians(rotation);
+
+        vec3 direction;
+        direction.x = cos(rotationRadians.x) * cos(rotationRadians.y);
+        direction.y = sin(rotationRadians.y);
+        direction.z = sin(rotationRadians.x) * cos(rotationRadians.y);
+
+        vec3 directionNormalized = normalize(direction);
+
+        return directionNormalized;
     }
 
     std::vector<glm::vec3> GenerateRectangleVertices(const glm::vec3& minXYZ, const glm::vec3& maxXYZ) {
