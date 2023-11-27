@@ -2,7 +2,6 @@
 #include "common/utils.h"
 #include "components/Texture.h"
 #include "components/Tiling.h"
-#include "components/Light.h"
 #include "components/Material.h"
 #include <algorithm>
 
@@ -19,10 +18,10 @@ Renderer::~Renderer()
 }
 
 bool Renderer::Initialize(std::string baseModelsPath,
-						  std::string baseTexturesPath,
-						  ShaderManager* pShaderManager,
-						  uint currShaderID,
-						  SceneView* pSceneView)
+	std::string baseTexturesPath,
+	ShaderManager* pShaderManager,
+	uint currShaderID,
+	SceneView* pSceneView)
 {
 	if (m_isInitialized)
 	{
@@ -47,7 +46,7 @@ bool Renderer::Initialize(std::string baseModelsPath,
 	m_isInitialized = true;
 	m_isRunning = true;
 
-    return true;
+	return true;
 }
 
 void Renderer::Destroy()
@@ -74,7 +73,7 @@ bool Renderer::LoadScene(std::string baseModelsPath)
 		CheckEngineError("loading materials");
 		return false;
 	}
-	
+
 	bool modelsLoaded = m_pModelSystem->LoadModels(baseModelsPath, m_currShaderID);
 	if (!modelsLoaded)
 	{
@@ -155,7 +154,7 @@ void Renderer::RenderAllModels(double deltaTime)
 		RenderModel(entityID, pModel, pTransform, deltaTime);
 	}
 
-	// Render all transparent models 
+	// Render all transparent models from more distant to closer to camera
 	std::sort(vecTransparentEntities.begin(), vecTransparentEntities.end(), SortTransformFromCamera);
 	for (TransformComponent* pTransform : vecTransparentEntities)
 	{
@@ -171,11 +170,11 @@ void Renderer::RenderAllModels(double deltaTime)
 	vecTransparentEntities.clear();
 }
 
-void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel, TransformComponent* pTransform, double deltaTime)
+void Renderer::RenderModel(EntityID entityID, ModelComponent* pModel,
+	TransformComponent* pTransform, double deltaTime)
 {
 	using namespace glm;
 
-	iComponent* pLightComp = m_pSceneView->GetComponent(entityID, "light");
 	iComponent* pTilingComp = m_pSceneView->GetComponent(entityID, "tiling");
 
 	// Default we only draw 1 time in each axis
@@ -241,11 +240,11 @@ void Renderer::RenderScene(double deltaTime)
 		return;
 	}
 
-	m_pLightSystem->Update(deltaTime);
-
 	UpdateCamera();
 
 	RenderAllModels(deltaTime);
+
+	//m_pLightSystem->Update(deltaTime);
 
 	return;
 }
@@ -263,10 +262,10 @@ void Renderer::UpdateTransform(glm::mat4 matModel)
 }
 
 void Renderer::Draw(bool isWireFrame,
-					bool doNotLight,
-					bool useColorTexture,
-					int VAO_ID, 
-					int numberOfIndices)
+	bool doNotLight,
+	bool useColorTexture,
+	int VAO_ID,
+	int numberOfIndices)
 {
 	m_pShaderProgram->IsWireframe(isWireFrame);
 	m_pShaderProgram->SetUniformFloat("doNotLight", doNotLight);
