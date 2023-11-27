@@ -26,12 +26,11 @@ void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProg
 {
 	int unitId = GL_TEXTURE0;
 	GLuint textureId = GetTextureIDFromName(textureName);
-	int samplerId = GetSamplerId(textureType);
 
 	sSamplerInfo* pSampler;
 	pSampler = GetSamplerInfo(pShaderProgram, textureType);
 
-	unitId += samplerId;
+	unitId += pSampler->samplerId;
 
 	glActiveTexture(unitId);
 
@@ -49,7 +48,7 @@ void cBasicTextureManager::BindTexture(ShaderManager::ShaderProgram* pShaderProg
 	{
 		glUniform1i(pSampler->samplerToggleUL, true);
 	}
-	glUniform1i(pSampler->samplerUL, samplerId);
+	glUniform1i(pSampler->samplerUL, pSampler->samplerId);
 	glUniform1f(pSampler->samplerRatioUL, ratio);
 
 	return;
@@ -204,6 +203,7 @@ sSamplerInfo* cBasicTextureManager::GetSamplerInfo(ShaderManager::ShaderProgram*
 	pSamplerInfo->samplerUL = pShaderProgram->GetUniformIDFromName(samplerName.c_str());
 	pSamplerInfo->samplerRatioUL = pShaderProgram->GetUniformIDFromName(samplerRatioName.c_str());
 	pSamplerInfo->samplerToggleUL = pShaderProgram->GetUniformIDFromName(samplerToggle.c_str());
+	pSamplerInfo->samplerId = GetSamplerId(textureTypeIn);
 
 	m_mapSamplerNameToInfo[samplerName.c_str()] = pSamplerInfo;
 
