@@ -78,6 +78,14 @@ vec3 calculateColorTextures(vec2 UVFinal);
 
 void main()
 {
+	if (bUseCubeTexture)
+	{
+		vec4 cubeSampleColour = texture(cubeTexture, vertexWorldNormal.xyz).rgba;
+		outputColour.rgb = cubeSampleColour.rgb;
+		outputColour.a = 1.0f;
+		return;
+	}
+
 	if (bUseDebugColour)
 	{
 		outputColour = debugColourRGBA;
@@ -93,13 +101,6 @@ void main()
 	if (bUseColorTexture)
 	{
 		vertexRGBA.rgb = calculateColorTextures(UVFinal);
-	}
-
-	if (bUseCubeTexture)
-	{
-		vec4 cubeSampleColour = texture(cubeTexture, vertexWorldNormal.xyz).rgba;
-		outputColour.rgb = cubeSampleColour.rgb;
-		return;
 	}
 
 	if (bUseDiscardTexture)

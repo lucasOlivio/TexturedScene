@@ -632,6 +632,8 @@ bool CTextureFromBMP::LoadBMP2( std::string fileName )
 	}
 	// BMP file is read....
 
+	delete pRawData;
+
 	return true;
 }
 

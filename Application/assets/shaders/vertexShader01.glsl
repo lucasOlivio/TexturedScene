@@ -32,15 +32,15 @@ out vec2 textureCoords;
 
 void main()
 {
-	vec4 vertexModelPosition = vPos;
-
-	vec2 UVFinal = vTextureCoords.st + UVOffset.yx;
-
 	// Rotate the normal by the inverse transpose of the model matrix
 	// (so that it only is impacted by the rotation, not translation or scale)
 	vertexWorldNormal = matModel_IT * vec4(vNormal.xyz, 1.0f);
 	vertexWorldNormal.xyz = normalize(vertexWorldNormal.xyz);
 	vertexWorldNormal.w = 1.0f;
+
+	vec4 vertexModelPosition = vPos;
+
+	vec2 UVFinal = vTextureCoords.st + UVOffset.yx;
 
 	if (bUseHeightMapTexture)
 	{
