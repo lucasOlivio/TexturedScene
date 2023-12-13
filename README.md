@@ -18,6 +18,5 @@ Project 2 for "Graphics 1" class. An improved scene with texture, materials, sky
 
 ## How to play
 
-- Press P to start playing
-- A/W/S/D to mode
+- A/W/S/D to move
 - Mouse to control the camera
